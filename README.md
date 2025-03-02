@@ -1,4 +1,4 @@
-# Nome do Projeto
+# CONTROLE DE ESTOQUE M.C PLÁSTICOS 
 
 Sistema de controle de estoque para a empresa M.C Plásticos
 
