@@ -2,6 +2,15 @@
 
 Sistema de controle de estoque para a empresa M.C Plásticos
 
+## O que fazer antes de começar a desenvolver?
+Primeiramente é necessario atualizar o repositorio local para a sua versão mais recente, para isso faça este comando 
+
+```sh
+git pull
+```
+
+Caso esteja tudo atualizado, pode prosseguir com o seu desenvolvimento
+
 ## Requisitos para Commit
 
 Antes de realizar um commit, **certifique-se de que está na branch `dev`**. Para isso, siga os passos abaixo:
