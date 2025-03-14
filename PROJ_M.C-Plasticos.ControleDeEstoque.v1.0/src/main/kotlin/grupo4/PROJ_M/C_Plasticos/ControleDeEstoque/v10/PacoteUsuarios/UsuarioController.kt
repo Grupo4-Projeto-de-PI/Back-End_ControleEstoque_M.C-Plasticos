@@ -1,13 +1,12 @@
-package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10
+package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.PacoteUsuarios
 
-import org.apache.coyote.Response
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 
 @RestController
 @RequestMapping("/usuarios")
-class UsuarioController {
+class   UsuarioController {
 
     val usuarios = mutableListOf<Usuario>()
 
@@ -20,13 +19,19 @@ class UsuarioController {
 
     //READ
     @GetMapping("/listar")
-    fun listarUsuarios(): ResponseEntity<List<Usuario>> {
+    fun listarUsuarios(@PathVariable (required = false) email: String?): ResponseEntity<List<Usuario>> {
 
-        if (usuarios.isEmpty()) {
-            return ResponseEntity.status(204).build()
+        if (email == null) {
+            if (usuarios.isEmpty()) {
+                return ResponseEntity.status(204).build()
+            }
+            return ResponseEntity.status(200).body(usuarios)
         }
-        return ResponseEntity.status(200).body(usuarios)
 
+        val usuarioEncontrado = usuarios.find { it.email == email }
+        return if (usuarioEncontrado != null) {
+            ResponseEntity.status(200).body(listOf(usuarioEncontrado))
+        } else ResponseEntity.status(204).build()
     }
 
     //UPDATE
