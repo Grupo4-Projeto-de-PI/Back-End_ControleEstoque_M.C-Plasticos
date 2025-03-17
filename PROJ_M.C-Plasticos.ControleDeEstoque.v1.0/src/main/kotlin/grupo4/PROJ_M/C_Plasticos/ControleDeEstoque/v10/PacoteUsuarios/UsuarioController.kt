@@ -19,7 +19,7 @@ class   UsuarioController {
 
     //READ
     @GetMapping("/listar")
-    fun listarUsuarios(@PathVariable (required = false) email: String?): ResponseEntity<List<Usuario>> {
+    fun listarUsuarios(@RequestParam (required = false) email: String?): ResponseEntity<List<Usuario>> {
 
         if (email == null) {
             if (usuarios.isEmpty()) {
@@ -57,7 +57,7 @@ class   UsuarioController {
 
         if (usuarioEncontrado != null) {
             usuarios.removeAt(index)
-            return ResponseEntity.status(200).body(usuarioEncontrado)
+            return ResponseEntity.status(200).build()
         }
         return ResponseEntity.status(404).build()
 
