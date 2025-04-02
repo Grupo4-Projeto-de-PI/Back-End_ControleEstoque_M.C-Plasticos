@@ -1,4 +1,4 @@
-package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10
+package Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
