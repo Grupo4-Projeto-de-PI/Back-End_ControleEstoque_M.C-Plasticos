@@ -1,7 +1,7 @@
-package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.PacoteClientes
+package Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Cliente
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.ClienteRepositorio
+import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Cliente
+import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.ClienteRepositorio
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

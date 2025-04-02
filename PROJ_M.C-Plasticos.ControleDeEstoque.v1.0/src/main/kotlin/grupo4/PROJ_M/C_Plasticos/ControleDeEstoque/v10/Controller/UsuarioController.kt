@@ -1,13 +1,14 @@
-package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.PacoteUsuarios
+package Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.UsuarioRepositorio
+import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Usuario
+import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.UsuarioRepositorio
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/usuarios")
-class UsuarioJPAController (val repositorio: UsuarioRepositorio){
+class UsuarioController (val repositorio: UsuarioRepositorio){
 
 
     @PostMapping("/criar")

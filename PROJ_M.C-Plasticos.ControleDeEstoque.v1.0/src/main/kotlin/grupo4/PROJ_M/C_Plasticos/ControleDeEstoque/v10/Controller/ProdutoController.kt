@@ -1,8 +1,7 @@
-package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.PacoteProdutos
+package Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Produto
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.ProdutoRepositorio
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
+import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Produto
+import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.ProdutoRepositorio
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
