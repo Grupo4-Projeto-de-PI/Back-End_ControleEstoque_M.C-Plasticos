@@ -6,84 +6,67 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/produtos")
+@RequestMapping("/produto")
 class ProdutoController(val repositorio: ProdutoRepositorio) {
 
-    @GetMapping
-    fun getListaProduto():ResponseEntity<List<Produto>>{
+    @GetMapping("/listar")
+    fun listarTodosProdutos():ResponseEntity<List<Produto>>{
 
-        val Produtos = repositorio.findAll()
+        val produtos = repositorio.findAll()
 
-        return if (Produtos.isEmpty()){
-
+        return if (produtos.isEmpty()){
             ResponseEntity.status(204).build()
-
         } else {
-
-            ResponseEntity.status(200).body(Produtos)
-
+            ResponseEntity.status(200).body(produtos)
         }
 
     }
 
-    @PostMapping
-    fun post(@RequestBody novaProdutos: Produto):ResponseEntity<Produto> {
-        val Produtos = repositorio.save(novaProdutos)
-        return ResponseEntity.status(201).body(Produtos)
+    @GetMapping("/listar/id")
+    fun getProdutoId(@RequestParam id:Int): ResponseEntity<Produto>{
+        val produtos = repositorio.findById(id)
+        return ResponseEntity.of(produtos)
     }
 
-    @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Int):ResponseEntity<Void> {
+    @GetMapping("/listar/tipo")
+    fun getProdutoTipo(@RequestParam tipo: String): ResponseEntity<List<Produto>>{
+        val produtos = repositorio.findByTipo(tipo)
+        return ResponseEntity.status(200).body(produtos)
+    }
 
+    @PostMapping("/criar")
+    fun criarProduto(@RequestBody novoProduto: Produto):ResponseEntity<Produto> {
+        val produtos = repositorio.save(novoProduto)
+        return ResponseEntity.status(201).body(produtos)
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    fun deletarProduto(@PathVariable id: Int):ResponseEntity<Void> {
         if(repositorio.existsById(id)){
             repositorio.deleteById(id)
             return ResponseEntity.status(204).build()
         }
-
         return ResponseEntity.status(404).build()
-
     }
 
-    @GetMapping("/{id}")
-    fun getProdutoId(@PathVariable id:Int): ResponseEntity<Produto>{
-
-        val Produtos = repositorio.findById(id)
-
-        return ResponseEntity.of(Produtos)
-
-    }
-
-    // função comentada exige mais pesquisa
-
-//    @GetMapping("/{tipo}")
-//    fun getProdutoTipo(@PathVariable tipo:String): ResponseEntity<Produto>{
-//
-//        val Produtos = repositorio.findBy(tipo)
-//
-//        return ResponseEntity.of(Produtos)
-//
-//    }
-
-    @PutMapping("/{id}")
-    fun put(@PathVariable id:Int, @RequestBody ProdutosAtualizados: Produto):ResponseEntity<Produto> {
+    @PutMapping("/atualizar-produto/{id}")
+    fun atualizarTodoProduto(@PathVariable id:Int, @RequestBody produtosAtualizado: Produto):ResponseEntity<Produto> {
 
         if (repositorio.existsById(id)) {
-
-            ProdutosAtualizados.id = id
-            val Produtos = repositorio.save(ProdutosAtualizados)
-            return ResponseEntity.status(200).body(Produtos)
+            produtosAtualizado.id = id
+            val produto = repositorio.save(produtosAtualizado)
+            return ResponseEntity.status(200).body(produto)
         }
 
         return ResponseEntity.status(404).build()
-
     }
 
-    @PatchMapping("/Produtos-Preco/{id}/{preco}")
+    @PatchMapping("/produtos-preco/{id}/{preco}")
     fun patchProdutosPreco(@PathVariable id:Int, @PathVariable preco:Double): ResponseEntity<Produto> {
         if (repositorio.existsById(id)) {
-            val ProdutosEncontrados = repositorio.findById(id).get()
-            ProdutosEncontrados.preco = preco
-            return ResponseEntity.status(200).body(ProdutosEncontrados)
+            val produtosEncontrados = repositorio.findById(id).get()
+            produtosEncontrados.preco = preco
+            return ResponseEntity.status(200).body(produtosEncontrados)
         }
 
         return ResponseEntity.status(404).build()

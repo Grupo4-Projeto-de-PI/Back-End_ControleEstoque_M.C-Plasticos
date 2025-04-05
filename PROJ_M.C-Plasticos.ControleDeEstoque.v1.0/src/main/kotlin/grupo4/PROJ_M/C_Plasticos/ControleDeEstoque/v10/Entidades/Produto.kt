@@ -5,6 +5,8 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.validation.constraints.PositiveOrZero
+import jakarta.validation.constraints.Size
 import java.time.LocalDate
 
 @Entity
@@ -13,10 +15,10 @@ data class Produto(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id:Int?,
-    var nome: String?,
-    var tipo: String?,
+    @field: Size(min = 1, max=45)var nome: String?,
+    @field: Size(min = 1, max = 45)var tipo: String?,
     var cadastrante: String?,
-    var preco: Double?,
+    @field: PositiveOrZero var preco: Double?,
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var dataCadastro: LocalDate = LocalDate.now()
 
