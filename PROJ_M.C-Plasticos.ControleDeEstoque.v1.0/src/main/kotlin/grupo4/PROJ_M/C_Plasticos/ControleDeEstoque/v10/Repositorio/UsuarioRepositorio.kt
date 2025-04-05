@@ -1,16 +1,22 @@
 package Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio
 
 import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Usuario
+import jakarta.transaction.Transactional
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
+import org.springframework.data.jpa.repository.Query
 
 interface UsuarioRepositorio: JpaRepository<Usuario, Int> {
+    @Transactional
+    @Modifying
+    @Query("update Usuario u set u.nome = ?2 where u.codigoFuncionario = ?1")
+    fun atualizarNome(codigoFuncionario: Int, nome: String): Int
 
-//    @Transactional
-//    @Modifying
-//    @Query()
-//
-//    fun atualizarSenha(email: String, senha: String): Int
-//    fun findByEmailContains(email: String): List<Usuario>
-//    fun findBySenhaContains(senha: String): List<Usuario>
-//    fun countByEmail(email: String): Int
+    @Transactional
+    @Modifying
+    @Query("update Usuario u set u.senha = ?2 where u.codigoFuncionario = ?1")
+    fun atualizarSenha(codigoFuncionario: Int, senha: Int): Int
+
+    @Transactional
+    fun deleteByCodigoFuncionario(codigoFuncionario: Int): Int
 }
