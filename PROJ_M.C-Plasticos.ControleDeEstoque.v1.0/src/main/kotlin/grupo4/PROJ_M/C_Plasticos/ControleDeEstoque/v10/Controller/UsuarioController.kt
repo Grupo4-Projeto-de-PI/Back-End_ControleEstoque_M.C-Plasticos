@@ -3,12 +3,16 @@ package Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
 import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Usuario
 import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.UsuarioRepositorio
 import jakarta.validation.Valid
+import org.springdoc.core.service.GenericResponseService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/usuarios")
-class UsuarioController (val repositorio: UsuarioRepositorio){
+@RequestMapping("/usuario")
+class UsuarioController(
+    val repositorio: UsuarioRepositorio,
+    private val responseBuilder: GenericResponseService
+){
 
 
     @PostMapping("/criar")
@@ -17,9 +21,8 @@ class UsuarioController (val repositorio: UsuarioRepositorio){
         return ResponseEntity.status(201).body(usuarioSalvo)
     }
 
-
     @GetMapping("/listar")
-    fun getListarUsuarios(@RequestParam(required = false) email: String?): ResponseEntity<List<Usuario>> {
+    fun listarTodosUsuarios(): ResponseEntity<List<Usuario>> {
         val usuarios = repositorio.findAll()
         if (usuarios.isEmpty()) {
             return ResponseEntity.status(204).build()
@@ -27,26 +30,48 @@ class UsuarioController (val repositorio: UsuarioRepositorio){
         return ResponseEntity.status(200).body(usuarios)
     }
 
-    @PatchMapping("/editar/{email}/{novaSenha}")
-    fun patchEditarUsuarios(@PathVariable email: String, @PathVariable novaSenha: String): ResponseEntity<Usuario> {
-        val usuarioEncontrado = repositorio.findById(email.toInt())
-        if (usuarioEncontrado.isPresent) {
-            val usuario = usuarioEncontrado.get()
-            usuario.senha = novaSenha
-            val usuarioSalvo = repositorio.save(usuario)
-            return ResponseEntity.status(200).body(usuarioSalvo)
+    @GetMapping("/listar/{codigoFuncionario}")
+    fun listarUsuarioId(@PathVariable(required = true) codigoFuncionario: Int): ResponseEntity<Usuario> {
+
+        if (!repositorio.existsById(codigoFuncionario)) {
+            return ResponseEntity.status(204).build()
         }
-        return ResponseEntity.status(404).build()
+        val usuarioEncontrado = repositorio.findById(codigoFuncionario)
+        return ResponseEntity.of(usuarioEncontrado)
     }
 
+    @PatchMapping("/editar/nome")
+    fun patchEditarNomeUsuario(@RequestParam nome: String, @RequestParam codigoFuncionario: Int): ResponseEntity<Usuario> {
 
-    @DeleteMapping("/excluir/{email}")
-    fun deleteExcluirUsuario(@PathVariable email: String): ResponseEntity<Usuario> {
-        val usuarioEncontrado = repositorio.findById(email.toInt())
-        if (usuarioEncontrado.isPresent) {
-            repositorio.delete(usuarioEncontrado.get())
-            return ResponseEntity.status(200).build()
+        if(!repositorio.existsById(codigoFuncionario)) {
+            return ResponseEntity.status(404).build()
         }
+
+        repositorio.atualizarNome(codigoFuncionario, nome)
+        val nomeAtualizado = repositorio.findById(codigoFuncionario).get()
+        return ResponseEntity.status(200).body(nomeAtualizado)
+    }
+
+    @PatchMapping("/editar/senha")
+    fun patchEditarSenhaUsuario(@RequestParam senha: Int, @RequestParam codigoFuncionario: Int): ResponseEntity<Usuario> {
+
+        if(!repositorio.existsById(codigoFuncionario)) {
+            return ResponseEntity.status(404).build()
+        }
+
+        repositorio.atualizarSenha(codigoFuncionario, senha)
+        val senhaAtualizada = repositorio.findById(codigoFuncionario).get()
+        return ResponseEntity.status(200).body(senhaAtualizada)
+    }
+
+    @DeleteMapping("/excluir/{codigoFuncionario}")
+    fun deleteExcluirUsuario(@PathVariable codigoFuncionario: Int): ResponseEntity<Usuario> {
+
+        if (repositorio.existsById(codigoFuncionario)) {
+            repositorio.deleteByCodigoFuncionario(codigoFuncionario)
+            return ResponseEntity.status(204).build()
+        }
+
         return ResponseEntity.status(404).build()
     }
 
