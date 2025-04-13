@@ -30,7 +30,14 @@ class ProdutoController(val repositorio: ProdutoRepositorio) {
 
     @GetMapping("/listar/tipo")
     fun getProdutoTipo(@RequestParam tipo: String): ResponseEntity<List<Produto>>{
+        if (tipo.isBlank()){
+            return ResponseEntity.status(400).build()
+        }
         val produtos = repositorio.findByTipo(tipo)
+
+        if(produtos.isEmpty()){
+            return ResponseEntity.status(204).build()
+        }
         return ResponseEntity.status(200).body(produtos)
     }
 
