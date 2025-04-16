@@ -22,8 +22,10 @@ data class Usuario (
     @field: Min(10) @field: Max(99999999) var senha: Int? = null,
     var dataCriacao: String? = LocalDateTime.now().toString(),
     var primeiroAcesso: Boolean = false,
-    var tipoUsuario: String? = null
-) {
+    var tipoUsuario: String? = null,
+    var ativo: Boolean = true,
+    var online: Boolean? = false
+    ) {
     constructor(): this(null, null, null)
 
 }
