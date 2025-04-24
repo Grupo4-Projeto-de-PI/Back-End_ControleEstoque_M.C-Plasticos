@@ -73,10 +73,11 @@ class ProdutoController(val repositorio: ProdutoRepositorio) {
         if (repositorio.existsById(id)) {
             val produtosEncontrados = repositorio.findById(id).get()
             produtosEncontrados.preco = preco
+            repositorio.save(produtosEncontrados)
             return ResponseEntity.status(200).body(produtosEncontrados)
         }
 
-        return ResponseEntity.status(404).build()
+        return ResponseEntity.status(404).build()gi
     }
 
 }

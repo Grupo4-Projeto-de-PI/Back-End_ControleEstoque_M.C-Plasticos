@@ -19,11 +19,13 @@ data class Usuario (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var codigoFuncionario: Int?,
     @field: NotBlank @field:Size(min = 1, max = 15) var nome: String? = null,
-    @field: Min(10) @field: Max(99999999) var senha: Int? = null,
+    @field:Size(max = 8, message = "A senha deve ter no máximo 8 dígitos") var senha: String? = null,
     var dataCriacao: String? = LocalDateTime.now().toString(),
     var primeiroAcesso: Boolean = false,
-    var tipoUsuario: String? = null
-) {
+    var tipoUsuario: String? = null,
+    var ativo: Boolean? = true,
+    var online: Boolean? = false
+    ) {
     constructor(): this(null, null, null)
 
 }
