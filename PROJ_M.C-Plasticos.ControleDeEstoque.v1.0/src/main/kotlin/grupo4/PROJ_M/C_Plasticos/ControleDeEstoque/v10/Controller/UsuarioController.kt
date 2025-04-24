@@ -89,22 +89,24 @@ class UsuarioController(
         return ResponseEntity.status(404).build()
     }
 
-    @GetMapping("/login/{nome}/{senha}")
-    fun login(@PathVariable nomeEntrada: String, @PathVariable senhaEntrada: String): ResponseEntity<Usuario>{
+    @GetMapping("/login")
+    fun login(@Valid @RequestBody loginUsuario: Usuario): ResponseEntity<Usuario>{
+        val nomeEntrada = loginUsuario.nome
+        val senhaEntrada = loginUsuario.senha
         val login = repositorio.findByNomeAndSenha(nomeEntrada, senhaEntrada)
         val nome = login?.nome
         val senha = login?.senha
         val status = login?.ativo
 
         if (nomeEntrada == nome && senhaEntrada == senha && status == true) {
-            val statuOnline = true
-            repositorio.atualizarOnline(nome, statuOnline)
+            val statusOnline = true
+            repositorio.atualizarOnline(nome, statusOnline)
             return ResponseEntity.status(204).build()
         }
 
         return ResponseEntity.status(404).build()
 
-        }
+    }
 
     @GetMapping("/login/{nome}")
     fun logoff(@PathVariable nomeEntrada: String): ResponseEntity<Usuario>{
