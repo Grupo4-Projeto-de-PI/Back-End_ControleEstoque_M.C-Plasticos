@@ -15,15 +15,15 @@ interface UsuarioRepositorio: JpaRepository<Usuario, Int> {
     @Transactional
     @Modifying
     @Query("update Usuario u set u.senha = ?2 where u.codigoFuncionario = ?1")
-    fun atualizarSenha(codigoFuncionario: Int, senha: Int): Int
+    fun atualizarSenha(codigoFuncionario: Int, senha: String): Int
 
     @Transactional
     fun deleteByCodigoFuncionario(codigoFuncionario: Int): Int
 
-    @Query("select * from Usuario u where u.nome = ?1 and u.senha = ?1")
-    fun findByNomeAndSenha(nome: String, senha: Int): Usuario?
+    @Transactional
+    fun findByNomeAndSenha(nome: String, senha: String): Usuario?
 
-    @Query("select * from Usuario u where u.nome = ?1")
+    @Transactional
     fun findByNome(nome: String): Usuario?
 
     @Modifying

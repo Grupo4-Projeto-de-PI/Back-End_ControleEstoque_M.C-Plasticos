@@ -42,25 +42,38 @@ class UsuarioController(
     }
 
     @PatchMapping("/editar/nome")
-    fun patchEditarNomeUsuario(@RequestParam nome: String, @RequestParam codigoFuncionario: Int): ResponseEntity<Usuario> {
+    fun patchEditarNomeUsuario(@Valid @RequestBody nome: Usuario, @RequestParam codigoFuncionario: Int): ResponseEntity<Usuario> {
 
         if(!repositorio.existsById(codigoFuncionario)) {
             return ResponseEntity.status(404).build()
         }
 
-        repositorio.atualizarNome(codigoFuncionario, nome)
+        val nomeUsuario = nome.nome
+
+        if (nomeUsuario != null) {
+            repositorio.atualizarNome(codigoFuncionario, nomeUsuario)
+        }
+        else{
+            return ResponseEntity.status(400).build()
+        }
         val nomeAtualizado = repositorio.findById(codigoFuncionario).get()
         return ResponseEntity.status(200).body(nomeAtualizado)
     }
 
     @PatchMapping("/editar/senha")
-    fun patchEditarSenhaUsuario(@RequestParam senha: Int, @RequestParam codigoFuncionario: Int): ResponseEntity<Usuario> {
+    fun patchEditarSenhaUsuario(@Valid @RequestBody senha: Usuario, @RequestParam codigoFuncionario: Int): ResponseEntity<Usuario> {
 
         if(!repositorio.existsById(codigoFuncionario)) {
             return ResponseEntity.status(404).build()
         }
+        val senhaUsuario = senha.senha
 
-        repositorio.atualizarSenha(codigoFuncionario, senha)
+        if (senhaUsuario != null) {
+            repositorio.atualizarSenha(codigoFuncionario, senhaUsuario)
+        }
+        else{
+            return ResponseEntity.status(400).build()
+        }
         val senhaAtualizada = repositorio.findById(codigoFuncionario).get()
         return ResponseEntity.status(200).body(senhaAtualizada)
     }
@@ -77,7 +90,7 @@ class UsuarioController(
     }
 
     @GetMapping("/login/{nome}/{senha}")
-    fun login(@PathVariable nomeEntrada: String, @PathVariable senhaEntrada: Int): ResponseEntity<Usuario>{
+    fun login(@PathVariable nomeEntrada: String, @PathVariable senhaEntrada: String): ResponseEntity<Usuario>{
         val login = repositorio.findByNomeAndSenha(nomeEntrada, senhaEntrada)
         val nome = login?.nome
         val senha = login?.senha
