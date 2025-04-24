@@ -1,6 +1,8 @@
-INSERT INTO Usuario VALUES
-(default, false, 12345678, 'Joao Silva',CURRENT_TIMESTAMP, 'Administrador', true, true),
-(default, false, 87654321, 'Maria Souza', CURRENT_TIMESTAMP, 'Comprador', true, false);
+INSERT INTO usuario (
+    codigo_funcionario, nome, senha, data_criacao, primeiro_acesso, tipo_usuario, ativo, online
+) VALUES
+      (default, 'Joao Silva', 12345678, CURRENT_TIMESTAMP, false, 'Administrador', true, false),
+      (default, 'Maria Souza', 87654321, CURRENT_TIMESTAMP, false, 'Comprador', true, false);
 
 INSERT INTO Produto (nome, tipo, preco, cadastrante, data_cadastro)
 VALUES

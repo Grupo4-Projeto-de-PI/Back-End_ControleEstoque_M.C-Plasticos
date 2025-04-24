@@ -10,7 +10,6 @@ import java.time.LocalDateTime
 @Entity
 data class Transacao(
 
-
     var fkUsuario: Int?,
     var fkFornecedor: Int?,
     var fkProduto: Int?,
