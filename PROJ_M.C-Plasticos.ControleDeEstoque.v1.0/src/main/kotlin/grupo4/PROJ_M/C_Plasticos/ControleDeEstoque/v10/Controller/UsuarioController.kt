@@ -90,34 +90,27 @@ class UsuarioController(
     }
 
     @GetMapping("/login")
-    fun login(@Valid @RequestBody loginUsuario: Usuario): ResponseEntity<Usuario>{
+    fun login(@Valid @RequestBody loginUsuario: Usuario): ResponseEntity<String>{
         val nomeEntrada = loginUsuario.nome
         val senhaEntrada = loginUsuario.senha
         val login = repositorio.findByNomeAndSenha(nomeEntrada, senhaEntrada)
-        val nome = login?.nome
-        val senha = login?.senha
-        val status = login?.ativo
 
-        if (nomeEntrada == nome && senhaEntrada == senha && status == true) {
-            val statusOnline = true
-            repositorio.atualizarOnline(nome, statusOnline)
-            return ResponseEntity.status(204).build()
+        if (login.isNotEmpty()) {
+            repositorio.atualizarOnline(nomeEntrada, true)
+            return ResponseEntity.status(200).body("Usuario logado com sucesso!")
         }
 
         return ResponseEntity.status(404).build()
-
     }
 
-    @GetMapping("/login/{nome}")
-    fun logoff(@PathVariable nomeEntrada: String): ResponseEntity<Usuario>{
-        val login = repositorio.findByNome(nomeEntrada)
-        val nome = login?.nome
-        val statusOnline = login?.online
+    @GetMapping("/logoff")
+    fun logoff(@RequestBody nomeEntrada: Usuario): ResponseEntity<String>{
+        val nomeUsuario = nomeEntrada.nome
+        val login = repositorio.findByNome(nomeUsuario)
 
-        if (nomeEntrada == nome && statusOnline == true) {
-            val online = false
-            repositorio.atualizarOnline(nome,online)
-            return ResponseEntity.status(204).build()
+        if (login.isNotEmpty()) {
+            repositorio.atualizarOnline(nomeUsuario,false)
+            return ResponseEntity.status(200).body("Usuario desconectado!")
         }
 
         return ResponseEntity.status(404).build()
