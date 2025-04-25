@@ -1,13 +1,10 @@
-package Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades
+package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.validation.constraints.Email
-import jakarta.validation.constraints.Max
-import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
