@@ -56,4 +56,6 @@ class CategoriaController(val repositorio: CategoriaRepositorio) {
         return ResponseEntity.status(404).build()
     }
 
+
+
 }

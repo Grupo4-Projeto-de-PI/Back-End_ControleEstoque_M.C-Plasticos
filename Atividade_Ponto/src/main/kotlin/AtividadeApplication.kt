@@ -1,11 +1,11 @@
-	package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10
+package com.seuprojeto
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class Application
+class AtividadeApplication
 
 fun main(args: Array<String>) {
-	runApplication<Application>(*args)
+    runApplication<AtividadeApplication>(*args)
 }
