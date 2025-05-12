@@ -1,18 +1,15 @@
-package Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
+package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
 
-import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Usuario
-import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.UsuarioRepositorio
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Usuario
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.UsuarioRepositorio
 import jakarta.validation.Valid
-import org.apache.coyote.Response
-import org.springdoc.core.service.GenericResponseService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/usuario")
 class UsuarioController(
-    val repositorio: UsuarioRepositorio,
-    private val responseBuilder: GenericResponseService
+    val repositorio: UsuarioRepositorio
 ){
 
 

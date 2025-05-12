@@ -1,7 +1,7 @@
-package Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
+package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
 
-import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Produto
-import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.ProdutoRepositorio
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Produto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.ProdutoRepositorio
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -77,7 +77,7 @@ class ProdutoController(val repositorio: ProdutoRepositorio) {
             return ResponseEntity.status(200).body(produtosEncontrados)
         }
 
-        return ResponseEntity.status(404).build()gi
+        return ResponseEntity.status(404).build()
     }
 
 }

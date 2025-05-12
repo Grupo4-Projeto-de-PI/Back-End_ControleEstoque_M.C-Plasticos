@@ -1,6 +1,6 @@
-package Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio
+package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio
 
-import Grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Usuario
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Usuario
 import jakarta.transaction.Transactional
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying

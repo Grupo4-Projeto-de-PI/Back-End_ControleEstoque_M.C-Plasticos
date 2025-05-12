@@ -1,0 +1,4 @@
+package DTO
+
+class ProfissaoDTO {
+}
