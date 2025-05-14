@@ -5,16 +5,27 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
 import java.time.LocalDateTime
 
 @Entity
 data class Transacao(
 
-    var fkUsuario: Int?,
-    var fkFornecedor: Int?,
-    var fkProduto: Int?,
-    var fkCategoria: Int?,
-    var fkCliente: Int?,
+    @ManyToOne
+    var fkUsuario: Usuario? = null,
+
+    @ManyToOne
+    var fkFornecedor: AtorComercial? = null,
+
+    @ManyToOne
+    var fkProduto: Int? = null,
+
+    @ManyToOne
+    var fkCategoria: Categoria? = null,
+
+    @ManyToOne
+    var fkCliente: AtorComercial? = null,
+
     var tipoOperacao: String?,
     var peso: Double?,
     var valorTotal: Double?,

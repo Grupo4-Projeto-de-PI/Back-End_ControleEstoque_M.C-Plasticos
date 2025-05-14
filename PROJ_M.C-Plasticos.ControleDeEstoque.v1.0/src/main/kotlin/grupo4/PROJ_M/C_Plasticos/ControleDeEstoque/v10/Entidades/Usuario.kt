@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
@@ -19,7 +20,10 @@ data class Usuario (
     @field:Size(max = 8, message = "A senha deve ter no máximo 8 dígitos") var senha: String? = null,
     var dataCriacao: String? = LocalDateTime.now().toString(),
     var primeiroAcesso: Boolean = false,
-    var tipoUsuario: String? = null,
+
+    // precisa trocar para uma fk para padronizar o nome
+    @ManyToOne
+    var tipoUsuario: TipoUsuario? = null,
     var ativo: Boolean? = true,
     var online: Boolean? = false
     ) {
