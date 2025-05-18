@@ -21,5 +21,5 @@ data class LogPrecoProduto (
     var dataAlteracao: LocalDateTime
 
 ){
-    constructor() : this(null, null, null, null, LocalDateTime.now())
+    constructor(precoAntigo: Any?, fkProduto: Produto, precoNovo: BigDecimal?, dataAlteracao: LocalDateTime) : this(null, null, null, null, LocalDateTime.now())
 }

@@ -43,9 +43,10 @@ class ProdutoController(val repositorio: ProdutoRepositorio) {
 
     @PostMapping("/criar")
     fun criarProduto(@RequestBody novoProduto: Produto):ResponseEntity<Produto> {
-        val produtos = repositorio.save(novoProduto)
+        val produtos = repositorio.findBySemPreco(novoProduto)
         return ResponseEntity.status(201).body(produtos)
     }
+
 
     @DeleteMapping("/deletar/{id}")
     fun deletarProduto(@PathVariable id: Int):ResponseEntity<Void> {
@@ -79,5 +80,7 @@ class ProdutoController(val repositorio: ProdutoRepositorio) {
 
         return ResponseEntity.status(404).build()
     }
+
+
 
 }

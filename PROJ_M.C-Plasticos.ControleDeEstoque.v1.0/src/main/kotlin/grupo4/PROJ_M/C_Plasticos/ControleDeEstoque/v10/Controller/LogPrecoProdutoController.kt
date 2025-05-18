@@ -1,0 +1,85 @@
+package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
+
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.LogPrecoProduto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Produto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.LogPrecoProdutoRepositorio
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.ProdutoRepositorio
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
+import java.math.BigDecimal
+import java.time.LocalDateTime
+
+@RestController
+@RequestMapping("/logPrecoProduto")
+class LogPrecoProdutoController(val repositorio: LogPrecoProdutoRepositorio,
+val produtoRepositorio: ProdutoRepositorio
+) {
+
+    @PostMapping
+    fun criar(@RequestBody produto: Produto): ResponseEntity<Produto> {
+        val salvo = produtoRepositorio.save(produto)
+
+        if (salvo.preco != null) {
+            val log = LogPrecoProduto(
+                fkProduto = salvo,
+                precoAntigo = null,
+                precoNovo = salvo.preco!!.toBigDecimal(),
+                dataAlteracao = LocalDateTime.now()
+            )
+            repositorio.save(log)
+        }
+
+        return ResponseEntity.ok(salvo)
+    }
+
+    @PutMapping("/{id}")
+    fun atualizar(@PathVariable id: Int, @RequestBody produto: Produto): ResponseEntity<Produto> {
+        val existente = produtoRepositorio.findById(id)
+            .orElseThrow { RuntimeException("Produto não encontrado") }
+
+        val precoAntigo = existente.preco
+        val precoNovo = produto.preco
+
+        existente.nome = produto.nome
+        existente.tipo = produto.tipo
+        existente.cadastrante = produto.cadastrante
+        existente.preco = precoNovo
+
+        val atualizado = produtoRepositorio.save(existente)
+
+        if (precoAntigo != null && precoNovo != null && precoAntigo != precoNovo) {
+            val log = LogPrecoProduto(
+                fkProduto = atualizado,
+                precoAntigo = BigDecimal.valueOf(precoAntigo),
+                precoNovo = BigDecimal.valueOf(precoNovo),
+                dataAlteracao = LocalDateTime.now()
+            )
+            repositorio.save(log)
+        }
+
+        return ResponseEntity.ok(atualizado)
+    }
+
+    @DeleteMapping("/{id}")
+    fun deletar(@PathVariable id: Int): ResponseEntity<Void> {
+        val produto = produtoRepositorio.findById(id)
+            .orElseThrow { RuntimeException("Produto não encontrado") }
+
+        if (produto.preco != null) {
+            val log = LogPrecoProduto(
+                fkProduto = produto,
+                precoAntigo = produto.preco!!.toBigDecimal(),
+                precoNovo = null,
+                dataAlteracao = LocalDateTime.now()
+            )
+            repositorio.save(log)
+        }
+
+        produtoRepositorio.delete(produto)
+        return ResponseEntity.noContent().build()
+    }
+
+    @GetMapping
+    fun listar(): List<Produto> = produtoRepositorio.findAll()
+
+}

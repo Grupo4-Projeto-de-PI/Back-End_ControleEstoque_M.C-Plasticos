@@ -2,6 +2,7 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
 
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.AtorComercial
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.TipoComercial
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.AtorComercialRepositorio
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
@@ -50,7 +51,7 @@ class AtorComercialController(val repositorio: AtorComercialRepositorio) {
 
     //Alterando a FkTipoPessoa onde 1 = PF e 2 = PJ
     @PatchMapping("/tipo-ator/{id}/{tipoPessoa}")
-    fun patchTipoAtorComercial(@PathVariable id:Int, @PathVariable tipoPessoa:Int): ResponseEntity<AtorComercial> {
+    fun patchTipoAtorComercial(@PathVariable id:Int, @PathVariable tipoPessoa: TipoComercial): ResponseEntity<AtorComercial> {
         if (repositorio.existsById(id)) {
             val atoresEncontrados = repositorio.findById(id).get()
             atoresEncontrados.fkTipoPessoa = tipoPessoa
