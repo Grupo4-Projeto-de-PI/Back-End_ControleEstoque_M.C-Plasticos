@@ -7,7 +7,7 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Entity
-data class LogEntrada(
+data class LogTransacao(
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
@@ -22,9 +22,11 @@ data class LogEntrada(
 
     var dataLog: LocalDateTime,
 
+    @ManyToOne
     var fkTransacao: Transacao? = null,
 
-    var fkTransacaoProduto: Transacao? = null
+    @ManyToOne
+    var fkTransacaoProduto: Produto? = null
 
 
 ){

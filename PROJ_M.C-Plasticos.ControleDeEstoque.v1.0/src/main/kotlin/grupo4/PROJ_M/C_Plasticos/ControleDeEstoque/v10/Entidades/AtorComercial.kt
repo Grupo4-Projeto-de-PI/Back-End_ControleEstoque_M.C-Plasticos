@@ -5,6 +5,8 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OneToOne
 import jakarta.validation.constraints.NotBlank
@@ -20,7 +22,8 @@ data class AtorComercial(
     var id: Int?,
     @field:NotBlank var nome: String?,
     @field:Size(min = 11, max=11)  var telefone: String?,
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "tipo")
     var fkTipoPessoa: TipoComercial? = null,
 
     //ponto de dúvida

@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
 import jakarta.validation.constraints.PositiveOrZero
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -15,11 +16,15 @@ data class LogPrecoProduto (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Int?,
+    @ManyToOne
     var fkProduto: Produto? = null,
     @field: PositiveOrZero var precoNovo: BigDecimal?,
     @field: PositiveOrZero var precoAntigo: BigDecimal?,
     var dataAlteracao: LocalDateTime
 
 ){
-    constructor(precoAntigo: Any?, fkProduto: Produto, precoNovo: BigDecimal?, dataAlteracao: LocalDateTime) : this(null, null, null, null, LocalDateTime.now())
+    constructor(precoAntigo: Any?, fkProduto: Produto, precoNovo: BigDecimal?, dataAlteracao: LocalDateTime) : this( null, fkProduto, precoNovo, precoAntigo as BigDecimal, dataAlteracao)
+    constructor() : this(null, null, null, BigDecimal.ZERO, LocalDateTime.now()) {
+
+    }
 }

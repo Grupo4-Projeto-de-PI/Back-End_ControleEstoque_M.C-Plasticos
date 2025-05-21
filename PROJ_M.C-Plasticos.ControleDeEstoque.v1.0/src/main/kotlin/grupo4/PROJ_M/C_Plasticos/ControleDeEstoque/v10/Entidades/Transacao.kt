@@ -11,34 +11,33 @@ import java.time.LocalDateTime
 @Entity
 data class Transacao(
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Int?,
+
     @ManyToOne
     var fkUsuario: Usuario? = null,
 
     @ManyToOne
-    var fkFornecedor: AtorComercial? = null,
+    var fkAtorComercial: AtorComercial? = null,
 
     @ManyToOne
-    var fkProduto: Int? = null,
+    var fkProduto: Produto? = null,
 
     @ManyToOne
     var fkCategoria: Categoria? = null,
-
-    @ManyToOne
-    var fkCliente: AtorComercial? = null,
 
     var tipoOperacao: String?,
     var peso: Double?,
     var valorTotal: Double?,
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Int?,
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var data: LocalDateTime = LocalDateTime.now()
 
 ) {
 
-    constructor() : this(null, null, null, null, null, null, null, null, null)
+    constructor() : this(null, null, null, null, null,
+        null, null, null,)
 
 }

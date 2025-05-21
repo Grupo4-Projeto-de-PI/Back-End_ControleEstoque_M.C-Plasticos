@@ -20,14 +20,6 @@ class TransacaoController (val repositorio: TransacaoRepositorio) {
     //CREATE
     @PostMapping
     fun post(@RequestBody novaTransacao: Transacao): ResponseEntity<Transacao> {
-
-        if (novaTransacao.tipoOperacao=="entrada"){
-            novaTransacao.fkCliente = novaTransacao.fkFornecedor
-        } else if (novaTransacao.tipoOperacao == "saída")  {
-            novaTransacao.fkFornecedor = novaTransacao.fkCliente
-            novaTransacao.fkCategoria = novaTransacao.fkProduto?.let { repositorio.findById(it).get().fkCategoria }
-        }
-
         val transacao = repositorio.save(novaTransacao)
         return ResponseEntity.status(201).body(transacao)
     }

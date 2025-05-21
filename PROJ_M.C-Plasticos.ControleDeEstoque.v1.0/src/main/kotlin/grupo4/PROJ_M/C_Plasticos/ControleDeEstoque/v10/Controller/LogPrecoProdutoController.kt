@@ -10,7 +10,7 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @RestController
-@RequestMapping("/logPrecoProduto")
+@RequestMapping("/log-preco-produto")
 class LogPrecoProdutoController(val repositorio: LogPrecoProdutoRepositorio,
 val produtoRepositorio: ProdutoRepositorio
 ) {
@@ -19,11 +19,11 @@ val produtoRepositorio: ProdutoRepositorio
     fun criar(@RequestBody produto: Produto): ResponseEntity<Produto> {
         val salvo = produtoRepositorio.save(produto)
 
-        if (salvo.preco != null) {
+        if (salvo.precoMedio != null) {
             val log = LogPrecoProduto(
                 fkProduto = salvo,
                 precoAntigo = null,
-                precoNovo = salvo.preco!!.toBigDecimal(),
+                precoNovo = salvo.precoMedio!!.toBigDecimal(),
                 dataAlteracao = LocalDateTime.now()
             )
             repositorio.save(log)
@@ -37,13 +37,13 @@ val produtoRepositorio: ProdutoRepositorio
         val existente = produtoRepositorio.findById(id)
             .orElseThrow { RuntimeException("Produto não encontrado") }
 
-        val precoAntigo = existente.preco
-        val precoNovo = produto.preco
+        val precoAntigo = existente.precoMedio
+        val precoNovo = produto.precoMedio
 
         existente.nome = produto.nome
         existente.tipo = produto.tipo
-        existente.cadastrante = produto.cadastrante
-        existente.preco = precoNovo
+        existente.fkUsuario = produto.fkUsuario
+        existente.precoMedio = precoNovo
 
         val atualizado = produtoRepositorio.save(existente)
 
@@ -65,10 +65,10 @@ val produtoRepositorio: ProdutoRepositorio
         val produto = produtoRepositorio.findById(id)
             .orElseThrow { RuntimeException("Produto não encontrado") }
 
-        if (produto.preco != null) {
+        if (produto.precoMedio != null) {
             val log = LogPrecoProduto(
                 fkProduto = produto,
-                precoAntigo = produto.preco!!.toBigDecimal(),
+                precoAntigo = produto.precoMedio!!.toBigDecimal(),
                 precoNovo = null,
                 dataAlteracao = LocalDateTime.now()
             )

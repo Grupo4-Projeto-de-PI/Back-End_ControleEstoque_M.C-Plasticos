@@ -18,7 +18,7 @@ VALUES
     ('Empresa XYZ LTDA', '11345678901', 2, 2),
     ('João dos Santos', '11999998888', 1, 3);
 
---
---INSERT INTO Entrada (fkCategoria, fkProduto, peso, valorTotal, fkUsuario, fkFornecedor, data)
---VALUES
---    (1, 1, 3.50, 20.0, 1, 1, CURRENT_TIMESTAMP);
+
+INSERT INTO Entrada (fkCategoria, fkProduto, peso, valorTotal, fkUsuario, fkFornecedor, data)
+VALUES
+   (1, 1, 3.50, 20.0, 1, 1, CURRENT_TIMESTAMP);

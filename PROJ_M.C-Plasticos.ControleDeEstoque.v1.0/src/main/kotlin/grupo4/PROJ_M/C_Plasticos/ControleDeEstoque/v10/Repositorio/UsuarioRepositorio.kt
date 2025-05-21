@@ -21,14 +21,14 @@ interface UsuarioRepositorio: JpaRepository<Usuario, Int> {
     fun deleteByCodigoFuncionario(codigoFuncionario: Int): Int
 
     @Transactional
-    fun findByNomeAndSenha(nomeLog: String?, senhaLog: String?): List<Usuario>
+    fun findByCodigoFuncionarioAndSenha(codigoFuncionario: Int?, senhaLog: String?): List<Usuario>
 
     @Transactional
-    fun findByNome(nome: String?): List<Usuario>
+    fun findByCodigoFuncionario(codigoFuncionario: Int?): List<Usuario>
 
     @Transactional
     @Modifying
-    @Query("update Usuario u set u.online = ?2 where u.nome = ?1")
-    fun atualizarOnline(nome: String?, online: Boolean): Int
+    @Query("update Usuario u set u.online = ?2 where u.codigoFuncionario = ?1")
+    fun atualizarOnline(codigoFuncionario: Int?, online: Boolean): Int
 
 }
