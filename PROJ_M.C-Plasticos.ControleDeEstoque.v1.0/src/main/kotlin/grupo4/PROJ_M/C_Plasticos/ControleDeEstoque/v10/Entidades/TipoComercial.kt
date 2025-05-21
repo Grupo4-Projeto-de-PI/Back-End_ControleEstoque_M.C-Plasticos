@@ -14,7 +14,7 @@ data class TipoComercial(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Int? ,
-    @field: Size(min = 1, max = 200)var tipo: String?
+    @field: Size(min = 2, max = 3)var tipo: String?
 
 ) {
     constructor() : this(null, null);

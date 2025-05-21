@@ -23,11 +23,12 @@ data class AtorComercial(
     @field:NotBlank var nome: String?,
     @field:Size(min = 11, max=11)  var telefone: String?,
     @ManyToOne
-    @JoinColumn(name = "tipo")
+    @JoinColumn(name = "tipo_comercial", referencedColumnName = "id")
     var fkTipoPessoa: TipoComercial? = null,
 
-    //ponto de dúvida
-    var fkPapelComercial: Int?
+    @ManyToOne
+    @JoinColumn(name = "fk_papel_comercial", referencedColumnName = "id")
+    var fkPapelComercial: PapelComercial?
 ){
 
     constructor(): this(null, null, null, null, null)

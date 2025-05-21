@@ -6,6 +6,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.validation.constraints.PositiveOrZero
 import jakarta.validation.constraints.Size
@@ -19,8 +20,10 @@ data class Produto(
     var id:Int?,
     @field: Size(min = 1, max=45)var nome: String?,
     @ManyToOne
+    @JoinColumn(name = "tipo_produto", referencedColumnName = "id")
     @field: Size(min = 1, max = 45)var tipo: TipoProduto?,
     @ManyToOne
+    @JoinColumn(name = "fk_usuario", referencedColumnName = "codigo_funcionario")
     var fkUsuario: Usuario?,
     @JsonIgnore @field: PositiveOrZero var precoMedio: Double?,
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

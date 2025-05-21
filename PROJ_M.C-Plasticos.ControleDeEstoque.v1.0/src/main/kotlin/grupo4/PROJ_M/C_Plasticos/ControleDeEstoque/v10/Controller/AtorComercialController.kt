@@ -2,6 +2,7 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
 
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.AtorComercial
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.PapelComercial
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.TipoComercial
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.AtorComercialRepositorio
 import jakarta.validation.Valid
@@ -62,12 +63,11 @@ class AtorComercialController(val repositorio: AtorComercialRepositorio) {
         return ResponseEntity.status(404).build()
     }
 
-    //Alterando a FkAtorComercial onde 1 = Cliente, 2 = Fornecedor e 3 = Cliente/Fornecedor
     @PatchMapping("/papel-comercial/{id}/{tipoAtor}")
-    fun patchPapelAtorComercial(@PathVariable id:Int, @PathVariable tipoAtor:Int): ResponseEntity<AtorComercial> {
+    fun patchPapelAtorComercial(@PathVariable id:Int, @PathVariable tipoAtor: AtorComercial): ResponseEntity<AtorComercial> {
         if (repositorio.existsById(id)) {
             val atoresEncontrados = repositorio.findById(id).get()
-            atoresEncontrados.fkPapelComercial = tipoAtor
+            atoresEncontrados.fkPapelComercial = tipoAtor.fkPapelComercial
             repositorio.save(atoresEncontrados)
             return ResponseEntity.status(200).body(atoresEncontrados)
         }
@@ -76,10 +76,10 @@ class AtorComercialController(val repositorio: AtorComercialRepositorio) {
     }
 //
     @PatchMapping("/ator-telefone/{id}/{telefone}")
-    fun patchFornecedoresTelefone(@PathVariable id:Int, @PathVariable telefone:String): ResponseEntity<AtorComercial> {
+    fun patchFornecedoresTelefone(@PathVariable id:Int, @PathVariable telefone: AtorComercial): ResponseEntity<AtorComercial> {
         if (repositorio.existsById(id)) {
             val atorEncontrado = repositorio.findById(id).get()
-            atorEncontrado.telefone = telefone
+            atorEncontrado.telefone = telefone.telefone
             repositorio.save(atorEncontrado)
             return ResponseEntity.status(200).body(atorEncontrado)
         }
