@@ -1,6 +1,8 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
 
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Dto.UsuarioDto.CriarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Usuario
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.TipoUsuarioRepositorio
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.UsuarioRepositorio
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
@@ -9,14 +11,25 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/usuario")
 class UsuarioController(
-    val repositorio: UsuarioRepositorio
+    val repositorio: UsuarioRepositorio,
+    val tipoUsuarioRepository: TipoUsuarioRepositorio,
 ){
 
 
     @PostMapping("/criar")
-    fun postCriarUsuario(@RequestBody @Valid novoUsuario: Usuario): ResponseEntity<Usuario>{
-        val usuarioSalvo = repositorio.save(novoUsuario)
-        return ResponseEntity.status(201).body(usuarioSalvo)
+    fun postCriarUsuario(@RequestBody @Valid novoUsuario: CriarUsuarioDto): ResponseEntity<Usuario> {
+
+        val tipoUsuario = tipoUsuarioRepository.findById(novoUsuario.tipoUsuario)
+            .orElseThrow { RuntimeException("Tipo de usuário não encontrado") }
+
+        val usuario = Usuario(
+            nome = novoUsuario.nome,
+            senha = novoUsuario.senha,
+            tipoUsuario = tipoUsuario
+        )
+
+        repositorio.save(usuario)
+        return ResponseEntity.status(201).body(usuario)
     }
 
     @GetMapping("/listar")
