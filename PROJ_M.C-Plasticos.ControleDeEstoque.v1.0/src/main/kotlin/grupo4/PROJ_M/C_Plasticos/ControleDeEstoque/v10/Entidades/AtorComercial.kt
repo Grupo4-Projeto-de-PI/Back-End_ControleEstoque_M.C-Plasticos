@@ -5,6 +5,10 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 
@@ -18,8 +22,13 @@ data class AtorComercial(
     var id: Int?,
     @field:NotBlank var nome: String?,
     @field:Size(min = 11, max=11)  var telefone: String?,
-    var fkTipoPessoa: Int?,
-    var fkPapelComercial: Int?
+    @ManyToOne
+    @JoinColumn(name = "tipo_comercial", referencedColumnName = "id")
+    var fkTipoPessoa: TipoComercial? = null,
+
+    @ManyToOne
+    @JoinColumn(name = "fk_papel_comercial", referencedColumnName = "id")
+    var fkPapelComercial: PapelComercial?
 ){
 
     constructor(): this(null, null, null, null, null)

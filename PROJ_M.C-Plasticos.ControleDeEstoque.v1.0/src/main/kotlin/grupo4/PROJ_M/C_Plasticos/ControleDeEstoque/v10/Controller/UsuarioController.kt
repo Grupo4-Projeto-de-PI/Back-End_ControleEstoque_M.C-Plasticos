@@ -1,6 +1,8 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
 
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Dto.UsuarioDto.CriarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Usuario
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.TipoUsuarioRepositorio
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.UsuarioRepositorio
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
@@ -9,14 +11,25 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/usuario")
 class UsuarioController(
-    val repositorio: UsuarioRepositorio
+    val repositorio: UsuarioRepositorio,
+    val tipoUsuarioRepository: TipoUsuarioRepositorio,
 ){
 
 
     @PostMapping("/criar")
-    fun postCriarUsuario(@RequestBody @Valid novoUsuario: Usuario): ResponseEntity<Usuario>{
-        val usuarioSalvo = repositorio.save(novoUsuario)
-        return ResponseEntity.status(201).body(usuarioSalvo)
+    fun postCriarUsuario(@RequestBody @Valid novoUsuario: CriarUsuarioDto): ResponseEntity<Usuario> {
+
+        val tipoUsuario = tipoUsuarioRepository.findById(novoUsuario.tipoUsuario)
+            .orElseThrow { RuntimeException("Tipo de usuário não encontrado") }
+
+        val usuario = Usuario(
+            nome = novoUsuario.nome,
+            senha = novoUsuario.senha,
+            tipoUsuario = tipoUsuario
+        )
+
+        repositorio.save(usuario)
+        return ResponseEntity.status(201).body(usuario)
     }
 
     @GetMapping("/listar")
@@ -87,13 +100,13 @@ class UsuarioController(
     }
 
     @GetMapping("/login")
-    fun login(@Valid @RequestBody loginUsuario: Usuario): ResponseEntity<String>{
-        val nomeEntrada = loginUsuario.nome
+    fun login(@RequestBody loginUsuario: Usuario): ResponseEntity<String>{
+        val codigoFuncionarioEntrada = loginUsuario.codigoFuncionario
         val senhaEntrada = loginUsuario.senha
-        val login = repositorio.findByNomeAndSenha(nomeEntrada, senhaEntrada)
+        val login = repositorio.findByCodigoFuncionarioAndSenha(codigoFuncionarioEntrada, senhaEntrada)
 
         if (login.isNotEmpty()) {
-            repositorio.atualizarOnline(nomeEntrada, true)
+            repositorio.atualizarOnline(codigoFuncionarioEntrada, true)
             return ResponseEntity.status(200).body("Usuario logado com sucesso!")
         }
 
@@ -102,11 +115,11 @@ class UsuarioController(
 
     @GetMapping("/logoff")
     fun logoff(@RequestBody nomeEntrada: Usuario): ResponseEntity<String>{
-        val nomeUsuario = nomeEntrada.nome
-        val login = repositorio.findByNome(nomeUsuario)
+        val codigoFuncionario = nomeEntrada.codigoFuncionario
+        val login = repositorio.findByCodigoFuncionario(codigoFuncionario)
 
         if (login.isNotEmpty()) {
-            repositorio.atualizarOnline(nomeUsuario,false)
+            repositorio.atualizarOnline(codigoFuncionario,false)
             return ResponseEntity.status(200).body("Usuario desconectado!")
         }
 

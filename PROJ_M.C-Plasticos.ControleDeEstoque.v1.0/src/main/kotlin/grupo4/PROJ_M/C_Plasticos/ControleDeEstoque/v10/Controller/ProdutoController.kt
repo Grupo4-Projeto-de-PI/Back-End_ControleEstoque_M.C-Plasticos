@@ -1,6 +1,7 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Controller
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Produto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.TipoProduto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Repositorio.ProdutoRepositorio
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -29,8 +30,8 @@ class ProdutoController(val repositorio: ProdutoRepositorio) {
     }
 
     @GetMapping("/listar/tipo")
-    fun getProdutoTipo(@RequestParam tipo: String): ResponseEntity<List<Produto>>{
-        if (tipo.isBlank()){
+    fun getProdutoTipo(@RequestParam tipo: TipoProduto): ResponseEntity<List<Produto>>{
+        if (tipo.tipo?.isBlank() == true){
             return ResponseEntity.status(400).build()
         }
         val produtos = repositorio.findByTipo(tipo)
@@ -46,6 +47,7 @@ class ProdutoController(val repositorio: ProdutoRepositorio) {
         val produtos = repositorio.save(novoProduto)
         return ResponseEntity.status(201).body(produtos)
     }
+
 
     @DeleteMapping("/deletar/{id}")
     fun deletarProduto(@PathVariable id: Int):ResponseEntity<Void> {
@@ -72,12 +74,14 @@ class ProdutoController(val repositorio: ProdutoRepositorio) {
     fun patchProdutosPreco(@PathVariable id:Int, @PathVariable preco:Double): ResponseEntity<Produto> {
         if (repositorio.existsById(id)) {
             val produtosEncontrados = repositorio.findById(id).get()
-            produtosEncontrados.preco = preco
+            produtosEncontrados.precoMedio = preco
             repositorio.save(produtosEncontrados)
             return ResponseEntity.status(200).body(produtosEncontrados)
         }
 
         return ResponseEntity.status(404).build()
     }
+
+
 
 }
