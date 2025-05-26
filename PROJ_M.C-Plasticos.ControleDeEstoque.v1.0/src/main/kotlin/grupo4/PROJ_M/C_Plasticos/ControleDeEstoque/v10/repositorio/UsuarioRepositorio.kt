@@ -10,7 +10,7 @@ interface UsuarioRepositorio: JpaRepository<Usuario, Int> {
     @Transactional
     @Modifying
     @Query("update Usuario u set u.nome = ?2 where u.codigoFuncionario = ?1")
-    fun atualizarNome(codigoFuncionario: Int, nome: String): Int
+    fun atualizarNome(codigoFuncionario: Int, nome: String?): Int
 
     @Transactional
     @Modifying
