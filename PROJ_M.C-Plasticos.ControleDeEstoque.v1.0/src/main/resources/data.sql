@@ -20,6 +20,13 @@ INSERT INTO tipo_produto (id, tipo) VALUES
 (default, 'Papel'),
 (default, 'Madeira');
 
+INSERT INTO categoria (id, tipo) VALUES
+(default, 'Granel'),
+(default, 'Material Separado');
+
+INSERT INTO tipo_operacao (id, tipo) VALUES
+(default, 'Entrada'),
+(default, 'Saida');
 
 INSERT INTO usuario (
 codigo_funcionario, nome, senha, data_criacao, primeiro_acesso, tipo_usuario, ativo, online
@@ -27,7 +34,7 @@ codigo_funcionario, nome, senha, data_criacao, primeiro_acesso, tipo_usuario, at
 (default, 'Joao Silva', 12345678, CURRENT_TIMESTAMP, false, 1, true, false),
 (default, 'Maria Souza', 87654321, CURRENT_TIMESTAMP, false, 2, true, false);
 
-INSERT INTO ator_comercial (id, nome, telefone, tipo_comercial, fk_papel_comercial) VALUES
+INSERT INTO parceiro_comercial (id, nome, telefone, fk_tipo_comercial, fk_papel_comercial) VALUES
 (default, 'Empresa ABC LTDA', '11987654321', 2, 2), -- Empresa (PJ) com papel FN
 (default, 'João da Silva', '11999998888', 1, 1),-- Cliente físico (PF) com papel CL
 (default, 'Empresa XYZ ME', '11345678901', 2, 3), -- Empresa (PJ) com papel CLFN
