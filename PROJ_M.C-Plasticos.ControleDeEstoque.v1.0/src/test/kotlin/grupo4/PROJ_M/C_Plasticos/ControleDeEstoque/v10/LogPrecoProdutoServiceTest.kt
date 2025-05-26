@@ -1,8 +1,8 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.LogPrecoProduto
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.Produto
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Service.LogPrecoProdutoService
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.LogPrecoProduto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Produto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.LogPrecoProdutoService
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal

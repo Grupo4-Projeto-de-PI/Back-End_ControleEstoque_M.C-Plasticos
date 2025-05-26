@@ -1,7 +1,6 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Entidades.AtorComercial
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Service.AtorComercialService
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.AtorComercialService
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
