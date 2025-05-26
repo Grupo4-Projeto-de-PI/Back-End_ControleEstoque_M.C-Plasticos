@@ -1,7 +1,7 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Dto.UsuarioDto.EditarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.UsuarioDto.CriarUsuarioDto
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.UsuarioDto.EditarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.TipoUsuarioRepositorio
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio

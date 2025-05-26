@@ -19,7 +19,9 @@ data class LogPrecoProduto (
     @ManyToOne
     var fkProduto: Produto? = null,
     @field: PositiveOrZero var precoNovo: BigDecimal?,
+
     @field: PositiveOrZero var precoAntigo: BigDecimal?,
+
     var dataAlteracao: LocalDateTime
 
 ){

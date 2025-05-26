@@ -18,14 +18,19 @@ data class Produto(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id:Int?,
+
     @field: Size(min = 1, max=45)var nome: String?,
+
     @ManyToOne
     @JoinColumn(name = "tipo_produto", referencedColumnName = "id")
     @field: Size(min = 1, max = 45)var tipo: TipoProduto?,
+
     @ManyToOne
     @JoinColumn(name = "fk_usuario", referencedColumnName = "codigo_funcionario")
     var fkUsuario: Usuario?,
+
     @JsonIgnore @field: PositiveOrZero var precoMedio: Double?,
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var dataCadastro: LocalDate = LocalDate.now()
 ){
