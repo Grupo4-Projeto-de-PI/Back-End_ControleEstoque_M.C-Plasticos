@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/tipoUsuario")
 class TipoUsuarioController(val repositorio: TipoUsuarioRepositorio) {
 
-    @GetMapping("/listar")
+    @GetMapping
     fun listarTipoUsuario(): ResponseEntity<List<TipoUsuario>>{
         val tipoUsuario = repositorio.findAll()
 
@@ -27,14 +27,14 @@ class TipoUsuarioController(val repositorio: TipoUsuarioRepositorio) {
     }
 
 
-    @PostMapping("/criar")
+    @PostMapping
     fun criarTipoUsuario(@RequestBody novoTipo: TipoUsuario): ResponseEntity<TipoUsuario>{
         novoTipo.id = null
         val tipoSalvo = repositorio.save(novoTipo)
         return ResponseEntity.status(201).body(tipoSalvo)
     }
 
-    @DeleteMapping("/deletar/{id}")
+    @DeleteMapping("/{id}")
     fun deletarTipoUsuario(@PathVariable id: Int): ResponseEntity<Void>{
         if (repositorio.existsById(id)){
             repositorio.deleteById(id)
@@ -43,7 +43,7 @@ class TipoUsuarioController(val repositorio: TipoUsuarioRepositorio) {
         return ResponseEntity.status(404).build()
     }
 
-    @GetMapping("/listar/{id}")
+    @GetMapping("/{id}")
     fun listarPorId(@PathVariable id: Int): ResponseEntity<TipoUsuario>{
         val listar = repositorio.findById(id)
         return ResponseEntity.of(listar)

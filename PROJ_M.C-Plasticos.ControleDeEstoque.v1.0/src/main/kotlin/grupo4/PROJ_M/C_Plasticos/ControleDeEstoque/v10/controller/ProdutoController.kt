@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 @RequestMapping("/produto")
 class ProdutoController(val repositorio: ProdutoRepositorio, val logRepositorio: LogPrecoProdutoRepositorio) {
 
-    @GetMapping("/listar")
+    @GetMapping
     fun listarTodosProdutos():ResponseEntity<List<Produto>>{
 
         val produtos = repositorio.findAll()
@@ -26,13 +26,13 @@ class ProdutoController(val repositorio: ProdutoRepositorio, val logRepositorio:
 
     }
 
-    @GetMapping("/listar/id")
+    @GetMapping("/id")
     fun getProdutoId(@RequestParam id:Int): ResponseEntity<Produto>{
         val produtos = repositorio.findById(id)
         return ResponseEntity.of(produtos)
     }
 
-    @GetMapping("/listar/tipo")
+    @GetMapping("/tipo")
     fun getProdutoTipo(@RequestParam tipo: TipoProduto): ResponseEntity<List<Produto>>{
         if (tipo.tipo?.isBlank() == true){
             return ResponseEntity.status(400).build()
@@ -45,14 +45,14 @@ class ProdutoController(val repositorio: ProdutoRepositorio, val logRepositorio:
         return ResponseEntity.status(200).body(produtos)
     }
 
-    @PostMapping("/criar")
+    @PostMapping
     fun criarProduto(@RequestBody novoProduto: Produto):ResponseEntity<Produto> {
         val produtos = repositorio.save(novoProduto)
         return ResponseEntity.status(201).body(produtos)
     }
 
 
-    @DeleteMapping("/deletar/{id}")
+    @DeleteMapping("/{id}")
     fun deletarProduto(@PathVariable id: Int):ResponseEntity<Void> {
         if(repositorio.existsById(id)){
             repositorio.deleteById(id)

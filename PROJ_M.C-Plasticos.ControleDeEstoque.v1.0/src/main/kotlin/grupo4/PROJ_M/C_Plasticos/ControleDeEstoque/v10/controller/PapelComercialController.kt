@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/papelComercial")
 class PapelComercialController(val repositorio: PapelComercialRepositorio) {
 
-    @GetMapping("/listar")
+    @GetMapping
     fun listarPapelComercial(): ResponseEntity<List<PapelComercial>>{
         val papelComercial = repositorio.findAll()
 
@@ -26,7 +26,7 @@ class PapelComercialController(val repositorio: PapelComercialRepositorio) {
     }
 
 
-    @PostMapping("/criar")
+    @PostMapping
     fun criarPapelComercial(@RequestBody novoPapel: PapelComercial): ResponseEntity<PapelComercial>{
         novoPapel.id = null
         val papelSalvo = repositorio.save(novoPapel)
@@ -34,7 +34,7 @@ class PapelComercialController(val repositorio: PapelComercialRepositorio) {
     }
 
 
-    @DeleteMapping("/deletar/{id}")
+    @DeleteMapping("/{id}")
     fun deletarPorId(@PathVariable id: Int): ResponseEntity<Void>{
         if (repositorio.existsById(id)){
             repositorio.deleteById(id)

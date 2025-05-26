@@ -30,14 +30,14 @@ class AtorComercialController(val repositorio: AtorComercialRepositorio) {
 
     }
 
-    @PostMapping("/criar")
+    @PostMapping
     fun post(@Valid @RequestBody novosFornecedores: AtorComercial):ResponseEntity<AtorComercial> {
         val salvandoNovoAtor = repositorio.save(novosFornecedores)
         return ResponseEntity.status(201).body(salvandoNovoAtor)
     }
 
 
-    @DeleteMapping("/deletar/{id}")
+    @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Int):ResponseEntity<Void> {
 
         if(repositorio.existsById(id)){

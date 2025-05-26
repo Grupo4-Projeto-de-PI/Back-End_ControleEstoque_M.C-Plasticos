@@ -16,7 +16,7 @@ class UsuarioController(
 ){
 
 
-    @PostMapping("/criar")
+    @PostMapping
     fun postCriarUsuario(@RequestBody @Valid novoUsuario: CriarUsuarioDto): ResponseEntity<Usuario> {
 
         val tipoUsuario = tipoUsuarioRepository.findById(novoUsuario.tipoUsuario)
@@ -32,7 +32,7 @@ class UsuarioController(
         return ResponseEntity.status(201).body(usuario)
     }
 
-    @GetMapping("/listar")
+    @GetMapping
     fun listarTodosUsuarios(): ResponseEntity<List<Usuario>> {
         val usuarios = repositorio.findAll()
         if (usuarios.isEmpty()) {
@@ -41,7 +41,7 @@ class UsuarioController(
         return ResponseEntity.status(200).body(usuarios)
     }
 
-    @GetMapping("/listar/{codigoFuncionario}")
+    @GetMapping("/{codigoFuncionario}")
     fun listarUsuarioId(@PathVariable(required = true) codigoFuncionario: Int): ResponseEntity<Usuario> {
 
         if (!repositorio.existsById(codigoFuncionario)) {
@@ -51,7 +51,7 @@ class UsuarioController(
         return ResponseEntity.of(usuarioEncontrado)
     }
 
-    @PatchMapping("/editar/nome")
+    @PatchMapping("/nome")
     fun patchEditarNomeUsuario(@Valid @RequestBody nome: Usuario, @RequestParam codigoFuncionario: Int): ResponseEntity<Usuario> {
 
         if(!repositorio.existsById(codigoFuncionario)) {
@@ -70,7 +70,7 @@ class UsuarioController(
         return ResponseEntity.status(200).body(nomeAtualizado)
     }
 
-    @PatchMapping("/editar/senha")
+    @PatchMapping("/senha")
     fun patchEditarSenhaUsuario(@Valid @RequestBody senha: Usuario, @RequestParam codigoFuncionario: Int): ResponseEntity<Usuario> {
 
         if(!repositorio.existsById(codigoFuncionario)) {
@@ -88,7 +88,7 @@ class UsuarioController(
         return ResponseEntity.status(200).body(senhaAtualizada)
     }
 
-    @DeleteMapping("/excluir/{codigoFuncionario}")
+    @DeleteMapping("/{codigoFuncionario}")
     fun deleteExcluirUsuario(@PathVariable codigoFuncionario: Int): ResponseEntity<Usuario> {
 
         if (repositorio.existsById(codigoFuncionario)) {
