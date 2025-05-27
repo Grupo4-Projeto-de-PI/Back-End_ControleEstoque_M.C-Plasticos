@@ -15,18 +15,18 @@ interface TransacaoRepositorio: JpaRepository <Transacao, Int> {
     JOIN t.fkProduto p
     JOIN p.tipo tp
     WHERE (:fkProduto IS NULL OR t.fkProduto.id = :fkProduto)
-      AND (:fkCategoria IS NULL OR t.fkCategoria.id = :fkCategoria)
+      AND (:categoria IS NULL OR t.fkCategoria = :categoria)
       AND (:fkParceiroComercial IS NULL OR t.fkParceiroComercial.id = :fkParceiroComercial)
-      AND (:tipoOperacao IS NULL OR t.tipoOperacao.id = :tipoOperacao)
+      AND (:tipoOperacao IS NULL OR t.tipoOperacao = :tipoOperacao)
       AND (:dataInicio IS NULL OR :dataFim IS NULL OR t.data BETWEEN :dataInicio AND :dataFim)
       AND (:pesoMinimo IS NULL OR :pesoMaximo IS NULL OR t.peso BETWEEN :pesoMinimo AND :pesoMaximo)
       AND (:tipoProdutoId IS NULL OR tp.id = :tipoProdutoId)
 """)
     fun findByDynamicFilters(
         @Param("fkProduto") fkProduto: Int? = null,
-        @Param("fkCategoria") fkCategoria: Int? = null,
+        @Param("categoria") categoria: String? = null,
         @Param("fkParceiroComercial") fkParceiroComercial: Int? = null,
-        @Param("tipoOperacao") tipoOperacao: Int? = null,
+        @Param("tipoOperacao") tipoOperacao: String? = null,
         @Param("dataInicio") dataInicio: LocalDateTime? = null,
         @Param("dataFim") dataFim: LocalDateTime? = null,
         @Param("pesoMinimo") pesoMinimo: Double? = null,

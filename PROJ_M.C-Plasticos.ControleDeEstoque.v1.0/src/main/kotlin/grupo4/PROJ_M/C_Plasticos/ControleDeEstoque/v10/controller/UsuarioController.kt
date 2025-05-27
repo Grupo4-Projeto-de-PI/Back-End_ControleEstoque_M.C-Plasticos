@@ -3,7 +3,7 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.EditarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.CriarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.TipoUsuarioRepositorio
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.usuarioEnum.tipoUsuarioEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -16,19 +16,21 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/usuario")
 class UsuarioController(
     val repositorio: UsuarioRepositorio,
-    val tipoUsuarioRepository: TipoUsuarioRepositorio,
 ){
     @Operation(summary = "Criar um novo usuário", description = "Cria um novo usuário com base nos dados fornecidos.")
     @PostMapping
     fun postCriarUsuario(@RequestBody @Valid novoUsuario: CriarUsuarioDto): ResponseEntity<Usuario> {
 
-        val tipoUsuario = tipoUsuarioRepository.findById(novoUsuario.tipoUsuario)
-            .orElseThrow { RuntimeException("Tipo de usuário não encontrado") }
+        val tipoUsuarioEnum = try {
+            tipoUsuarioEnum.valueOf(novoUsuario.tipoUsuario)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.status(400).build() // Retorna erro se o tipoUsuario não for válido
+        }
 
         val usuario = Usuario(
             nome = novoUsuario.nome,
             senha = novoUsuario.senha,
-            tipoUsuario = tipoUsuario
+            tipoUsuario = tipoUsuarioEnum
         )
 
         repositorio.save(usuario)

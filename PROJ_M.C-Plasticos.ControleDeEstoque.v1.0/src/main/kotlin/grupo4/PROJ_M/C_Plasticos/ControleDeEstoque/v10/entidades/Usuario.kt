@@ -1,6 +1,7 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.usuarioEnum.tipoUsuarioEnum
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
@@ -22,14 +23,8 @@ data class Usuario(
     var senha: String? = null,
 
     var dataCriacao: String? = LocalDateTime.now().toString(),
-
     var primeiroAcesso: Boolean = false,
-
-    @ManyToOne
-    @JoinColumn(name = "tipo_usuario", referencedColumnName = "id")
-    var tipoUsuario: TipoUsuario? = null,
-
+    var tipoUsuario: tipoUsuarioEnum? = null,
     var ativo: Boolean? = true,
-
     var online: Boolean? = false
 )

@@ -4,6 +4,8 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.FiltroTransacaoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.TransacaoDto.EditarTransacaoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.TransacaoDto.NovaTransacaoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Transacao
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.categoriaEnum
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.tipoOperacaoEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.http.ResponseEntity
@@ -14,11 +16,9 @@ import org.springframework.web.bind.annotation.*
 
 class TransacaoController (
     val repositorio: TransacaoRepositorio,
-    val categoriaRepositorio: CategoriaRepositorio,
     val produtoRepositorio: ProdutoRepositorio,
     val parceiroComercialRepositorio: ParceiroComercialRepositorio,
     val usuarioRepositorio: UsuarioRepositorio,
-    val tipoOperacaoRepositorio: TipoOperacaoRepositorio
 ) {
 
     //Função generica para poder buscar os ID passados no body do post
@@ -28,19 +28,29 @@ class TransacaoController (
 
     @PostMapping("/criar")
     fun post(@RequestBody novaTransacao: NovaTransacaoDto): ResponseEntity<Transacao> {
-
-        val fkCategoria = buscarId(categoriaRepositorio, novaTransacao.fkCategoria)
+        
         val fkProduto = buscarId(produtoRepositorio, novaTransacao.fkProduto)
         val fkParceiroComercial = buscarId(parceiroComercialRepositorio, novaTransacao.fkParceiroComercial)
         val fkUsuario = buscarId(usuarioRepositorio, novaTransacao.fkUsuario)
-        val fkTipoOperacao = buscarId(tipoOperacaoRepositorio, novaTransacao.tipoOperacao)
+        
+        val categoriaEnum = try {
+            categoriaEnum.valueOf(novaTransacao.categoria)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.status(400).body(null)
+        }
+
+        val tipoOperacaoEnum = try {
+            tipoOperacaoEnum.valueOf(novaTransacao.tipoOperacao)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.status(400).body(null)
+        }
 
         val novoHistorico = Transacao(
             fkProduto = fkProduto,
-            fkCategoria = fkCategoria,
+            categoria = categoriaEnum,
             peso = novaTransacao.peso,
             valorTotal = novaTransacao.valorTotal,
-            tipoOperacao = fkTipoOperacao,
+            tipoOperacao = tipoOperacaoEnum,
             fkParceiroComercial = fkParceiroComercial,
             fkUsuario = fkUsuario
         )
@@ -75,11 +85,27 @@ class TransacaoController (
 
     @PostMapping("/filtro")
     fun filtrarTransacoes(@RequestBody filtro: FiltroTransacaoDto): ResponseEntity<List<Transacao>> {
+        val categoriaEnum = filtro.categoria?.let {
+            try {
+                categoriaEnum.valueOf(it)
+            } catch (e: IllegalArgumentException) {
+                return ResponseEntity.status(400).build()
+            }
+        }
+
+        val tipoOperacaoEnum = filtro.tipoOperacao?.let {
+            try {
+                tipoOperacaoEnum.valueOf(it)
+            } catch (e: IllegalArgumentException) {
+                return ResponseEntity.status(400).build()
+            }
+        }
+
         val transacoes = repositorio.findByDynamicFilters(
             fkProduto = filtro.fkProduto,
-            fkCategoria = filtro.fkCategoria,
+            categoria = categoriaEnum?.name,
             fkParceiroComercial = filtro.fkParceiroComercial,
-            tipoOperacao = filtro.tipoOperacao,
+            tipoOperacao = tipoOperacaoEnum?.name,
             dataInicio = filtro.dataInicio,
             dataFim = filtro.dataFim,
             pesoMinimo = filtro.pesoMinimo,
@@ -96,7 +122,7 @@ class TransacaoController (
 
     @PutMapping("/{idTransacao}")
     fun atualizarTransacao(@PathVariable idTransacao: Int, @RequestBody transacaoAtualizada: EditarTransacaoDto)
-    : ResponseEntity<Transacao> {
+            : ResponseEntity<Transacao> {
         if (!repositorio.existsById(idTransacao)) {
             return ResponseEntity.status(404).build()
         }
@@ -104,13 +130,17 @@ class TransacaoController (
         val transacaoExistente = repositorio.findById(idTransacao).get()
 
         transacaoAtualizada.fkProduto?.let { transacaoExistente.fkProduto = buscarId(produtoRepositorio, it) }
-        transacaoAtualizada.fkCategoria?.let { transacaoExistente.fkCategoria = buscarId(categoriaRepositorio, it) }
+        transacaoAtualizada.fkCategoria?.let {
+            transacaoExistente.categoria = categoriaEnum.valueOf(it)
+        }
         transacaoAtualizada.peso?.let { transacaoExistente.peso = it }
         transacaoAtualizada.preco?.let { transacaoExistente.valorTotal = it }
-        transacaoAtualizada.fkTipoOperacao?.let { transacaoExistente.tipoOperacao =
-            buscarId(tipoOperacaoRepositorio, it) }
-        transacaoAtualizada.fkParceiroComercial?.let { transacaoExistente.fkParceiroComercial =
-            buscarId(parceiroComercialRepositorio, it) }
+        transacaoAtualizada.fkTipoOperacao?.let {
+            transacaoExistente.tipoOperacao = tipoOperacaoEnum.valueOf(it)
+        }
+        transacaoAtualizada.fkParceiroComercial?.let {
+            transacaoExistente.fkParceiroComercial = buscarId(parceiroComercialRepositorio, it)
+        }
 
         val transacaoAtualizadaFinal = repositorio.save(transacaoExistente)
         return ResponseEntity.status(200).body(transacaoAtualizadaFinal)

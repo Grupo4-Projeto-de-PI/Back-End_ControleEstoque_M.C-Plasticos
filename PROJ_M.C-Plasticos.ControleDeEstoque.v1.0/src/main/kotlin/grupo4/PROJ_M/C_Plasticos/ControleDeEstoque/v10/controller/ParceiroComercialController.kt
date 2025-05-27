@@ -2,7 +2,7 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.ParceiroComercial
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.TipoComercial
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.parceiroComercialEnum.tipoComercialEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.ParceiroComercialRepositorio
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
@@ -51,10 +51,10 @@ class ParceiroComercialController(val repositorio: ParceiroComercialRepositorio)
 
     //Alterando a FkTipoPessoa onde 1 = PF e 2 = PJ
     @PatchMapping("/tipo-ator/{id}/{tipoPessoa}")
-    fun patchTipoParceiroComercial(@PathVariable id:Int, @PathVariable tipoPessoa: TipoComercial): ResponseEntity<ParceiroComercial> {
+    fun patchTipoParceiroComercial(@PathVariable id:Int, @PathVariable tipoPessoa: tipoComercialEnum): ResponseEntity<ParceiroComercial> {
         if (repositorio.existsById(id)) {
             val atoresEncontrados = repositorio.findById(id).get()
-            atoresEncontrados.fkTipoPessoa = tipoPessoa
+            atoresEncontrados.tipoComercial = tipoPessoa
             repositorio.save(atoresEncontrados)
             return ResponseEntity.status(200).body(atoresEncontrados)
         }
@@ -73,7 +73,7 @@ class ParceiroComercialController(val repositorio: ParceiroComercialRepositorio)
 
         return ResponseEntity.status(404).build()
     }
-    //
+
     @PatchMapping("/ator-telefone/{id}/{telefone}")
     fun patchFornecedoresTelefone(@PathVariable id:Int, @PathVariable telefone: ParceiroComercial): ResponseEntity<ParceiroComercial> {
         if (repositorio.existsById(id)) {

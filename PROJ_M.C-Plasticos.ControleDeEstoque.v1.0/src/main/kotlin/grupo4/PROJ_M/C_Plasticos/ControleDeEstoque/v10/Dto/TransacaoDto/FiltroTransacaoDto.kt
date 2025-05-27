@@ -4,9 +4,9 @@ import java.time.LocalDateTime
 
 data class FiltroTransacaoDto(
     val fkProduto: Int? = null,
-    val fkCategoria: Int? = null,
+    val categoria: String? = null,
     val fkParceiroComercial: Int? = null,
-    val tipoOperacao: Int? = null,
+    val tipoOperacao: String? = null,
     val dataInicio: LocalDateTime? = null,
     val dataFim: LocalDateTime? = null,
     val pesoMinimo: Double? = null,

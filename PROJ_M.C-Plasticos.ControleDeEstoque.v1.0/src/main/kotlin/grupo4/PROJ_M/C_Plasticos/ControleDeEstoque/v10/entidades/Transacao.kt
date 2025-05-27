@@ -1,6 +1,8 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.categoriaEnum
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.tipoOperacaoEnum
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -21,12 +23,9 @@ data class Transacao(
     @ManyToOne
     var fkProduto: Produto? = null,
 
-    @ManyToOne
-    var fkCategoria: Categoria? = null,
+    var categoria: categoriaEnum? = null,
 
-    @ManyToOne
-    var tipoOperacao: TipoOperacao? = null,
-
+    var tipoOperacao: tipoOperacaoEnum? = null,
     var peso: Double? = null,
     var valorTotal: Double? = null,
 
