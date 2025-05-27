@@ -1,13 +1,13 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.LogTransacao
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.LogEntradaRepositorio
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.LogTransacaoRepositorio
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/log-transacao")
-class LogEntradaController(val repositorio: LogEntradaRepositorio) {
+class LogTransacaoController(val repositorio: LogTransacaoRepositorio) {
 
     @GetMapping
     fun listar(): List<LogTransacao> = repositorio.findAll()
