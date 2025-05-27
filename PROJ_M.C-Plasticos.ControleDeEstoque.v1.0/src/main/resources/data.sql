@@ -41,7 +41,7 @@ INSERT INTO parceiro_comercial (id, nome, telefone, fk_tipo_comercial, fk_papel_
 (default, 'Maria Oliveira', '11988887777', 1, 1), -- Cliente físico (PF) com papel CL
 (default, 'Comércio Zeta', '1144445555', 3, 2); -- Empresa (PFJ) com papel FN
 
-INSERT INTO produto (nome, tipo_produto, preco_medio, fk_usuario, data_cadastro)
+INSERT INTO produto (nome, tipo_produto, preco, fk_usuario, data_cadastro)
 VALUES
 ('PP Branca', 1, 3.50, 1, CURRENT_TIMESTAMP),
 ('PET Cristal', 1, 2.80, 1, CURRENT_TIMESTAMP),

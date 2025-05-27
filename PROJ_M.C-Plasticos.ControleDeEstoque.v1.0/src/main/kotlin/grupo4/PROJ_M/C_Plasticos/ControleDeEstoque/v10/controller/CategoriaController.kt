@@ -17,13 +17,9 @@ class CategoriaController(val repositorio: CategoriaRepositorio) {
         return if (categorias.isEmpty()){
 
             ResponseEntity.status(204).build()
-
         } else {
-
             ResponseEntity.status(200).body(categorias)
-
         }
-
     }
 
     @PostMapping
@@ -43,7 +39,6 @@ class CategoriaController(val repositorio: CategoriaRepositorio) {
         return ResponseEntity.status(404).build()
 
     }
-
 
     @PatchMapping("/categorias-tipo/{id}/{tipo}")
     fun patchCategoriasTipo(@PathVariable id:Int, @PathVariable tipo:String): ResponseEntity<Categoria> {

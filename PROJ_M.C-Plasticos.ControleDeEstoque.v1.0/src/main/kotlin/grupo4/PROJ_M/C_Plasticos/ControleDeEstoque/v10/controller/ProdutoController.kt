@@ -73,7 +73,7 @@ class ProdutoController(val repositorio: ProdutoRepositorio) {
     fun patchProdutosPreco(@PathVariable id:Int, @PathVariable preco:Double): ResponseEntity<Produto> {
         if (repositorio.existsById(id)) {
             val produtosEncontrados = repositorio.findById(id).get()
-            produtosEncontrados.precoMedio = preco
+            produtosEncontrados.preco = preco
             repositorio.save(produtosEncontrados)
             return ResponseEntity.status(200).body(produtosEncontrados)
         }

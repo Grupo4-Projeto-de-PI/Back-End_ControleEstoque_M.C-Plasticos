@@ -1,19 +1,13 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.FiltroTransacaoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.TransacaoDto.EditarTransacaoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.TransacaoDto.NovaTransacaoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Transacao
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/transacoes")
@@ -100,21 +94,28 @@ class TransacaoController (
         }
     }
 
-    @GetMapping()
-    //UPDATE
-    @PatchMapping("/transacoes-peso/{idTransacao}/{novoPeso}")
-    fun patchTransacoesPeso(@PathVariable idTransacao:Int, @PathVariable novoPeso:Double): ResponseEntity<Transacao> {
-        if (repositorio.existsById(idTransacao)) {
-            val transacoesEncontradas = repositorio.findById(idTransacao).get()
-            transacoesEncontradas.peso = novoPeso
-            repositorio.save(transacoesEncontradas)
-            return ResponseEntity.status(200).body(transacoesEncontradas)
+    @PutMapping("/{idTransacao}")
+    fun atualizarTransacao(@PathVariable idTransacao: Int, @RequestBody transacaoAtualizada: EditarTransacaoDto)
+    : ResponseEntity<Transacao> {
+        if (!repositorio.existsById(idTransacao)) {
+            return ResponseEntity.status(404).build()
         }
 
-        return ResponseEntity.status(404).build()
+        val transacaoExistente = repositorio.findById(idTransacao).get()
+
+        transacaoAtualizada.fkProduto?.let { transacaoExistente.fkProduto = buscarId(produtoRepositorio, it) }
+        transacaoAtualizada.fkCategoria?.let { transacaoExistente.fkCategoria = buscarId(categoriaRepositorio, it) }
+        transacaoAtualizada.peso?.let { transacaoExistente.peso = it }
+        transacaoAtualizada.preco?.let { transacaoExistente.valorTotal = it }
+        transacaoAtualizada.fkTipoOperacao?.let { transacaoExistente.tipoOperacao =
+            buscarId(tipoOperacaoRepositorio, it) }
+        transacaoAtualizada.fkParceiroComercial?.let { transacaoExistente.fkParceiroComercial =
+            buscarId(parceiroComercialRepositorio, it) }
+
+        val transacaoAtualizadaFinal = repositorio.save(transacaoExistente)
+        return ResponseEntity.status(200).body(transacaoAtualizadaFinal)
     }
 
-    //DELETE
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Int): ResponseEntity<Void> {
 
@@ -126,7 +127,4 @@ class TransacaoController (
         return ResponseEntity.status(404).build()
 
     }
-
-
-
 }

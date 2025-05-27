@@ -19,6 +19,5 @@ class TipoComercialController(val repositorio: TipoComercialRepositorio) {
         }else{
             ResponseEntity.status(200).body(tipoComercial)
         }
-
     }
 }

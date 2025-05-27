@@ -19,11 +19,11 @@ val produtoRepositorio: ProdutoRepositorio
     fun criar(@RequestBody produto: Produto): ResponseEntity<Produto> {
         val salvo = produtoRepositorio.save(produto)
 
-        if (salvo.precoMedio != null) {
+        if (salvo.preco != null) {
             val log = LogPrecoProduto(
                 fkProduto = salvo,
                 precoAntigo = null,
-                precoNovo = salvo.precoMedio!!.toBigDecimal(),
+                precoNovo = salvo.preco!!.toBigDecimal(),
                 dataAlteracao = LocalDateTime.now()
             )
             repositorio.save(log)
@@ -37,13 +37,13 @@ val produtoRepositorio: ProdutoRepositorio
         val existente = produtoRepositorio.findById(id)
             .orElseThrow { RuntimeException("Produto não encontrado") }
 
-        val precoAntigo = existente.precoMedio
-        val precoNovo = produto.precoMedio
+        val precoAntigo = existente.preco
+        val precoNovo = produto.preco
 
         existente.nome = produto.nome
         existente.tipo = produto.tipo
         existente.fkUsuario = produto.fkUsuario
-        existente.precoMedio = precoNovo
+        existente.preco = precoNovo
 
         val atualizado = produtoRepositorio.save(existente)
 
@@ -65,10 +65,10 @@ val produtoRepositorio: ProdutoRepositorio
         val produto = produtoRepositorio.findById(id)
             .orElseThrow { RuntimeException("Produto não encontrado") }
 
-        if (produto.precoMedio != null) {
+        if (produto.preco != null) {
             val log = LogPrecoProduto(
                 fkProduto = produto,
-                precoAntigo = produto.precoMedio!!.toBigDecimal(),
+                precoAntigo = produto.preco!!.toBigDecimal(),
                 precoNovo = null,
                 dataAlteracao = LocalDateTime.now()
             )

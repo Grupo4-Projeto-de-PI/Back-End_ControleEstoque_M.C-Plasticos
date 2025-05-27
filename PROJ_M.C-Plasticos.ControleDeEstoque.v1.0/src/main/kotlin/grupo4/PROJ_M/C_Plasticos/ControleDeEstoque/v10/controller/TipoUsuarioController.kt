@@ -26,7 +26,6 @@ class TipoUsuarioController(val repositorio: TipoUsuarioRepositorio) {
 
     }
 
-
     @PostMapping
     fun criarTipoUsuario(@RequestBody novoTipo: TipoUsuario): ResponseEntity<TipoUsuario>{
         novoTipo.id = null

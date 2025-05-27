@@ -29,7 +29,7 @@ data class Produto(
     @JoinColumn(name = "fk_usuario", referencedColumnName = "codigo_funcionario")
     var fkUsuario: Usuario?,
 
-    @JsonIgnore @field: PositiveOrZero var precoMedio: Double?,
+    @JsonIgnore @field: PositiveOrZero var preco: Double?,
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var dataCadastro: LocalDate = LocalDate.now()
