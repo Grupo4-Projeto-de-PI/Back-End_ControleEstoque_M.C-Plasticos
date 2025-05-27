@@ -3,8 +3,7 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.EditarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.CriarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.usuarioEnum.tipoUsuarioEnum
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.UsuarioService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
@@ -15,47 +14,25 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/usuario")
 class UsuarioController(
-    val repositorio: UsuarioRepositorio,
-){
+    val usuarioService: UsuarioService
+) {
+
     @Operation(summary = "Criar um novo usuário", description = "Cria um novo usuário com base nos dados fornecidos.")
     @PostMapping
     fun postCriarUsuario(@RequestBody @Valid novoUsuario: CriarUsuarioDto): ResponseEntity<Usuario> {
-
-        val tipoUsuarioEnum = try {
-            tipoUsuarioEnum.valueOf(novoUsuario.tipoUsuario)
-        } catch (e: IllegalArgumentException) {
-            return ResponseEntity.status(400).build() // Retorna erro se o tipoUsuario não for válido
-        }
-
-        val usuario = Usuario(
-            nome = novoUsuario.nome,
-            senha = novoUsuario.senha,
-            tipoUsuario = tipoUsuarioEnum
-        )
-
-        repositorio.save(usuario)
-        return ResponseEntity.status(201).body(usuario)
+        return usuarioService.criarUsuario(novoUsuario)
     }
 
     @Operation(summary = "Listar todos os usuários", description = "Retorna uma lista de todos os usuários cadastrados.")
     @GetMapping
     fun listarTodosUsuarios(): ResponseEntity<List<Usuario>> {
-        val usuarios = repositorio.findAll()
-        if (usuarios.isEmpty()) {
-            return ResponseEntity.status(204).build()
-        }
-        return ResponseEntity.status(200).body(usuarios)
+        return usuarioService.listarTodosUsuarios()
     }
 
     @Operation(summary = "Listar usuário por ID", description = "Retorna os dados de um usuário específico com base no código do funcionário.")
     @GetMapping("{codigoFuncionario}")
     fun listarUsuarioId(@PathVariable(required = true) codigoFuncionario: Int): ResponseEntity<Usuario> {
-
-        if (!repositorio.existsById(codigoFuncionario)) {
-            return ResponseEntity.status(204).build()
-        }
-        val usuarioEncontrado = repositorio.findById(codigoFuncionario)
-        return ResponseEntity.of(usuarioEncontrado)
+        return usuarioService.listarUsuarioPorId(codigoFuncionario)
     }
 
     @Operation(summary = "Editar nome do usuário", description = "Atualiza o nome de um usuário específico.")
@@ -64,80 +41,33 @@ class UsuarioController(
         @Valid @RequestBody dto: EditarUsuarioDto,
         @RequestParam codigoFuncionario: Int
     ): ResponseEntity<Usuario> {
-
-        if (!repositorio.existsById(codigoFuncionario)) {
-            return ResponseEntity.status(404).build()
-        }
-
-        if( dto.nome.isNullOrBlank()) {
-            return ResponseEntity.status(400).build()
-        }
-
-        val nomeUsuario = dto.nome
-        repositorio.atualizarNome(codigoFuncionario, nomeUsuario)
-
-        val nomeAtualizado = repositorio.findById(codigoFuncionario).get()
-        return ResponseEntity.status(200).body(nomeAtualizado)
+        return usuarioService.editarNomeUsuario(codigoFuncionario, dto)
     }
 
     @Operation(summary = "Editar senha do usuário", description = "Atualiza a senha de um usuário específico.")
     @PatchMapping("/senha")
-    fun patchEditarSenhaUsuario(@Valid @RequestBody senha: EditarUsuarioDto, @RequestParam codigoFuncionario: Int): ResponseEntity<Usuario> {
-
-        if(!repositorio.existsById(codigoFuncionario)) {
-            return ResponseEntity.status(404).build()
-        }
-
-        if(senha.senha.isNullOrBlank()) {
-            return ResponseEntity.status(400).body(null)
-        }
-        val senhaUsuario = senha.senha
-        repositorio.atualizarSenha(codigoFuncionario, senhaUsuario)
-
-        val senhaAtualizada = repositorio.findById(codigoFuncionario).get()
-        return ResponseEntity.status(200).body(senhaAtualizada)
+    fun patchEditarSenhaUsuario(
+        @Valid @RequestBody senha: EditarUsuarioDto,
+        @RequestParam codigoFuncionario: Int
+    ): ResponseEntity<Usuario> {
+        return usuarioService.editarSenhaUsuario(codigoFuncionario, senha)
     }
 
     @Operation(summary = "Excluir usuário", description = "Exclui um usuário com base no código do funcionário.")
     @DeleteMapping("/{codigoFuncionario}")
     fun deleteExcluirUsuario(@PathVariable codigoFuncionario: Int): ResponseEntity<Usuario> {
-
-        if (repositorio.existsById(codigoFuncionario)) {
-            repositorio.deleteByCodigoFuncionario(codigoFuncionario)
-            return ResponseEntity.status(204).build()
-        }
-
-        return ResponseEntity.status(404).build()
+        return usuarioService.excluirUsuario(codigoFuncionario)
     }
 
     @Operation(summary = "Login do usuário", description = "Realiza o login de um usuário com base no código do funcionário e senha.")
     @GetMapping("/login")
-    fun login(@RequestBody loginUsuario: Usuario): ResponseEntity<String>{
-        val codigoFuncionarioEntrada = loginUsuario.codigoFuncionario
-        val senhaEntrada = loginUsuario.senha
-        val login = repositorio.findByCodigoFuncionarioAndSenha(codigoFuncionarioEntrada, senhaEntrada)
-
-        if (login.isNotEmpty()) {
-            repositorio.atualizarOnline(codigoFuncionarioEntrada, true)
-            return ResponseEntity.status(200).body("Usuario logado com sucesso!")
-        }
-
-        return ResponseEntity.status(404).build()
+    fun login(@RequestBody loginUsuario: Usuario): ResponseEntity<String> {
+        return usuarioService.loginUsuario(loginUsuario)
     }
 
     @Operation(summary = "Logoff do usuário", description = "Realiza o logoff de um usuário com base no código do funcionário.")
     @GetMapping("/logoff")
-    fun logoff(@RequestBody nomeEntrada: Usuario): ResponseEntity<String>{
-        val codigoFuncionario = nomeEntrada.codigoFuncionario
-        val login = repositorio.findByCodigoFuncionario(codigoFuncionario)
-
-        if (login.isNotEmpty()) {
-            repositorio.atualizarOnline(codigoFuncionario,false)
-            return ResponseEntity.status(200).body("Usuario desconectado!")
-        }
-
-        return ResponseEntity.status(404).build()
-
+    fun logoff(@RequestBody nomeEntrada: Usuario): ResponseEntity<String> {
+        return usuarioService.logoffUsuario(nomeEntrada)
     }
 }
-
