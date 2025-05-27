@@ -22,7 +22,7 @@ class ProdutoController(val repositorio: ProdutoRepositorio) {
 
     }
 
-    @GetMapping("/listar/id")
+    @GetMapping("/id")
     fun getProdutoId(@RequestParam id:Int): ResponseEntity<Produto>{
         val produtos = repositorio.findById(id)
         return ResponseEntity.of(produtos)
@@ -41,14 +41,14 @@ class ProdutoController(val repositorio: ProdutoRepositorio) {
 //        return ResponseEntity.status(200).body(produtos)
 //    }
 
-    @PostMapping("/criar")
+    @PostMapping
     fun criarProduto(@RequestBody novoProduto: Produto):ResponseEntity<Produto> {
         val produtos = repositorio.save(novoProduto)
         return ResponseEntity.status(201).body(produtos)
     }
 
 
-    @DeleteMapping("/deletar/{id}")
+    @DeleteMapping("/{id}")
     fun deletarProduto(@PathVariable id: Int):ResponseEntity<Void> {
         if(repositorio.existsById(id)){
             repositorio.deleteById(id)

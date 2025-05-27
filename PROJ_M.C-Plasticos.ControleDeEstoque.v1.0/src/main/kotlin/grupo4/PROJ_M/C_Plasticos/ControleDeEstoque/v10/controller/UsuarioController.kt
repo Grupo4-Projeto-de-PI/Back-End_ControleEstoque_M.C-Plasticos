@@ -1,7 +1,7 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Dto.UsuarioDto.EditarUsuarioDto
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.UsuarioDto.CriarUsuarioDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.EditarUsuarioDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.CriarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.TipoUsuarioRepositorio
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio
@@ -19,7 +19,7 @@ class UsuarioController(
     val tipoUsuarioRepository: TipoUsuarioRepositorio,
 ){
     @Operation(summary = "Criar um novo usuário", description = "Cria um novo usuário com base nos dados fornecidos.")
-    @PostMapping("/criar")
+    @PostMapping
     fun postCriarUsuario(@RequestBody @Valid novoUsuario: CriarUsuarioDto): ResponseEntity<Usuario> {
 
         val tipoUsuario = tipoUsuarioRepository.findById(novoUsuario.tipoUsuario)
@@ -36,7 +36,7 @@ class UsuarioController(
     }
 
     @Operation(summary = "Listar todos os usuários", description = "Retorna uma lista de todos os usuários cadastrados.")
-    @GetMapping("/listar")
+    @GetMapping
     fun listarTodosUsuarios(): ResponseEntity<List<Usuario>> {
         val usuarios = repositorio.findAll()
         if (usuarios.isEmpty()) {
@@ -46,7 +46,7 @@ class UsuarioController(
     }
 
     @Operation(summary = "Listar usuário por ID", description = "Retorna os dados de um usuário específico com base no código do funcionário.")
-    @GetMapping("/listar/{codigoFuncionario}")
+    @GetMapping("{codigoFuncionario}")
     fun listarUsuarioId(@PathVariable(required = true) codigoFuncionario: Int): ResponseEntity<Usuario> {
 
         if (!repositorio.existsById(codigoFuncionario)) {
@@ -57,7 +57,7 @@ class UsuarioController(
     }
 
     @Operation(summary = "Editar nome do usuário", description = "Atualiza o nome de um usuário específico.")
-    @PatchMapping("/editar/nome")
+    @PatchMapping("/nome")
     fun patchEditarNomeUsuario(
         @Valid @RequestBody dto: EditarUsuarioDto,
         @RequestParam codigoFuncionario: Int
@@ -79,7 +79,7 @@ class UsuarioController(
     }
 
     @Operation(summary = "Editar senha do usuário", description = "Atualiza a senha de um usuário específico.")
-    @PatchMapping("/editar/senha")
+    @PatchMapping("/senha")
     fun patchEditarSenhaUsuario(@Valid @RequestBody senha: EditarUsuarioDto, @RequestParam codigoFuncionario: Int): ResponseEntity<Usuario> {
 
         if(!repositorio.existsById(codigoFuncionario)) {
@@ -97,7 +97,7 @@ class UsuarioController(
     }
 
     @Operation(summary = "Excluir usuário", description = "Exclui um usuário com base no código do funcionário.")
-    @DeleteMapping("/excluir/{codigoFuncionario}")
+    @DeleteMapping("/{codigoFuncionario}")
     fun deleteExcluirUsuario(@PathVariable codigoFuncionario: Int): ResponseEntity<Usuario> {
 
         if (repositorio.existsById(codigoFuncionario)) {

@@ -45,7 +45,7 @@ class CategoriaController(val repositorio: CategoriaRepositorio) {
     }
 
 
-    @PatchMapping("/categorias-Tipo/{id}/{tipo}")
+    @PatchMapping("/categorias-tipo/{id}/{tipo}")
     fun patchCategoriasTipo(@PathVariable id:Int, @PathVariable tipo:String): ResponseEntity<Categoria> {
         if (repositorio.existsById(id)) {
             val categoriasEncontrados = repositorio.findById(id).get()

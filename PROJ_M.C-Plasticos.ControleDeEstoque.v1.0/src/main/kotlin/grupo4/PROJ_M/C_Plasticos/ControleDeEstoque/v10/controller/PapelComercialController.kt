@@ -25,7 +25,7 @@ class PapelComercialController(val repositorio: PapelComercialRepositorio) {
         return ResponseEntity.status(200).body(papelComercial)
     }
 
-    @PostMapping("/criar")
+    @PostMapping
     fun criarPapelComercial(@RequestBody novoPapel: PapelComercial): ResponseEntity<PapelComercial>{
         novoPapel.id = null
         val papelSalvo = repositorio.save(novoPapel)
@@ -33,7 +33,7 @@ class PapelComercialController(val repositorio: PapelComercialRepositorio) {
     }
 
 
-    @DeleteMapping("/deletar/{id}")
+    @DeleteMapping("/{id}")
     fun deletarPorId(@PathVariable id: Int): ResponseEntity<Void>{
         if (repositorio.existsById(id)){
             repositorio.deleteById(id)

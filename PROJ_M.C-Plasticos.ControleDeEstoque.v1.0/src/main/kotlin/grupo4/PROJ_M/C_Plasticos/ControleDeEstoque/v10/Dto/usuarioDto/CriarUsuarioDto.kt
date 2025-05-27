@@ -1,4 +1,4 @@
-package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.UsuarioDto
+package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto
 
 data class CriarUsuarioDto(
     val nome: String,
