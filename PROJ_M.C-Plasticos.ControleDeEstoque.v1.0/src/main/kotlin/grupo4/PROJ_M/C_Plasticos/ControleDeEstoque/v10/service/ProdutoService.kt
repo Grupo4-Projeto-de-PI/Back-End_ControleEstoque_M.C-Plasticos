@@ -1,12 +1,22 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service
 
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.AtualizarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.CriarProdutoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Produto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.helper.ProdutoHelper
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.ProdutoRepositorio
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.TipoProdutoRepositorio
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class ProdutoService(val repositorio: ProdutoRepositorio) {
+class ProdutoService(
+    val repositorio: ProdutoRepositorio,
+    val tipoProdutoRepositorio: TipoProdutoRepositorio,
+    val usuarioRepositorio: UsuarioRepositorio,
+    val produtoHelper: ProdutoHelper
+) {
 
     fun listarTodosProdutos(): ResponseEntity<List<Produto>> {
         val produtos = repositorio.findAll()
@@ -31,8 +41,24 @@ class ProdutoService(val repositorio: ProdutoRepositorio) {
         }
     }
 
-    fun criarProduto(novoProduto: Produto): ResponseEntity<Produto> {
-        val produto = repositorio.save(novoProduto)
+    fun criarProduto(novoProduto: CriarProdutoDto): ResponseEntity<Produto> {
+
+        val existeTipoProduto = tipoProdutoRepositorio.findById(novoProduto.tipo)
+        val usuarioEncontrado = usuarioRepositorio.findById(novoProduto.fkUsuario)
+
+        if(!existeTipoProduto.isPresent || !usuarioEncontrado.isPresent){
+            return ResponseEntity.status(400).build()
+        }
+
+        val produto = Produto(
+            nome = novoProduto.nome,
+            tipo = existeTipoProduto.get(),
+            fkUsuario = usuarioEncontrado.get(),
+            preco = 0.0
+
+        )
+
+        repositorio.save(produto)
         return ResponseEntity.status(201).body(produto)
     }
 
@@ -45,24 +71,13 @@ class ProdutoService(val repositorio: ProdutoRepositorio) {
         }
     }
 
-    fun atualizarProduto(id: Int, produtosAtualizado: Produto): ResponseEntity<Produto> {
-        return if (repositorio.existsById(id)) {
-            produtosAtualizado.id = id
-            val produto = repositorio.save(produtosAtualizado)
-            ResponseEntity.status(200).body(produto)
-        } else {
-            ResponseEntity.status(404).build()
+    fun atualizarProduto(id: Int, produtosAtualizado: AtualizarProdutoDto): ResponseEntity<Produto> {
+        if(!repositorio.existsById(id)) {
+            return ResponseEntity.status(404).build()
         }
-    }
-
-    fun atualizarPrecoProduto(id: Int, preco: Double): ResponseEntity<Produto> {
-        return if (repositorio.existsById(id)) {
-            val produtoEncontrado = repositorio.findById(id).get()
-            produtoEncontrado.preco = preco
-            repositorio.save(produtoEncontrado)
-            ResponseEntity.status(200).body(produtoEncontrado)
-        } else {
-            ResponseEntity.status(404).build()
-        }
+        val produtoExistente = repositorio.findById(id).get()
+        produtoHelper.atualizarProduto(produtosAtualizado, produtoExistente)
+        repositorio.save(produtoExistente)
+        return ResponseEntity.status(200).body(produtoExistente)
     }
 }

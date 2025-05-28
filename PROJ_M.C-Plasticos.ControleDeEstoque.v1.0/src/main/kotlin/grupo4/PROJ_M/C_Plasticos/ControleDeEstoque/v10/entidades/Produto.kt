@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.PositiveOrZero
 import jakarta.validation.constraints.Size
 import java.time.LocalDate
@@ -17,24 +18,21 @@ data class Produto(
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id:Int?,
+    var id:Int? = null,
 
-    @field: Size(min = 1, max=45)var nome: String?,
+    @field: NotBlank
+    var nome: String? = null,
 
     @ManyToOne
     @JoinColumn(name = "tipo_produto", referencedColumnName = "id")
-    @field: Size(min = 1, max = 45)var tipo: TipoProduto?,
+    var tipo: TipoProduto? = null,
 
     @ManyToOne
     @JoinColumn(name = "fk_usuario", referencedColumnName = "codigo_funcionario")
-    var fkUsuario: Usuario?,
+    var fkUsuario: Usuario? = null,
 
-    @JsonIgnore @field: PositiveOrZero var preco: Double?,
+    @JsonIgnore @field: PositiveOrZero var preco: Double? = null,
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var dataCadastro: LocalDate = LocalDate.now()
-){
-
-    constructor(): this(null, null, null, null, null)
-
-}
+)

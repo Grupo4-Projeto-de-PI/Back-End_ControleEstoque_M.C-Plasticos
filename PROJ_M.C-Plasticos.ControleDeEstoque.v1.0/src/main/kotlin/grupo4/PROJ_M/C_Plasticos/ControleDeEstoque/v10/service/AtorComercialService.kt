@@ -15,6 +15,4 @@ class AtorComercialService {
         }
         return nomeNovo
     }
-
-
 }

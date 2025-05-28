@@ -1,5 +1,7 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.AtualizarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.CriarProdutoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Produto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.ProdutoService
 import org.springframework.http.ResponseEntity
@@ -25,7 +27,7 @@ class ProdutoController(val produtoService: ProdutoService) {
     }
 
     @PostMapping
-    fun criarProduto(@RequestBody novoProduto: Produto): ResponseEntity<Produto> {
+    fun criarProduto(@RequestBody novoProduto: CriarProdutoDto): ResponseEntity<Produto> {
         return produtoService.criarProduto(novoProduto)
     }
 
@@ -35,12 +37,7 @@ class ProdutoController(val produtoService: ProdutoService) {
     }
 
     @PutMapping("/atualizar-produto/{id}")
-    fun atualizarTodoProduto(@PathVariable id: Int, @RequestBody produtosAtualizado: Produto): ResponseEntity<Produto> {
+    fun atualizarTodoProduto(@PathVariable id: Int, @RequestBody produtosAtualizado: AtualizarProdutoDto): ResponseEntity<Produto> {
         return produtoService.atualizarProduto(id, produtosAtualizado)
-    }
-
-    @PatchMapping("/produtos-preco/{id}/{preco}")
-    fun patchProdutosPreco(@PathVariable id: Int, @PathVariable preco: Double): ResponseEntity<Produto> {
-        return produtoService.atualizarPrecoProduto(id, preco)
     }
 }
