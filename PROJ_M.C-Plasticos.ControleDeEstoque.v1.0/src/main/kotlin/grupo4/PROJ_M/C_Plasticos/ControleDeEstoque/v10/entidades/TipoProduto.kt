@@ -9,8 +9,10 @@ data class TipoProduto(
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Int? = null,
-    @field: Size(min = 1, max=45) val tipo: String? = null
+    var id: Int? = null,
+
+    @field:Size(min = 1, max = 45)
+    var tipo: String? = null
 ){
     constructor(): this(null, null)
 }
