@@ -6,6 +6,7 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.TransacaoDto.NovaTran
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Transacao
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.categoriaEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.tipoOperacaoEnum
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.helper.TransacaoHelper
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.http.HttpStatus
@@ -18,7 +19,8 @@ class TransacaoService(
     val repositorio: TransacaoRepositorio,
     val produtoRepositorio: ProdutoRepositorio,
     val parceiroComercialRepositorio: ParceiroComercialRepositorio,
-    val usuarioRepositorio: UsuarioRepositorio
+    val usuarioRepositorio: UsuarioRepositorio,
+    private val transacaoHelper: TransacaoHelper
 ) {
 
     private fun <T> buscarId(repositorio: JpaRepository<T, Int>, id: Int, mensagemErro: String = "Erro ao atualizar"): T {
@@ -118,21 +120,8 @@ class TransacaoService(
         if (!repositorio.existsById(idTransacao)) {
             return ResponseEntity.status(404).build()
         }
-
         val transacaoExistente = repositorio.findById(idTransacao).get()
-
-        transacaoAtualizada.fkProduto?.let { transacaoExistente.fkProduto = buscarId(produtoRepositorio, it) }
-        transacaoAtualizada.fkCategoria?.let {
-            transacaoExistente.categoria = categoriaEnum.valueOf(it)
-        }
-        transacaoAtualizada.peso?.let { transacaoExistente.peso = it }
-        transacaoAtualizada.preco?.let { transacaoExistente.valorTotal = it }
-        transacaoAtualizada.fkTipoOperacao?.let {
-            transacaoExistente.tipoOperacao = tipoOperacaoEnum.valueOf(it)
-        }
-        transacaoAtualizada.fkParceiroComercial?.let {
-            transacaoExistente.fkParceiroComercial = buscarId(parceiroComercialRepositorio, it)
-        }
+        transacaoHelper.atualizarTransacao(transacaoAtualizada, transacaoExistente)
 
         val transacaoAtualizadaFinal = repositorio.save(transacaoExistente)
         return ResponseEntity.status(200).body(transacaoAtualizadaFinal)
