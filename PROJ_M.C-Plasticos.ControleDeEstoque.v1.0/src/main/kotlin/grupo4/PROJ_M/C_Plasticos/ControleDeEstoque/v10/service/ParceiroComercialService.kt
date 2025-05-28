@@ -46,7 +46,7 @@ class ParceiroComercialService(val repositorio: ParceiroComercialRepositorio) {
     fun atualizarPapelParceiro(id: Int, tipoAtor: ParceiroComercial): ResponseEntity<ParceiroComercial> {
         return if (repositorio.existsById(id)) {
             val parceiro = repositorio.findById(id).get()
-            parceiro.fkPapelComercial = tipoAtor.fkPapelComercial
+            parceiro.papelComercial = tipoAtor.papelComercial
             repositorio.save(parceiro)
             ResponseEntity.status(200).body(parceiro)
         } else {

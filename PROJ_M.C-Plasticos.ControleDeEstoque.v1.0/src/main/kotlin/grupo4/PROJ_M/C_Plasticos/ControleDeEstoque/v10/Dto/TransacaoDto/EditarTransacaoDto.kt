@@ -4,7 +4,7 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.TransacaoDto
      val fkProduto: Int? = null,
      val peso: Double? = null,
      val preco: Double? = null,
-     val fkTipoOperacao: String? = null,
-     val fkCategoria: String? = null,
+     val tipoOperacao: Int? = null,
+     val categoria: Int? = null,
      val fkParceiroComercial: Int? = null,
  )

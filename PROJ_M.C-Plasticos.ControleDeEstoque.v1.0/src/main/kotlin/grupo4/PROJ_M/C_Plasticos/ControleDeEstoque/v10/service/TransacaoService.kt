@@ -8,8 +8,10 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.catego
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.tipoOperacaoEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.*
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class TransacaoService(
@@ -19,33 +21,34 @@ class TransacaoService(
     val usuarioRepositorio: UsuarioRepositorio
 ) {
 
-    private fun <T> buscarId(repositorio: JpaRepository<T, Int>, id: Int): T {
-        return repositorio.findById(id).orElseThrow { RuntimeException("Transação não encontrada") }
+    private fun <T> buscarId(repositorio: JpaRepository<T, Int>, id: Int, mensagemErro: String = "Erro ao atualizar"): T {
+        return repositorio.findById(id).orElseThrow { throw ResponseStatusException(HttpStatus.BAD_REQUEST, mensagemErro) }
     }
 
     fun criarTransacao(novaTransacao: NovaTransacaoDto): ResponseEntity<Transacao> {
-        val fkProduto = buscarId(produtoRepositorio, novaTransacao.fkProduto)
-        val fkParceiroComercial = buscarId(parceiroComercialRepositorio, novaTransacao.fkParceiroComercial)
-        val fkUsuario = buscarId(usuarioRepositorio, novaTransacao.fkUsuario)
+        val fkProduto = buscarId(produtoRepositorio, novaTransacao.fkProduto, "Produto não encontrado")
+        val fkParceiroComercial = buscarId(parceiroComercialRepositorio, novaTransacao.fkParceiroComercial,
+            "Parceiro Comercial não encontrado")
+        val fkUsuario = buscarId(usuarioRepositorio, novaTransacao.fkUsuario, "Usuário não encontrado")
 
-        val categoriaEnum = try {
-            categoriaEnum.valueOf(novaTransacao.categoria)
-        } catch (e: IllegalArgumentException) {
-            return ResponseEntity.status(400).body(null)
+        val categoria = when (novaTransacao.categoria) {
+            0 -> categoriaEnum.GR
+            1 -> categoriaEnum.MS
+            else -> return ResponseEntity.status(400).build()
         }
 
-        val tipoOperacaoEnum = try {
-            tipoOperacaoEnum.valueOf(novaTransacao.tipoOperacao)
-        } catch (e: IllegalArgumentException) {
-            return ResponseEntity.status(400).body(null)
+        val tipoOperacao = when (novaTransacao.tipoOperacao) {
+            0 -> tipoOperacaoEnum.Entrada
+            1 -> tipoOperacaoEnum.Saida
+            else -> return ResponseEntity.status(400).build()
         }
 
         val novoHistorico = Transacao(
             fkProduto = fkProduto,
-            categoria = categoriaEnum,
+            categoria = categoria,
             peso = novaTransacao.peso,
             valorTotal = novaTransacao.valorTotal,
-            tipoOperacao = tipoOperacaoEnum,
+            tipoOperacao = tipoOperacao,
             fkParceiroComercial = fkParceiroComercial,
             fkUsuario = fkUsuario
         )

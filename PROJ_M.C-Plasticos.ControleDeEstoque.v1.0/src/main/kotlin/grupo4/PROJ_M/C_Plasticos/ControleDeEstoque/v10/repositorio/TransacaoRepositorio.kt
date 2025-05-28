@@ -15,7 +15,7 @@ interface TransacaoRepositorio: JpaRepository <Transacao, Int> {
     JOIN t.fkProduto p
     JOIN p.tipo tp
     WHERE (:fkProduto IS NULL OR t.fkProduto.id = :fkProduto)
-      AND (:categoria IS NULL OR t.fkCategoria = :categoria)
+      AND (:categoria IS NULL OR t.categoria = :categoria)
       AND (:fkParceiroComercial IS NULL OR t.fkParceiroComercial.id = :fkParceiroComercial)
       AND (:tipoOperacao IS NULL OR t.tipoOperacao = :tipoOperacao)
       AND (:dataInicio IS NULL OR :dataFim IS NULL OR t.data BETWEEN :dataInicio AND :dataFim)

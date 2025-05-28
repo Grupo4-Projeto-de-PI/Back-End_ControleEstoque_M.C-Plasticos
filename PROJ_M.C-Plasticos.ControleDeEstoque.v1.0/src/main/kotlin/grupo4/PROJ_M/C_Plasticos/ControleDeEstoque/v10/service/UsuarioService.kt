@@ -14,16 +14,17 @@ class UsuarioService(
 ) {
 
     fun criarUsuario(novoUsuario: CriarUsuarioDto): ResponseEntity<Usuario> {
-        val tipoUsuarioEnum = try {
-            tipoUsuarioEnum.valueOf(novoUsuario.tipoUsuario)
-        } catch (e: IllegalArgumentException) {
-            return ResponseEntity.status(400).build()
-        }
 
+        val tipoUsuario = when (novoUsuario.tipoUsuario) {
+            0 -> tipoUsuarioEnum.Admin
+            1 -> tipoUsuarioEnum.Estoquista
+            2 -> tipoUsuarioEnum.Vendedor
+            else -> return ResponseEntity.status(400).build()
+        }
         val usuario = Usuario(
             nome = novoUsuario.nome,
             senha = novoUsuario.senha,
-            tipoUsuario = tipoUsuarioEnum
+            tipoUsuario = tipoUsuario
         )
 
         repositorio.save(usuario)

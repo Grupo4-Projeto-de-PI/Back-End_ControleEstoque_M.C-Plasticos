@@ -23,7 +23,7 @@ data class ParceiroComercial(
     @field: NotBlank
     var tipoComercial: tipoComercialEnum? = null,
     @field: NotBlank
-    var fkPapelComercial: papelComercialEnum? = null,
+    var papelComercial: papelComercialEnum? = null,
 ){
 
     constructor(): this(null, null, null, null, null)

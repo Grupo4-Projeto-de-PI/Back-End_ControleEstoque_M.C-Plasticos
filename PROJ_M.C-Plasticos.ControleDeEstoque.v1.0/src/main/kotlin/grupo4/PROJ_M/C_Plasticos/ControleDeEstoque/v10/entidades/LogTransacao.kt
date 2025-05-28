@@ -1,6 +1,7 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.tipoOperacaoEnum
 import jakarta.persistence.*
 import jakarta.validation.constraints.PositiveOrZero
 import java.math.BigDecimal
@@ -17,9 +18,7 @@ data class LogTransacao(
     @field: PositiveOrZero var peso: BigDecimal?,
     var valorTotal: BigDecimal?,
 
-    @Enumerated(EnumType.STRING)
-    @ManyToOne
-    var tipoOperacao: TipoOperacao? = null,
+    var tipoOperacao: tipoOperacaoEnum? = null,
 
     var dataLog: LocalDateTime,
 
