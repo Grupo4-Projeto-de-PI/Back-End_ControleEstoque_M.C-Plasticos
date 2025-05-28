@@ -33,24 +33,12 @@ class TransacaoService(
             "Parceiro Comercial não encontrado")
         val fkUsuario = buscarId(usuarioRepositorio, novaTransacao.fkUsuario, "Usuário não encontrado")
 
-        val categoria = when (novaTransacao.categoria) {
-            0 -> categoriaEnum.GR
-            1 -> categoriaEnum.MS
-            else -> return ResponseEntity.status(400).build()
-        }
-
-        val tipoOperacao = when (novaTransacao.tipoOperacao) {
-            0 -> tipoOperacaoEnum.Entrada
-            1 -> tipoOperacaoEnum.Saida
-            else -> return ResponseEntity.status(400).build()
-        }
-
         val novoHistorico = Transacao(
             fkProduto = fkProduto,
-            categoria = categoria,
+            categoria = novaTransacao.categoria,
             peso = novaTransacao.peso,
             valorTotal = novaTransacao.valorTotal,
-            tipoOperacao = tipoOperacao,
+            tipoOperacao = novaTransacao.tipoOperacao,
             fkParceiroComercial = fkParceiroComercial,
             fkUsuario = fkUsuario
         )
@@ -81,27 +69,11 @@ class TransacaoService(
     }
 
     fun filtrarTransacoes(filtro: FiltroTransacaoDto): ResponseEntity<List<Transacao>> {
-        val categoriaEnum = filtro.categoria?.let {
-            try {
-                categoriaEnum.valueOf(it)
-            } catch (e: IllegalArgumentException) {
-                return ResponseEntity.status(400).build()
-            }
-        }
-
-        val tipoOperacaoEnum = filtro.tipoOperacao?.let {
-            try {
-                tipoOperacaoEnum.valueOf(it)
-            } catch (e: IllegalArgumentException) {
-                return ResponseEntity.status(400).build()
-            }
-        }
-
         val transacoes = repositorio.findByDynamicFilters(
             fkProduto = filtro.fkProduto,
-            categoria = categoriaEnum?.name,
+            categoria = filtro.categoria,
             fkParceiroComercial = filtro.fkParceiroComercial,
-            tipoOperacao = tipoOperacaoEnum?.name,
+            tipoOperacao = filtro.tipoOperacao,
             dataInicio = filtro.dataInicio,
             dataFim = filtro.dataFim,
             pesoMinimo = filtro.pesoMinimo,

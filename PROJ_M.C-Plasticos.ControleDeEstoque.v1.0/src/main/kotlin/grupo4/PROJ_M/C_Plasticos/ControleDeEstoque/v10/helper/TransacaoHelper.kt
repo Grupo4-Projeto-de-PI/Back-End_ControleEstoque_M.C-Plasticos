@@ -30,13 +30,8 @@ class TransacaoHelper (
         fkProduto?.let { transacao.fkProduto = buscarId(produtoRepositorio, it) }
     }
 
-     private fun atualizarCategoria(categoria: Int?, transacao: Transacao) {
-        val categoriaEnum = when(categoria) {
-            0 -> categoriaEnum.GR
-            1 -> categoriaEnum.MS
-            else -> throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria inválida")
-        }
-         transacao.categoria = categoriaEnum
+     private fun atualizarCategoria(categoria: categoriaEnum?, transacao: Transacao) {
+         transacao.categoria = categoria
     }
 
      private fun atualizarPeso(peso: Double?, transacao: Transacao) {
@@ -47,13 +42,8 @@ class TransacaoHelper (
         preco?.let { transacao.valorTotal = it }
     }
 
-     private fun atualizarTipoOperacao(tipoOperacao: Int?, transacao: Transacao) {
-        val tipoOperacaoEnum = when(tipoOperacao) {
-            0 -> tipoOperacaoEnum.Entrada
-            1 -> tipoOperacaoEnum.Saida
-            else -> throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Tipo de operação inválido")
-        }
-         transacao.tipoOperacao = tipoOperacaoEnum
+     private fun atualizarTipoOperacao(tipoOperacao: tipoOperacaoEnum?, transacao: Transacao) {
+         transacao.tipoOperacao = tipoOperacao
     }
 
      private fun atualizarFkParceiroComercial(fkParceiroComercial: Int?, transacao: Transacao) {

@@ -20,9 +20,7 @@ data class ParceiroComercial(
     var id: Int?,
     @field:NotBlank var nome: String?,
     @field:Size(min = 11, max=11)  var telefone: String?,
-    @field: NotBlank
     var tipoComercial: tipoComercialEnum? = null,
-    @field: NotBlank
     var papelComercial: papelComercialEnum? = null,
 ){
 

@@ -1,5 +1,6 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto
 
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.usuarioEnum.tipoUsuarioEnum
 import jakarta.validation.constraints.*
 
 data class CriarUsuarioDto(
@@ -9,8 +10,5 @@ data class CriarUsuarioDto(
     @field: NotBlank
     @field: Size(max = 8)
     val senha: String,
-
-    @field: Min(0)
-    @field: Max(2)
-    val tipoUsuario: Int
+    val tipoUsuario: tipoUsuarioEnum
 )

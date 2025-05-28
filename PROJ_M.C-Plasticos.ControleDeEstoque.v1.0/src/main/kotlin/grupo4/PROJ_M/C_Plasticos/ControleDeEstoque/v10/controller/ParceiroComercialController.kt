@@ -26,35 +26,11 @@ class ParceiroComercialController(val parceiroComercialService: ParceiroComercia
         return parceiroComercialService.deletarParceiro(id)
     }
 
-    @PatchMapping("/tipo-ator/{id}/{tipoPessoa}")
-    fun patchTipoParceiroComercial(
+    @PutMapping("/{id}")
+    fun atualizarParceiro(
         @PathVariable id: Int,
-        @PathVariable tipoPessoa: tipoComercialEnum
+        @Valid @RequestBody parceiroAtualizado: ParceiroComercial
     ): ResponseEntity<ParceiroComercial> {
-        return parceiroComercialService.atualizarTipoParceiro(id, tipoPessoa)
-    }
-
-    @PatchMapping("/papel-comercial/{id}/{tipoAtor}")
-    fun patchPapelParceiroComercial(
-        @PathVariable id: Int,
-        @PathVariable tipoAtor: ParceiroComercial
-    ): ResponseEntity<ParceiroComercial> {
-        return parceiroComercialService.atualizarPapelParceiro(id, tipoAtor)
-    }
-
-    @PatchMapping("/ator-telefone/{id}/{telefone}")
-    fun patchFornecedoresTelefone(
-        @PathVariable id: Int,
-        @PathVariable telefone: ParceiroComercial
-    ): ResponseEntity<ParceiroComercial> {
-        return parceiroComercialService.atualizarTelefoneParceiro(id, telefone)
-    }
-
-    @PatchMapping("/ator-nome/{id}/{nome}")
-    fun patchFornecedoresNome(
-        @PathVariable id: Int,
-        @PathVariable nome: String
-    ): ResponseEntity<ParceiroComercial> {
-        return parceiroComercialService.atualizarNomeParceiro(id, nome)
+        return parceiroComercialService.atualizarParceiro(id, parceiroAtualizado)
     }
 }

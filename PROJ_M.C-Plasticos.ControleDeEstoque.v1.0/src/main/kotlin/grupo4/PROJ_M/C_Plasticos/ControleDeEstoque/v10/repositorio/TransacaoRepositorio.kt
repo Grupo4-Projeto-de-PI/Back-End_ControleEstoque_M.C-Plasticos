@@ -1,6 +1,8 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Transacao
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.categoriaEnum
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.tipoOperacaoEnum
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -24,9 +26,9 @@ interface TransacaoRepositorio: JpaRepository <Transacao, Int> {
 """)
     fun findByDynamicFilters(
         @Param("fkProduto") fkProduto: Int? = null,
-        @Param("categoria") categoria: String? = null,
+        @Param("categoria") categoria: categoriaEnum? = null,
         @Param("fkParceiroComercial") fkParceiroComercial: Int? = null,
-        @Param("tipoOperacao") tipoOperacao: String? = null,
+        @Param("tipoOperacao") tipoOperacao: tipoOperacaoEnum? = null,
         @Param("dataInicio") dataInicio: LocalDateTime? = null,
         @Param("dataFim") dataFim: LocalDateTime? = null,
         @Param("pesoMinimo") pesoMinimo: Double? = null,

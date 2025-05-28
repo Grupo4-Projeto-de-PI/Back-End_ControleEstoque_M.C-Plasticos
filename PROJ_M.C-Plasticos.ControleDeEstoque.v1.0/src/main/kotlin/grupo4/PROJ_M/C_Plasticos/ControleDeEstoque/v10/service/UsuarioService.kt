@@ -14,17 +14,10 @@ class UsuarioService(
 ) {
 
     fun criarUsuario(novoUsuario: CriarUsuarioDto): ResponseEntity<Usuario> {
-
-        val tipoUsuario = when (novoUsuario.tipoUsuario) {
-            0 -> tipoUsuarioEnum.Admin
-            1 -> tipoUsuarioEnum.Estoquista
-            2 -> tipoUsuarioEnum.Vendedor
-            else -> return ResponseEntity.status(400).build()
-        }
         val usuario = Usuario(
             nome = novoUsuario.nome,
             senha = novoUsuario.senha,
-            tipoUsuario = tipoUsuario
+            tipoUsuario = novoUsuario.tipoUsuario
         )
 
         repositorio.save(usuario)
