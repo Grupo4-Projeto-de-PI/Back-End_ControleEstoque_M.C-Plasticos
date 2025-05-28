@@ -22,6 +22,15 @@ class ProdutoService(val repositorio: ProdutoRepositorio) {
         return ResponseEntity.of(produto)
     }
 
+    fun getProdutoPorTipo(tipoId: Int): ResponseEntity<List<Produto>> {
+        val produtos = repositorio.findByTipoProduto(tipoId)
+        return if (produtos.isEmpty()) {
+            ResponseEntity.status(204).build()
+        } else {
+            ResponseEntity.status(200).body(produtos)
+        }
+    }
+
     fun criarProduto(novoProduto: Produto): ResponseEntity<Produto> {
         val produto = repositorio.save(novoProduto)
         return ResponseEntity.status(201).body(produto)

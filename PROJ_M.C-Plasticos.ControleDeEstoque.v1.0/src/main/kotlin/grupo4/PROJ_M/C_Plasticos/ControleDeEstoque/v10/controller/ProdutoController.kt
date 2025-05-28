@@ -19,6 +19,11 @@ class ProdutoController(val produtoService: ProdutoService) {
         return produtoService.getProdutoPorId(id)
     }
 
+    @GetMapping("/tipo/{tipoId}")
+    fun getProdutoTipo(@PathVariable tipoId: Int): ResponseEntity<List<Produto>> {
+        return produtoService.getProdutoPorTipo(tipoId)
+    }
+
     @PostMapping
     fun criarProduto(@RequestBody novoProduto: Produto): ResponseEntity<Produto> {
         return produtoService.criarProduto(novoProduto)
