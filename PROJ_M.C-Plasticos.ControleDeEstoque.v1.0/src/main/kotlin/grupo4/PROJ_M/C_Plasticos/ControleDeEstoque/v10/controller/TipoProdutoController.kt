@@ -22,7 +22,7 @@ class TipoProdutoController(val tipoProdutoService : TipoProdutoService) {
     }
 
     @DeleteMapping("/{id}")
-    fun deletarTipoProduto(id: Int): ResponseEntity<Void> {
+    fun deletarTipoProduto(@PathVariable id: Int): ResponseEntity<Void> {
         return tipoProdutoService.deletarTipoProduto(id)
     }
 
