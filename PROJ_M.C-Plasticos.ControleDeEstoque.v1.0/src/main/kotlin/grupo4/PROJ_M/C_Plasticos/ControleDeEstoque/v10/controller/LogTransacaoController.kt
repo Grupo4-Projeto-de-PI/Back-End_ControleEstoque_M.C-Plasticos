@@ -1,9 +1,14 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.LogTransacaoDto.LogTransacaoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.LogTransacao
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Produto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Transacao
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.logTransacaoEnum.logTransacaoEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.LogTransacaoRepositorio
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/log-transacao")
@@ -19,11 +24,8 @@ class LogTransacaoController(val repositorio: LogTransacaoRepositorio) {
         else ResponseEntity.notFound().build()
     }
 
-    @PostMapping
-    fun criar(@RequestBody logEntrada: LogTransacao): ResponseEntity<LogTransacao> {
-        val salvo = repositorio.save(logEntrada)
-        return ResponseEntity.ok(salvo)
-    }
+
+
 
     @PutMapping("/{id}")
     fun atualizar(@PathVariable id: Int, @RequestBody logEntrada: LogTransacao): ResponseEntity<LogTransacao> {
