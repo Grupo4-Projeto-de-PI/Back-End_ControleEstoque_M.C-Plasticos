@@ -5,15 +5,6 @@ import java.math.BigDecimal
 
 class LogPrecoProdutoService {
 
-//    fun getPrecoAlterado(LogPreco : LogPrecoProduto): BigDecimal {
-//        if (LogPreco.precoNovo < 0) {
-//            throw IllegalArgumentException()
-//        }
-//
-//        return precoNovo + 1
-//
-//    }
-
     fun getPrecoAlterado(precoProduto: LogPrecoProduto): BigDecimal {
         if (precoProduto.precoNovo!! < BigDecimal.ZERO) {
             throw IllegalArgumentException("Preço novo não pode ser negativo")
