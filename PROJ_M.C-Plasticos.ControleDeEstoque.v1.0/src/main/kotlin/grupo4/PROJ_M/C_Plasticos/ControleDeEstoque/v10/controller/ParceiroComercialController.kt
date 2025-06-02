@@ -1,7 +1,6 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.ParceiroComercial
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.parceiroComercialEnum.tipoComercialEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.ParceiroComercialService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity

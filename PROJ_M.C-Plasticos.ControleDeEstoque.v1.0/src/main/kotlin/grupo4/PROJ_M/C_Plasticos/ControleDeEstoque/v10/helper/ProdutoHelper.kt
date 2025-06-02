@@ -1,6 +1,6 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.helper
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.AtualizarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.produtoDto.AtualizarProdutoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Produto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.TipoProdutoRepositorio
 import org.springframework.http.HttpStatus

@@ -1,8 +1,8 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.FiltroTransacaoDto
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.TransacaoDto.EditarTransacaoDto
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.TransacaoDto.NovaTransacaoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.transacaoDto.EditarTransacaoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.transacaoDto.NovaTransacaoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Transacao
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.TransacaoService
 import org.springframework.http.ResponseEntity

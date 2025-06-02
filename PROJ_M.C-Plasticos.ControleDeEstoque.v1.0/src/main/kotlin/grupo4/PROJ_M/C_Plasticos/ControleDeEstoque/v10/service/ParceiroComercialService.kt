@@ -1,7 +1,6 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.ParceiroComercial
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.parceiroComercialEnum.tipoComercialEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.helper.ParceiroComercialHelper
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.ParceiroComercialRepositorio
 import org.springframework.http.ResponseEntity
