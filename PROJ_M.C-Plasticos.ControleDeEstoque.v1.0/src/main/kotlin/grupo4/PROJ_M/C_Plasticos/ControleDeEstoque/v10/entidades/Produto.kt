@@ -39,5 +39,7 @@ data class Produto(
     var fkUsuario: Usuario? = null,
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    var dataCadastro: LocalDate = LocalDate.now()
+    var dataCadastro: LocalDate = LocalDate.now(),
+
+    var fotoProduto: ByteArray? = null
 )

@@ -5,8 +5,10 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Transacao
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.logTransacaoEnum.logTransacaoEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.LogTransacaoRepositorio
 import org.springframework.http.ResponseEntity
+import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
+@Service
 class LogTransacaoService(val repositorio: LogTransacaoRepositorio) {
 
 
