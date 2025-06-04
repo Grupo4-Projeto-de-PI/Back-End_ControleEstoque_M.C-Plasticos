@@ -12,6 +12,9 @@ interface ProdutoRepositorio: JpaRepository<Produto, Int> {
     @Query("SELECT p FROM Produto p JOIN p.tipo tp WHERE tp.id = :tipoId")
     fun findByTipoProduto(tipoId: Int?): List<Produto>
 
+    @Transactional
+    fun findTopByOrderByIdDesc(): Produto?
+
 //    @Transactional
 //    @Query("SELECT p.id AS id, p.nome AS nome, p.tipo AS tipo, p.fkUsuario AS cadastrante, p.dataCadastro AS dataCadastro FROM Produto p")
 //    fun findBySemPreco(novoProduto: Produto): Produto

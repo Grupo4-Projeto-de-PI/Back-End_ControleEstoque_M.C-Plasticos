@@ -5,6 +5,5 @@ data class CriarProdutoDto(
     @field: NotBlank
     val nome: String,
     val tipo: Int,
-    val imagemProduto: ByteArray? = null,
     val fkUsuario: Int,
 )

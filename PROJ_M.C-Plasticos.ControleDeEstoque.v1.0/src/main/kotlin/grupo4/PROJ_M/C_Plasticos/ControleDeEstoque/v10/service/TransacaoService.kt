@@ -1,6 +1,5 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller.LogTransacaoController
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.FiltroTransacaoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.transacaoDto.EditarTransacaoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.transacaoDto.NovaTransacaoDto
