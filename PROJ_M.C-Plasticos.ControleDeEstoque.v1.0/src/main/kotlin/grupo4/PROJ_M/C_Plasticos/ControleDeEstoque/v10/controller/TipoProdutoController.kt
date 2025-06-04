@@ -17,7 +17,7 @@ class TipoProdutoController(val tipoProdutoService : TipoProdutoService) {
     }
 
     @PostMapping
-    fun cadastrarTipoProduto(tipoProduto: TipoProduto): ResponseEntity<TipoProduto> {
+    fun cadastrarTipoProduto(@RequestBody tipoProduto: TipoProduto): ResponseEntity<TipoProduto> {
         return tipoProdutoService.cadastrarTipoProduto(tipoProduto)
     }
 
