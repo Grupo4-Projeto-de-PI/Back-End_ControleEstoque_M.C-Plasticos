@@ -3,6 +3,7 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.ParceiroComercial
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.parceiroComercialEnum.papelComercialEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.parceiroComercialEnum.tipoComercialEnum
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.helper.ParceiroComercialHelper
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.ParceiroComercialRepositorio
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.ParceiroComercialService
 import org.junit.jupiter.api.BeforeEach
@@ -17,11 +18,17 @@ class ParceiroComercialServiceTest {
 
     private lateinit var repositorio: ParceiroComercialRepositorio
     private lateinit var service: ParceiroComercialService
+    private lateinit var helper: ParceiroComercialHelper
+
 
     @BeforeEach
     fun setup() {
+
         repositorio = mock(ParceiroComercialRepositorio::class.java)
-        service = ParceiroComercialService(repositorio)
+        helper = mock(ParceiroComercialHelper::class.java)
+        service = ParceiroComercialService(repositorio, helper)
+
+
     }
 
     @Test
@@ -78,16 +85,19 @@ class ParceiroComercialServiceTest {
     }
 
     @Test
-    fun `atualizarTipoParceiro deve atualizar tipoComercial quando parceiro existir`() {
+    fun `atualizarParceiro deve atualizar campos corretamente`() {
         val id = 1
-        val parceiro = ParceiroComercial(id, "Parceiro Y", "11777777777", tipoComercialEnum.PF, papelComercialEnum.CLFN)
-        `when`(repositorio.existsById(id)).thenReturn(true)
-        `when`(repositorio.findById(id)).thenReturn(Optional.of(parceiro))
-        `when`(repositorio.save(any())).thenReturn(parceiro)
+        val parceiroExistente = ParceiroComercial(id, "Antigo Nome", "11666666666", tipoComercialEnum.PF, papelComercialEnum.CL)
+        val parceiroAtualizado = ParceiroComercial(id, "Novo Nome", "11999999999", tipoComercialEnum.PJ, papelComercialEnum.CLFN)
 
-        val response = service.atualizarTipoParceiro(id, tipoComercialEnum.PJ)
+        `when`(repositorio.existsById(id)).thenReturn(true)
+        `when`(repositorio.findById(id)).thenReturn(Optional.of(parceiroExistente))
+        `when`(repositorio.save(any())).thenReturn(parceiroExistente)
+
+        val response = service.atualizarParceiro(id, parceiroAtualizado)
 
         assertEquals(HttpStatus.OK, response.statusCode)
+        assertEquals("Novo Nome", response.body?.nome)
         assertEquals(tipoComercialEnum.PJ, response.body?.tipoComercial)
     }
 
@@ -100,7 +110,7 @@ class ParceiroComercialServiceTest {
         `when`(repositorio.save(any())).thenReturn(parceiro)
 
         val novoNome = "Novo Nome"
-        val response = service.atualizarNomeParceiro(id, novoNome)
+        val response = service.atualizarParceiro(id, parceiro.copy(nome = novoNome))
 
         assertEquals(HttpStatus.OK, response.statusCode)
         assertEquals(novoNome, response.body?.nome)

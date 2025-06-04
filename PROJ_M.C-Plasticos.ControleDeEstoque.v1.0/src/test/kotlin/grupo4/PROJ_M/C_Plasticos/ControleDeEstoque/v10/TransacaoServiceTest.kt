@@ -50,7 +50,7 @@ class TransacaoServiceTest {
 
         val produto = Produto(id = 1, nome = "Produto Teste")
         val parceiro = ParceiroComercial(id = 2, nome = "Parceiro Teste")
-        val usuario = UsuarioS(id = 3, nome = "Usuario Teste")
+        val usuario = Usuario(id = 3, nome = "Usuario Teste")
 
         `when`(produtoRepositorio.findById(1)).thenReturn(Optional.of(produto))
         `when`(parceiroComercialRepositorio.findById(2)).thenReturn(Optional.of(parceiro))
