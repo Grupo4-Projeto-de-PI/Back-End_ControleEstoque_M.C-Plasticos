@@ -16,7 +16,7 @@ class ClimaController {
 
     @GetMapping("/{cidade}")
     fun obterClima(@PathVariable cidade: String): ResponseEntity<ClimaDto> {
-        val url = "https://api.openweathermap.org/data/2.5/weather?q=$cidade&appid=$apiKey&units=metric&lang=pt_br"
+        val url = "https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${apiKey}&units=metric&lang=pt_br"
 
         val restTemplate = RestTemplate()
         val response = restTemplate.getForObject(url, String::class.java)
