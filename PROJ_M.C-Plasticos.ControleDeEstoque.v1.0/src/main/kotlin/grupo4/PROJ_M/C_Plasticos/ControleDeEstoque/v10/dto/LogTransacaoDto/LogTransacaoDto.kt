@@ -13,5 +13,4 @@ data class LogTransacaoDto(
     val dataLog: LocalDateTime = LocalDateTime.now(),
     val fkTransacaoId: Int? = null,
     val fkTransacaoProdutoId: Int? = null
-
 )

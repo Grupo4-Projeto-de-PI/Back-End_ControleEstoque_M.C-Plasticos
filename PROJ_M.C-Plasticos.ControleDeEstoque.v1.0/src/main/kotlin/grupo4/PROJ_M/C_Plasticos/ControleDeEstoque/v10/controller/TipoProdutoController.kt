@@ -1,6 +1,6 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Dto.tipoProdutoDTO.AtualizarTipoProdutoDTO
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.tipoProdutoDto.AtualizarTipoProdutoDTO
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.TipoProduto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.TipoProdutoService
 import org.springframework.http.ResponseEntity

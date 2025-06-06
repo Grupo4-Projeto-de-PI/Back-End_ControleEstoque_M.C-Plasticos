@@ -12,16 +12,16 @@ import java.time.LocalDateTime
 class LogTransacaoService(val repositorio: LogTransacaoRepositorio) {
 
 
-    fun criar(Transacao: Transacao): ResponseEntity<LogTransacao> {
+    fun criar(transacao: Transacao): ResponseEntity<LogTransacao> {
         val logTransacao = LogTransacao(
             id = null,
-            peso = Transacao.peso,
-            valorTotal = Transacao.valorTotal,
+            peso = transacao.peso,
+            valorTotal = transacao.valorTotal,
             tipoEdicao = logTransacaoEnum.CREATE,
-            tipoOperacao = Transacao.tipoOperacao,
+            tipoOperacao = transacao.tipoOperacao,
             dataLog = LocalDateTime.now(),
-            fkTransacao = Transacao,
-            fkTransacaoProduto = Transacao.fkProduto
+            fkTransacao = transacao,
+            fkTransacaoProduto = transacao.fkProduto
         )
         val salvo = repositorio.save(logTransacao)
         return ResponseEntity.ok(salvo)

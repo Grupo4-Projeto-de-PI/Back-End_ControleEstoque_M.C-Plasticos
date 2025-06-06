@@ -13,7 +13,7 @@ data class TipoProduto(
 
     @field:Size(min = 1, max = 45)
     @Column(nullable = false)
-    var tipo: String
+    var tipo: String? = null
 ){
-    constructor(): this(null, "")
+    constructor(): this(null, null)
 }
