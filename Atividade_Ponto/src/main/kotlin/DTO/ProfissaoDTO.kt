@@ -1,4 +1,0 @@
-package DTO
-
-class ProfissaoDTO {
-}
