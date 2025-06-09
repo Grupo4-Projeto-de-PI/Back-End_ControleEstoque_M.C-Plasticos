@@ -2,6 +2,9 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.*
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
+import jakarta.validation.constraints.PositiveOrZero
 import jakarta.validation.constraints.Size
 
 @Entity
@@ -13,7 +16,12 @@ data class TipoProduto(
 
     @field:Size(min = 1, max = 45)
     @Column(nullable = false)
-    var tipo: String
+    var tipo: String,
+
+    @field:Size(min = 0, max = 100)
+    var meta: Double? = null
+
+
 ){
-    constructor(): this(null, "")
+    constructor(): this(null, "", null)
 }

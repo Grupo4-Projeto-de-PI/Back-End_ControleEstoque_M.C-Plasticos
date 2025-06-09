@@ -55,6 +55,7 @@ class ProdutoService(
         val produto = Produto(
             nome = novoProduto.nome,
             tipo = existeTipoProduto.get(),
+            meta = novoProduto.meta,
             fkUsuario = usuarioEncontrado.get(),
             preco = 0.0,
             fotoProduto = null,

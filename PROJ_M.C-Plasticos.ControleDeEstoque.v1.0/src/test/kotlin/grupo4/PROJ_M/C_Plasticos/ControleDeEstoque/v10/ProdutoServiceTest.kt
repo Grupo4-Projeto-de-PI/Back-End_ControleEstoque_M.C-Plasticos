@@ -21,7 +21,7 @@ class ProdutoServiceTest {
     @BeforeEach
     fun setup() {
         repositorio = mock(ProdutoRepositorio::class.java)
-        service = ProdutoService(repositorio)
+        service = ProdutoService(pullrepositorio)
     }
 
     @Test

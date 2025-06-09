@@ -5,5 +5,6 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.produtoEnum.ProdutoP
 data class AtualizarProdutoDto(
     val nome: String? = null,
     val tipo: Int? = null,
+    val meta: Double? = null,
     val prioridade: ProdutoPrioridade? = null,
 )

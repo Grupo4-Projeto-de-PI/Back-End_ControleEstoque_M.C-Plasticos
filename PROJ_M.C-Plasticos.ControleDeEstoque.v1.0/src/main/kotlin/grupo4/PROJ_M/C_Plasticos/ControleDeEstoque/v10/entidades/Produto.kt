@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.produtoEnum.ProdutoNivelSaude
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.produtoEnum.ProdutoPrioridade
 import jakarta.persistence.*
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.PositiveOrZero
+import jakarta.validation.constraints.*
 import java.time.LocalDate
 
 @Entity
@@ -24,6 +23,18 @@ data class Produto(
     var prioridade: ProdutoPrioridade? = null,
 
     var nivelSaude: ProdutoNivelSaude? = null,
+
+    @field:Size(min = 0, max = 100)
+    var meta: Double? = null,
+
+    @field:PositiveOrZero
+    var precoMaximo: Double? = null,
+
+    @field:PositiveOrZero
+    var precoMinimo: Double? = null,
+
+    @field:PositiveOrZero
+    var precoMedio: Double? = null,
 
     @ManyToOne
     @JoinColumn(name = "tipo_produto", referencedColumnName = "id")

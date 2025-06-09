@@ -5,5 +5,7 @@ data class CriarProdutoDto(
     @field: NotBlank
     val nome: String,
     val tipo: Int,
+    val meta: Double,
     val fkUsuario: Int,
+
 )
