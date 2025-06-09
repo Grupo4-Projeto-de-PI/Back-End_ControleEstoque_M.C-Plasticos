@@ -106,6 +106,7 @@ class ProdutoServiceTest {
             nome = "Ferro",
             tipo = 1,
             fkUsuario = 1,
+            meta = 100.0,
         )
 
         val produtoSalvo = Produto(

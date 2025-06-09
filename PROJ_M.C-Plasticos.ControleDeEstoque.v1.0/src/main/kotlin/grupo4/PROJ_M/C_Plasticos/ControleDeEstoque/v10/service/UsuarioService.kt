@@ -4,6 +4,11 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.EditarUsua
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.CriarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
@@ -11,7 +16,6 @@ import org.springframework.stereotype.Service
 class UsuarioService(
     val repositorio: UsuarioRepositorio
 ) {
-
     fun criarUsuario(novoUsuario: CriarUsuarioDto): ResponseEntity<Usuario> {
 
         if(novoUsuario.nome.isBlank() || novoUsuario.senha.isBlank()) {
@@ -58,6 +62,7 @@ class UsuarioService(
         val nomeAtualizado = repositorio.findById(codigoFuncionario).get()
         return ResponseEntity.status(200).body(nomeAtualizado)
     }
+
 
     fun editarSenhaUsuario(codigoFuncionario: Int, senha: EditarUsuarioDto): ResponseEntity<Usuario> {
         if (!repositorio.existsById(codigoFuncionario)) {
