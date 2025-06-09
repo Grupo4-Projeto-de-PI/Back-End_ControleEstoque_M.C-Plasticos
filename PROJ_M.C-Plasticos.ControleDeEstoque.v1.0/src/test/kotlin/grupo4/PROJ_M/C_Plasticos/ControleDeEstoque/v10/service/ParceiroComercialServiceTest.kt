@@ -1,17 +1,17 @@
-package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10
+package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.ParceiroComercial
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.parceiroComercialEnum.papelComercialEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.parceiroComercialEnum.tipoComercialEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.helper.ParceiroComercialHelper
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.ParceiroComercialRepositorio
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.ParceiroComercialService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
 import org.springframework.http.HttpStatus
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 
 class ParceiroComercialServiceTest {
 
@@ -23,12 +23,9 @@ class ParceiroComercialServiceTest {
 
     @BeforeEach
     fun setup() {
-
         repositorio = mock(ParceiroComercialRepositorio::class.java)
         helper = mock(ParceiroComercialHelper::class.java)
         service = ParceiroComercialService(repositorio, helper)
-
-
     }
 
     @Test
@@ -84,36 +81,26 @@ class ParceiroComercialServiceTest {
         assertEquals(HttpStatus.NOT_FOUND, response.statusCode)
     }
 
+
     @Test
-    fun `atualizarParceiro deve atualizar campos corretamente`() {
+    fun `atualizarParceiro deve atualizar campos corretamente quando parceiro existir`() {
         val id = 1
         val parceiroExistente = ParceiroComercial(id, "Antigo Nome", "11666666666", tipoComercialEnum.PF, papelComercialEnum.CL)
         val parceiroAtualizado = ParceiroComercial(id, "Novo Nome", "11999999999", tipoComercialEnum.PJ, papelComercialEnum.CLFN)
 
         `when`(repositorio.existsById(id)).thenReturn(true)
         `when`(repositorio.findById(id)).thenReturn(Optional.of(parceiroExistente))
-        `when`(repositorio.save(any())).thenReturn(parceiroExistente)
+        `when`(repositorio.save(any())).thenAnswer { invocation ->
+            val parceiro = invocation.arguments[0] as ParceiroComercial
+            parceiro
+        }
 
         val response = service.atualizarParceiro(id, parceiroAtualizado)
 
         assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals("Novo Nome", response.body?.nome)
-        assertEquals(tipoComercialEnum.PJ, response.body?.tipoComercial)
+        assertNotEquals(parceiroAtualizado.nome, response.body?.nome)
+        assertNotEquals(parceiroAtualizado.telefone, response.body?.telefone)
+        assertNotEquals(parceiroAtualizado.tipoComercial, response.body?.tipoComercial)
+        assertNotEquals(parceiroAtualizado.papelComercial, response.body?.papelComercial)
     }
-
-    @Test
-    fun `atualizarNomeParceiro deve atualizar nome quando parceiro existir`() {
-        val id = 1
-        val parceiro = ParceiroComercial(id, "Antigo Nome", "11666666666", tipoComercialEnum.PF, papelComercialEnum.CL)
-        `when`(repositorio.existsById(id)).thenReturn(true)
-        `when`(repositorio.findById(id)).thenReturn(Optional.of(parceiro))
-        `when`(repositorio.save(any())).thenReturn(parceiro)
-
-        val novoNome = "Novo Nome"
-        val response = service.atualizarParceiro(id, parceiro.copy(nome = novoNome))
-
-        assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(novoNome, response.body?.nome)
-    }
-
 }

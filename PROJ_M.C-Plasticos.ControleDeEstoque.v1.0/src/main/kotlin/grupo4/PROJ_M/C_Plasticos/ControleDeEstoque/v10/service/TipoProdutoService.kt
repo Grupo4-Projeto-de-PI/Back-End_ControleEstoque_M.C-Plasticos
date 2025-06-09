@@ -1,6 +1,6 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.Dto.tipoProdutoDTO.AtualizarTipoProdutoDTO
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.tipoProdutoDto.AtualizarTipoProdutoDTO
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.TipoProduto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.TipoProdutoRepositorio
 import org.springframework.http.ResponseEntity
@@ -38,7 +38,7 @@ class TipoProdutoService(
 
         return if (existente.isPresent) {
             val tipoProduto = existente.get()
-            dto.tipo?.let { tipoProduto.tipo = it }
+            dto.tipo.let { tipoProduto.tipo = it }
             val tipoProdutoAtualizado = repositorio.save(tipoProduto)
             ResponseEntity.ok(tipoProdutoAtualizado)
         } else {

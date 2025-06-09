@@ -13,6 +13,11 @@ class UsuarioService(
 ) {
 
     fun criarUsuario(novoUsuario: CriarUsuarioDto): ResponseEntity<Usuario> {
+
+        if(novoUsuario.nome.isBlank() || novoUsuario.senha.isBlank()) {
+            return ResponseEntity.status(400).build()
+        }
+
         val usuario = Usuario(
             nome = novoUsuario.nome,
             senha = novoUsuario.senha,
