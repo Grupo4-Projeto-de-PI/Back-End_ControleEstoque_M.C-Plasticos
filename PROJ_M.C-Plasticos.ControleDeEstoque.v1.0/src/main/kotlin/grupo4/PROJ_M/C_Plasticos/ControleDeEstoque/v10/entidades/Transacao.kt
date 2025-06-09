@@ -31,5 +31,4 @@ data class Transacao(
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var data: LocalDateTime? = LocalDateTime.now()
-
 )

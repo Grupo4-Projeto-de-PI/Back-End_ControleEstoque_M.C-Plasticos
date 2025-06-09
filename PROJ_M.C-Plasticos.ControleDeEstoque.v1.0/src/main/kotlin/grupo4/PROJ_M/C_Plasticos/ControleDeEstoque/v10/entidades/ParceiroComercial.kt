@@ -17,9 +17,9 @@ data class ParceiroComercial(
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Int?,
-    @field:NotBlank var nome: String?,
-    @field:Size(min = 11, max=11)  var telefone: String?,
+    var id: Int? = null,
+    @field:NotBlank var nome: String? = null,
+    @field:Size(min = 11, max=11)  var telefone: String? = null,
     var tipoComercial: tipoComercialEnum? = null,
     var papelComercial: papelComercialEnum? = null,
 ){

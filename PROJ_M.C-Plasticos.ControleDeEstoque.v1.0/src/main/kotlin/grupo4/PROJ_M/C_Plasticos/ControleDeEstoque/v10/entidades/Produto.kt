@@ -2,15 +2,10 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.PositiveOrZero
-import jakarta.validation.constraints.Size
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.produtoEnum.ProdutoNivelSaude
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.produtoEnum.ProdutoPrioridade
+import jakarta.persistence.*
+import jakarta.validation.constraints.*
 import java.time.LocalDate
 
 @Entity
@@ -23,6 +18,24 @@ data class Produto(
     @field: NotBlank
     var nome: String? = null,
 
+    @JsonIgnore @field: PositiveOrZero var preco: Double? = null,
+
+    var prioridade: ProdutoPrioridade? = null,
+
+    var nivelSaude: ProdutoNivelSaude? = null,
+
+    @field:Size(min = 0, max = 100)
+    var meta: Double? = null,
+
+    @field:PositiveOrZero
+    var precoMaximo: Double? = null,
+
+    @field:PositiveOrZero
+    var precoMinimo: Double? = null,
+
+    @field:PositiveOrZero
+    var precoMedio: Double? = null,
+
     @ManyToOne
     @JoinColumn(name = "tipo_produto", referencedColumnName = "id")
     var tipo: TipoProduto? = null,
@@ -31,8 +44,7 @@ data class Produto(
     @JoinColumn(name = "fk_usuario", referencedColumnName = "codigo_funcionario")
     var fkUsuario: Usuario? = null,
 
-    @JsonIgnore @field: PositiveOrZero var preco: Double? = null,
-
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    var dataCadastro: LocalDate = LocalDate.now()
+    var dataCadastro: LocalDate = LocalDate.now(),
+    @Column(length = 100*1024*1024) var fotoProduto: ByteArray? = null
 )

@@ -1,6 +1,6 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.helper
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.TransacaoDto.EditarTransacaoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.transacaoDto.EditarTransacaoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Transacao
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.categoriaEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.tipoOperacaoEnum

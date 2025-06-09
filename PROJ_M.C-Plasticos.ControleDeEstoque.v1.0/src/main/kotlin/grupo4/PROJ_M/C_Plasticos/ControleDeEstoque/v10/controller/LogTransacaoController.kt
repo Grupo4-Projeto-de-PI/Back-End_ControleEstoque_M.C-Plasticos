@@ -19,12 +19,6 @@ class LogTransacaoController(val repositorio: LogTransacaoRepositorio) {
         else ResponseEntity.notFound().build()
     }
 
-    @PostMapping
-    fun criar(@RequestBody logEntrada: LogTransacao): ResponseEntity<LogTransacao> {
-        val salvo = repositorio.save(logEntrada)
-        return ResponseEntity.ok(salvo)
-    }
-
     @PutMapping("/{id}")
     fun atualizar(@PathVariable id: Int, @RequestBody logEntrada: LogTransacao): ResponseEntity<LogTransacao> {
         val existe = repositorio.findById(id)

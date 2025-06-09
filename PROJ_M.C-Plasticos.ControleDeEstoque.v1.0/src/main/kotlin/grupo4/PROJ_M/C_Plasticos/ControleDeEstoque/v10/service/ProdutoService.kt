@@ -1,7 +1,7 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.AtualizarProdutoDto
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.CriarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.produtoDto.AtualizarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.produtoDto.CriarProdutoDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Produto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.helper.ProdutoHelper
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.ProdutoRepositorio
@@ -9,6 +9,8 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.TipoProdutoRe
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 
 @Service
 class ProdutoService(
@@ -53,13 +55,27 @@ class ProdutoService(
         val produto = Produto(
             nome = novoProduto.nome,
             tipo = existeTipoProduto.get(),
+            meta = novoProduto.meta,
             fkUsuario = usuarioEncontrado.get(),
-            preco = 0.0
-
+            preco = 0.0,
+            fotoProduto = null,
         )
 
         repositorio.save(produto)
         return ResponseEntity.status(201).body(produto)
+    }
+
+    fun adicionarImagem(imagem: ByteArray, id: Int): ResponseEntity<Void> {
+        val produtoAchado = repositorio.findById(id).get()
+        produtoAchado.fotoProduto = imagem
+        repositorio.save(produtoAchado)
+        return ResponseEntity.status(200).build()
+    }
+
+    fun getFoto(@PathVariable id: Int): ResponseEntity<ByteArray>{
+        val produto = repositorio.findById(id).get()
+        val fotoProduto = produto.fotoProduto
+        return ResponseEntity.status(200).body(fotoProduto)
     }
 
     fun deletarProduto(id: Int): ResponseEntity<Void> {

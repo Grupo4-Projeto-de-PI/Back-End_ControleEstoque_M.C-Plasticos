@@ -1,6 +1,7 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.logTransacaoEnum.logTransacaoEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.tipoOperacaoEnum
 import jakarta.persistence.*
 import jakarta.validation.constraints.PositiveOrZero
@@ -14,9 +15,10 @@ data class LogTransacao(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Int?,
-    var data: LocalDateTime?,
-    @field: PositiveOrZero var peso: BigDecimal?,
-    var valorTotal: BigDecimal?,
+    @field: PositiveOrZero var peso: Double?,
+    var valorTotal: Double?,
+
+    var tipoEdicao: logTransacaoEnum? = null,
 
     var tipoOperacao: tipoOperacaoEnum? = null,
 
@@ -29,9 +31,5 @@ data class LogTransacao(
     var fkTransacaoProduto: Produto? = null
 
 
-){
-
-    constructor() : this(null, null, null, null, null, LocalDateTime.now(), null, null)
-
-}
+)
 

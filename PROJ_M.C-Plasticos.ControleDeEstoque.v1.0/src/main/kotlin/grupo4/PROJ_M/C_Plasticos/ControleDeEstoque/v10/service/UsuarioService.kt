@@ -3,7 +3,6 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.EditarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.CriarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.usuarioEnum.tipoUsuarioEnum
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -14,6 +13,11 @@ class UsuarioService(
 ) {
 
     fun criarUsuario(novoUsuario: CriarUsuarioDto): ResponseEntity<Usuario> {
+
+        if(novoUsuario.nome.isBlank() || novoUsuario.senha.isBlank()) {
+            return ResponseEntity.status(400).build()
+        }
+
         val usuario = Usuario(
             nome = novoUsuario.nome,
             senha = novoUsuario.senha,
