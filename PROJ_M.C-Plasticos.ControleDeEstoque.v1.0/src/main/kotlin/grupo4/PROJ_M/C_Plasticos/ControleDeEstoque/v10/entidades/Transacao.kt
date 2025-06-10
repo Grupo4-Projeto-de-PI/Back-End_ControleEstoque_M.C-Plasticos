@@ -15,12 +15,15 @@ data class Transacao(
     var id: Int? = null,
 
     @ManyToOne
+    @JoinColumn(name = "fk_usuario")
     var fkUsuario: Usuario? = null,
 
     @ManyToOne
+    @JoinColumn(name = "fk_parceiro_comercial")
     var fkParceiroComercial: ParceiroComercial? = null,
 
     @ManyToOne
+    @JoinColumn(name = "fk_produto")
     var fkProduto: Produto? = null,
 
     var categoria: categoriaEnum? = null,
