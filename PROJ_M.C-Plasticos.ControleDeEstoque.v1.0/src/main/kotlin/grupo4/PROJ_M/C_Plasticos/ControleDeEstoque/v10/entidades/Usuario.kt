@@ -22,7 +22,7 @@ data class Usuario(
     @field:Size(max = 8, message = "A senha deve ter no máximo 8 dígitos")
     var senha: String? = null,
 
-    var dataCriacao: String? = LocalDateTime.now().toString(),
+    var dataCriacao: LocalDateTime = LocalDateTime.now(),
     var primeiroAcesso: Boolean = false,
     var tipoUsuario: tipoUsuarioEnum? = null,
     var ativo: Boolean? = true,
