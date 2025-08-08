@@ -27,6 +27,8 @@ class TransacaoService(
     }
 
     fun criarTransacao(novaTransacao: NovaTransacaoDto): ResponseEntity<Transacao> {
+        println("Cai dentro do criarTransacao")
+        println("Transação recebida: $novaTransacao")
         val fkProduto = buscarId(produtoRepositorio, novaTransacao.fkProduto, "Produto não encontrado")
         val fkParceiroComercial = buscarId(parceiroComercialRepositorio, novaTransacao.fkParceiroComercial,
             "Parceiro Comercial não encontrado")
@@ -45,7 +47,7 @@ class TransacaoService(
 
         val transacao = repositorio.save(novoHistorico)
         logTransacaoService.criar(novoHistorico)
-        return ResponseEntity.status(201).body(transacao)
+        return ResponseEntity.status(201).build()
     }
 
     fun listarTransacoes(): ResponseEntity<List<Transacao>> {
