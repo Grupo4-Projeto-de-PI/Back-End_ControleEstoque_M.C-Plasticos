@@ -91,6 +91,14 @@ class UsuarioController(
         return usuarioService.editarSenhaUsuario(codigoFuncionario, senha)
     }
 
+    @PatchMapping("/tipoUsuario")
+    fun patchEditarTipoUsuario(
+        @Valid @RequestBody tipoUsuario: EditarUsuarioDto,
+        @RequestParam codigoFuncionario: Int
+    ): ResponseEntity<Usuario> {
+        return usuarioService.editarTipoUsuario(codigoFuncionario, tipoUsuario)
+    }
+
     @Operation(summary = "Exclui um usuário", description = "Remove um usuário específico pelo ID.")
     @ApiResponses(
         value = [

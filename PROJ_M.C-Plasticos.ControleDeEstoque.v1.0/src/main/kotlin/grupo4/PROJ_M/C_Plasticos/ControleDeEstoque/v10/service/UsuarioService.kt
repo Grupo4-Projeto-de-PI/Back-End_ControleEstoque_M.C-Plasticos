@@ -73,6 +73,20 @@ class UsuarioService(
         return ResponseEntity.status(200).body(senhaAtualizada)
     }
 
+    fun editarTipoUsuario(codigoFuncionario: Int, tipoUsuario: EditarUsuarioDto): ResponseEntity<Usuario> {
+        if (!repositorio.existsById(codigoFuncionario)) {
+            return ResponseEntity.status(404).build()
+        }
+
+        if (tipoUsuario.tipoUsuario == null) {
+            return ResponseEntity.status(400).body(null)
+        }
+
+        repositorio.atualizarTipoUsuario(codigoFuncionario, tipoUsuario.tipoUsuario)
+        val usuarioAtualizado = repositorio.findById(codigoFuncionario).get()
+        return ResponseEntity.status(200).body(usuarioAtualizado)
+    }
+
     fun excluirUsuario(codigoFuncionario: Int): ResponseEntity<Usuario> {
         if (repositorio.existsById(codigoFuncionario)) {
             repositorio.deleteByCodigoFuncionario(codigoFuncionario)
