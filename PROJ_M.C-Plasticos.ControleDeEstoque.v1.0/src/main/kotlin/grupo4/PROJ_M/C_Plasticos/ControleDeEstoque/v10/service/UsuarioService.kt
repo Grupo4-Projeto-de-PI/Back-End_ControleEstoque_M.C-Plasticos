@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service
 class UsuarioService(
     val repositorio: UsuarioRepositorio
 ) {
-
     fun criarUsuario(novoUsuario: CriarUsuarioDto): ResponseEntity<Usuario> {
 
         if(novoUsuario.nome.isBlank() || novoUsuario.senha.isBlank()) {
@@ -59,6 +58,7 @@ class UsuarioService(
         return ResponseEntity.status(200).body(nomeAtualizado)
     }
 
+
     fun editarSenhaUsuario(codigoFuncionario: Int, senha: EditarUsuarioDto): ResponseEntity<Usuario> {
         if (!repositorio.existsById(codigoFuncionario)) {
             return ResponseEntity.status(404).build()
@@ -71,6 +71,20 @@ class UsuarioService(
         repositorio.atualizarSenha(codigoFuncionario, senha.senha)
         val senhaAtualizada = repositorio.findById(codigoFuncionario).get()
         return ResponseEntity.status(200).body(senhaAtualizada)
+    }
+
+    fun editarTipoUsuario(codigoFuncionario: Int, tipoUsuario: EditarUsuarioDto): ResponseEntity<Usuario> {
+        if (!repositorio.existsById(codigoFuncionario)) {
+            return ResponseEntity.status(404).build()
+        }
+
+        if (tipoUsuario.tipoUsuario == null) {
+            return ResponseEntity.status(400).body(null)
+        }
+
+        repositorio.atualizarTipoUsuario(codigoFuncionario, tipoUsuario.tipoUsuario)
+        val usuarioAtualizado = repositorio.findById(codigoFuncionario).get()
+        return ResponseEntity.status(200).body(usuarioAtualizado)
     }
 
     fun excluirUsuario(codigoFuncionario: Int): ResponseEntity<Usuario> {

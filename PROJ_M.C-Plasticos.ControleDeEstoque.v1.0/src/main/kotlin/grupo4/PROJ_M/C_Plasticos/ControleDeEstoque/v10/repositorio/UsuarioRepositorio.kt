@@ -1,6 +1,7 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.usuarioEnum.tipoUsuarioEnum
 import jakarta.transaction.Transactional
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
@@ -16,6 +17,11 @@ interface UsuarioRepositorio: JpaRepository<Usuario, Int> {
     @Modifying
     @Query("update Usuario u set u.senha = ?2 where u.codigoFuncionario = ?1")
     fun atualizarSenha(codigoFuncionario: Int, senha: String): Int
+
+    @Transactional
+    @Modifying
+    @Query("update Usuario u set u.tipoUsuario = ?2 where u.codigoFuncionario = ?1")
+    fun atualizarTipoUsuario(codigoFuncionario: Int, tipoUsuario: tipoUsuarioEnum?): Int
 
     @Transactional
     fun deleteByCodigoFuncionario(codigoFuncionario: Int): Int

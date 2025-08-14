@@ -22,16 +22,17 @@ class TransacaoService(
     private val logTransacaoService: LogTransacaoService
 ) {
 
-    private fun <T> buscarId(repositorio: JpaRepository<T, Int>, id: Int, mensagemErro: String = "Erro ao atualizar"): T {
+    private fun <T> buscarId(repositorio: JpaRepository<T, Int>, id: Int, mensagemErro: String): T {
         return repositorio.findById(id).orElseThrow { throw ResponseStatusException(HttpStatus.BAD_REQUEST, mensagemErro) }
     }
 
     fun criarTransacao(novaTransacao: NovaTransacaoDto): ResponseEntity<Transacao> {
+        println("Cai dentro do criarTransacao")
+        println("Transação recebida: $novaTransacao")
         val fkProduto = buscarId(produtoRepositorio, novaTransacao.fkProduto, "Produto não encontrado")
         val fkParceiroComercial = buscarId(parceiroComercialRepositorio, novaTransacao.fkParceiroComercial,
             "Parceiro Comercial não encontrado")
         val fkUsuario = buscarId(usuarioRepositorio, novaTransacao.fkUsuario, "Usuário não encontrado")
-
 
 
         val novoHistorico = Transacao(
@@ -44,9 +45,9 @@ class TransacaoService(
             fkUsuario = fkUsuario
         )
 
-        logTransacaoService.criar(novoHistorico)
         val transacao = repositorio.save(novoHistorico)
-        return ResponseEntity.status(201).body(transacao)
+        logTransacaoService.criar(novoHistorico)
+        return ResponseEntity.status(201).build()
     }
 
     fun listarTransacoes(): ResponseEntity<List<Transacao>> {

@@ -15,7 +15,7 @@ class TransacaoController(
 ) {
 
     @PostMapping
-    fun post(@RequestBody novaTransacao: NovaTransacaoDto): ResponseEntity<Transacao> {
+    fun post(@RequestBody novaTransacao: NovaTransacaoDto): ResponseEntity<out Any> {
         return transacaoService.criarTransacao(novaTransacao)
     }
 

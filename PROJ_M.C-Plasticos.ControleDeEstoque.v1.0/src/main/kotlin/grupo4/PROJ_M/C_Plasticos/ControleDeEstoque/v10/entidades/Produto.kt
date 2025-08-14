@@ -6,7 +6,7 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.produtoEnum.ProdutoN
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.produtoEnum.ProdutoPrioridade
 import jakarta.persistence.*
 import jakarta.validation.constraints.*
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Entity
 data class Produto(
@@ -45,6 +45,6 @@ data class Produto(
     var fkUsuario: Usuario? = null,
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    var dataCadastro: LocalDate = LocalDate.now(),
+    var dataCadastro: LocalDateTime = LocalDateTime.now(),
     @Column(length = 100*1024*1024) var fotoProduto: ByteArray? = null
 )

@@ -67,7 +67,8 @@ class UsuarioServiceTest {
     @Test
     fun `deve listar usuario por ID com sucesso`() {
         val idUsuario = 1
-        val usuario = Usuario(codigoFuncionario = idUsuario, nome = "Lucas", senha = "123456",
+        val usuario = Usuario(
+            codigoFuncionario = idUsuario, nome = "Lucas", senha = "123456",
             tipoUsuario = tipoUsuarioEnum.Admin)
 
         `when`(repositorio.existsById(idUsuario)).thenReturn(true)
@@ -84,7 +85,8 @@ class UsuarioServiceTest {
     fun `deve editar nome do usuario com sucesso`() {
         val idUsuario = 1
         val dto = EditarUsuarioDto(nome = "Lucas Atualizado")
-        val usuarioAtualizado = Usuario(codigoFuncionario = idUsuario, nome = dto.nome, senha = "123456",
+        val usuarioAtualizado = Usuario(
+            codigoFuncionario = idUsuario, nome = dto.nome, senha = "123456",
             tipoUsuario = tipoUsuarioEnum.Admin)
 
         `when`(repositorio.existsById(idUsuario)).thenReturn(true)
