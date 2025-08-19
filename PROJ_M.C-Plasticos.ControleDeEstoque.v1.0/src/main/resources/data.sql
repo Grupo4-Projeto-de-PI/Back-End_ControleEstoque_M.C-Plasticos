@@ -43,5 +43,19 @@ INSERT INTO produto (nome, preco, prioridade, tipo_produto, fk_usuario, data_cad
 ('Arquivo', 1.00, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Papel'), 1, CURRENT_TIMESTAMP),
 ('Jornal', 0.90, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Papel'), 1, CURRENT_TIMESTAMP),
 ('PVC', 3.30, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
-('ABS/PS', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP);
+('ABS/PS', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
+('PET', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
+('PET LARANJA', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
+('PET Laminada', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
+('PPC', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
+('PPB', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
+('PPP', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
+('PADB', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
+('PADC', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
+('APARA Limpa Branca', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
+('Apara Colorida Limpa', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
+('Apara SujaBranca', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP),
+('Apara Suja Colorida', 3.60, 1, (SELECT id FROM tipo_produto WHERE tipo = 'Plástico'), 1, CURRENT_TIMESTAMP);
+
+
 

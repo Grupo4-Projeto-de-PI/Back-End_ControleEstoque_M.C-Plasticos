@@ -30,9 +30,11 @@ class TransacaoService(
         println("Cai dentro do criarTransacao")
         println("Transação recebida: $novaTransacao")
         val fkProduto = buscarId(produtoRepositorio, novaTransacao.fkProduto, "Produto não encontrado")
-        val fkParceiroComercial = buscarId(parceiroComercialRepositorio, novaTransacao.fkParceiroComercial,
-            "Parceiro Comercial não encontrado")
-        val fkUsuario = buscarId(usuarioRepositorio, novaTransacao.fkUsuario, "Usuário não encontrado")
+        val fkParceiroComercial = novaTransacao.fkParceiroComercial?.let {
+            buscarId(parceiroComercialRepositorio, it,
+                "Parceiro Comercial não encontrado")
+        }
+        val fkUsuario = novaTransacao.fkUsuario?.let { buscarId(usuarioRepositorio, it, "Usuário não encontrado") }
 
 
         val novoHistorico = Transacao(

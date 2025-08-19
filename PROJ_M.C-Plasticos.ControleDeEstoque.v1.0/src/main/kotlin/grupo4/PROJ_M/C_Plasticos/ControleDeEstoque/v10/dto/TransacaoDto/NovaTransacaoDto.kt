@@ -16,7 +16,7 @@ data class NovaTransacaoDto(
     @field: NotBlank(message = "Insira o tipo de operação")
     val tipoOperacao: tipoOperacaoEnum,
     @field: NotBlank(message = "Insira id do parceiro comercial")
-    val fkParceiroComercial: Int,
+    val fkParceiroComercial: Int?,
     @field: NotBlank(message = "Insira o ID do usuário que realizou a transação")
-    val fkUsuario: Int,
+    val fkUsuario: Int?,
 )
