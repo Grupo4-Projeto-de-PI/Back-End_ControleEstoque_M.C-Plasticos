@@ -24,7 +24,6 @@ data class Produto(
 
     var nivelSaude: ProdutoNivelSaude? = null,
 
-    @field:Size(min = 0, max = 100)
     var meta: Double? = null,
 
     @field:PositiveOrZero
