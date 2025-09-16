@@ -2,6 +2,7 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.EditarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.CriarUsuarioDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.LoginResponseDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.LoginUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio
@@ -96,7 +97,7 @@ class UsuarioService(
         return ResponseEntity.status(404).build()
     }
 
-    fun loginUsuario(loginUsuario: LoginUsuarioDto): ResponseEntity<String> {
+    fun loginUsuario(loginUsuario: LoginUsuarioDto): ResponseEntity<LoginResponseDto> {
         val usuarioEncontrado = repositorio.findByCodigoFuncionario(loginUsuario.codigoFuncionario)
 
         return if (usuarioEncontrado.isNotEmpty()) {
@@ -105,12 +106,32 @@ class UsuarioService(
             // Verifica se a senha fornecida corresponde à senha armazenada
             if (usuario.senha == loginUsuario.senhaLog) {
                 repositorio.atualizarOnline(loginUsuario.codigoFuncionario, true)
-                ResponseEntity.status(200).body("Usuario logado com sucesso!")
+
+                ResponseEntity.status(200).body(
+                    LoginResponseDto(
+                        success = true,
+                        message = "Usuario logado com sucesso!",
+                        statusText = "OK",
+                        usuario = usuario
+                    )
+                )
             } else {
-                ResponseEntity.status(401).body("Credenciais inválidas")
+                ResponseEntity.status(401).body(
+                    LoginResponseDto(
+                        success = false,
+                        message = "Credenciais inválidas",
+                        statusText = "Unauthorized"
+                    )
+                )
             }
         } else {
-            ResponseEntity.status(404).body("Usuário não encontrado")
+            ResponseEntity.status(404).body(
+                LoginResponseDto(
+                    success = false,
+                    message = "Usuário não encontrado",
+                    statusText = "Not Found"
+                )
+            )
         }
     }
 }

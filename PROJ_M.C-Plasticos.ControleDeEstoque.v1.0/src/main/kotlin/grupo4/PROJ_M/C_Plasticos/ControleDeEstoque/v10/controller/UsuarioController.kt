@@ -2,6 +2,7 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.EditarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.CriarUsuarioDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.LoginResponseDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.LoginUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.UsuarioService
@@ -113,8 +114,8 @@ class UsuarioController(
     }
 
     @Operation(summary = "Login do usuário", description = "Realiza o login de um usuário com base no código do funcionário e senha.")
-    @GetMapping("/login")
-    fun login(@RequestBody loginUsuario: LoginUsuarioDto): ResponseEntity<String> {
+    @PostMapping("/login")
+    fun login(@RequestBody loginUsuario: LoginUsuarioDto): ResponseEntity<LoginResponseDto> {
         return usuarioService.loginUsuario(loginUsuario)
     }
 }
