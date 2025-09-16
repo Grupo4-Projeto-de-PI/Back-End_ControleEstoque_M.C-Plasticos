@@ -26,5 +26,4 @@ data class Usuario(
     var primeiroAcesso: Boolean = false,
     var tipoUsuario: tipoUsuarioEnum? = null,
     var ativo: Boolean? = true,
-    var online: Boolean? = false
 )

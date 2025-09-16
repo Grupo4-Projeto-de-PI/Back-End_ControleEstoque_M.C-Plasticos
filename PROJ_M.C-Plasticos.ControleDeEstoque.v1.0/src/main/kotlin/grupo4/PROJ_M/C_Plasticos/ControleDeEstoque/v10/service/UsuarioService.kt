@@ -2,6 +2,7 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.EditarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.CriarUsuarioDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.LoginUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio
 import org.springframework.http.ResponseEntity
@@ -95,28 +96,21 @@ class UsuarioService(
         return ResponseEntity.status(404).build()
     }
 
-    fun loginUsuario(loginUsuario: Usuario): ResponseEntity<String> {
-        val login = repositorio.findByCodigoFuncionarioAndSenha(
-            loginUsuario.codigoFuncionario,
-            loginUsuario.senha
-        )
+    fun loginUsuario(loginUsuario: LoginUsuarioDto): ResponseEntity<String> {
+        val usuarioEncontrado = repositorio.findByCodigoFuncionario(loginUsuario.codigoFuncionario)
 
-        return if (login.isNotEmpty()) {
-            repositorio.atualizarOnline(loginUsuario.codigoFuncionario, true)
-            ResponseEntity.status(200).body("Usuario logado com sucesso!")
+        return if (usuarioEncontrado.isNotEmpty()) {
+            val usuario = usuarioEncontrado.first()
+
+            // Verifica se a senha fornecida corresponde à senha armazenada
+            if (usuario.senha == loginUsuario.senhaLog) {
+                repositorio.atualizarOnline(loginUsuario.codigoFuncionario, true)
+                ResponseEntity.status(200).body("Usuario logado com sucesso!")
+            } else {
+                ResponseEntity.status(401).body("Credenciais inválidas")
+            }
         } else {
-            ResponseEntity.status(404).build()
-        }
-    }
-
-    fun logoffUsuario(nomeEntrada: Usuario): ResponseEntity<String> {
-        val login = repositorio.findByCodigoFuncionario(nomeEntrada.codigoFuncionario)
-
-        return if (login.isNotEmpty()) {
-            repositorio.atualizarOnline(nomeEntrada.codigoFuncionario, false)
-            ResponseEntity.status(200).body("Usuario desconectado!")
-        } else {
-            ResponseEntity.status(404).build()
+            ResponseEntity.status(404).body("Usuário não encontrado")
         }
     }
 }
