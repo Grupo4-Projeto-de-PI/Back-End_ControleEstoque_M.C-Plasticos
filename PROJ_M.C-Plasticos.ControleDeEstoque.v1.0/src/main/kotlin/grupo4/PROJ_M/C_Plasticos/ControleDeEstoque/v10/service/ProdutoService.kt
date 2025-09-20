@@ -9,7 +9,6 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.TipoProdutoRe
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 
 @Service
@@ -49,16 +48,18 @@ class ProdutoService(
         val usuarioEncontrado = usuarioRepositorio.findById(novoProduto.fkUsuario)
 
         if(!existeTipoProduto.isPresent || !usuarioEncontrado.isPresent){
-            return ResponseEntity.status(400).build()
+            return ResponseEntity.status(400).body("Tipo de produto ou usuário não encontrado".let { null })
         }
+
+        val fotoBytes: ByteArray? = novoProduto.fotoProduto?.bytes
 
         val produto = Produto(
             nome = novoProduto.nome,
             tipo = existeTipoProduto.get(),
-            meta = novoProduto.meta,
+            prioridade = novoProduto.prioridade,
             fkUsuario = usuarioEncontrado.get(),
             preco = 0.0,
-            fotoProduto = null,
+            fotoProduto = fotoBytes,
         )
 
         repositorio.save(produto)
