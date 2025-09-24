@@ -27,8 +27,7 @@ class TransacaoService(
     }
 
     fun criarTransacao(novaTransacao: NovaTransacaoDto): ResponseEntity<Transacao> {
-        println("Cai dentro do criarTransacao")
-        println("Transação recebida: $novaTransacao")
+
         val fkProduto = buscarId(produtoRepositorio, novaTransacao.fkProduto, "Produto não encontrado")
         val fkParceiroComercial = novaTransacao.fkParceiroComercial?.let {
             buscarId(parceiroComercialRepositorio, it,
