@@ -76,14 +76,16 @@ class TransacaoService(
     fun filtrarTransacoes(filtro: FiltroTransacaoDto): ResponseEntity<List<Transacao>> {
         val transacoes = repositorio.findByDynamicFilters(
             fkProduto = filtro.fkProduto,
-            categoria = filtro.categoria,
-            fkParceiroComercial = filtro.fkParceiroComercial,
+            categoria = filtro.fkCategoria,
+            fkCliente = filtro.fkCliente,
+            fkFornecedor = filtro.fkFornecedor,
+            fkTipoParceiroComercial = filtro.fkTipoParceiroComercial,
             tipoOperacao = filtro.tipoOperacao,
             dataInicio = filtro.dataInicio,
             dataFim = filtro.dataFim,
             pesoMinimo = filtro.pesoMinimo,
             pesoMaximo = filtro.pesoMaximo,
-            tipoProdutoId = filtro.tipoProdutoId
+            fkTipoProduto = filtro.fkTipoProduto
         )
 
         return if (transacoes.isEmpty()) {
