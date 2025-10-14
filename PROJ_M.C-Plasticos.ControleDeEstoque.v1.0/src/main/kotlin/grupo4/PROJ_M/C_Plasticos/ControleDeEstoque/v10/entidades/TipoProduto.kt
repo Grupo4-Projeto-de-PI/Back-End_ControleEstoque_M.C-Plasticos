@@ -18,7 +18,8 @@ data class TipoProduto(
     @Column(nullable = false)
     var tipo: String,
 
-    @field:Size(min = 0, max = 100)
+    @field:Min(0)
+    @field:Max(100)
     var meta: Double? = null
 
 
