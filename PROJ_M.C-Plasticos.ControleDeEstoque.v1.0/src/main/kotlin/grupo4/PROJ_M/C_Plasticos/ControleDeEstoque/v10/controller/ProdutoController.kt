@@ -35,6 +35,8 @@ class ProdutoController(val produtoService: ProdutoService) {
         @RequestPart(value = "fotoProduto", required = false) fotoProduto: MultipartFile?
     ): ResponseEntity<Produto> {
 
+        println("produto recebido $novoProduto")
+        println("arquivo recebido $fotoProduto")
         val produtoCompleto = CriarProdutoDto(
             nome = novoProduto.nome,
             tipo = novoProduto.tipo,

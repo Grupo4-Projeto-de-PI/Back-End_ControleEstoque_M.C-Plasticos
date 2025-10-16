@@ -46,7 +46,7 @@ data class Produto(
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var dataCadastro: LocalDateTime = LocalDateTime.now(),
 
-    @Column(length = 100*1024*1024)
+    @Column(length = 500*1024*1024)
     var fotoProduto: ByteArray? = null
 )
 

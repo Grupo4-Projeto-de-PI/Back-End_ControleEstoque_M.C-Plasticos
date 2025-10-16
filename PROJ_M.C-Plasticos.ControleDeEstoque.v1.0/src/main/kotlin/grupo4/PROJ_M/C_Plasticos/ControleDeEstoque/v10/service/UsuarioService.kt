@@ -6,6 +6,7 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.LoginRespo
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.LoginUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio
+import org.apache.coyote.Response
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
@@ -98,40 +99,44 @@ class UsuarioService(
     }
 
     fun loginUsuario(loginUsuario: LoginUsuarioDto): ResponseEntity<LoginResponseDto> {
-        val usuarioEncontrado = repositorio.findByCodigoFuncionario(loginUsuario.codigoFuncionario)
-
-        return if (usuarioEncontrado.isNotEmpty()) {
-            val usuario = usuarioEncontrado.first()
-
-            // Verifica se a senha fornecida corresponde à senha armazenada
-            if (usuario.senha == loginUsuario.senhaLog) {
-                repositorio.atualizarOnline(loginUsuario.codigoFuncionario, true)
-
-                ResponseEntity.status(200).body(
-                    LoginResponseDto(
-                        success = true,
-                        message = "Usuario logado com sucesso!",
-                        statusText = "OK",
-                        usuario = usuario
-                    )
-                )
-            } else {
-                ResponseEntity.status(401).body(
-                    LoginResponseDto(
-                        success = false,
-                        message = "Credenciais inválidas",
-                        statusText = "Unauthorized"
-                    )
-                )
-            }
-        } else {
-            ResponseEntity.status(404).body(
+        if (loginUsuario.codigoFuncionario <= 0 || loginUsuario.senhaLog.isBlank()) {
+            return ResponseEntity.status(400).body(
                 LoginResponseDto(
                     success = false,
-                    message = "Usuário não encontrado",
-                    statusText = "Not Found"
+                    message = "Dados inválidos ou incompletos",
+                    statusText = "Bad Request",
                 )
             )
         }
+
+        val usuario = repositorio.findByCodigoFuncionario(loginUsuario.codigoFuncionario).firstOrNull()
+            ?: return ResponseEntity.status(404).body(
+                LoginResponseDto(
+                    success = false,
+                    message = "Usuário não encontrado",
+                    statusText = "Not Found",
+                )
+            )
+
+        if (usuario.senha != loginUsuario.senhaLog) {
+            return ResponseEntity.status(401).body(
+                LoginResponseDto(
+                    success = false,
+                    message = "Credenciais inválidas",
+                    statusText = "Unauthorized",
+                )
+            )
+        }
+
+        repositorio.atualizarOnline(loginUsuario.codigoFuncionario, true)
+
+        return ResponseEntity.status(200).body(
+            LoginResponseDto(
+                success = true,
+                message = "Usuário logado com sucesso!",
+                statusText = "OK",
+                usuario = usuario
+            )
+        )
     }
 }

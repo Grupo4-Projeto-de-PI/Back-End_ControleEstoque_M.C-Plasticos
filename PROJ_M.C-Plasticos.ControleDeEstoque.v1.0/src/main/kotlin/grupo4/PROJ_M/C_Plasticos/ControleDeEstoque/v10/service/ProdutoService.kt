@@ -46,11 +46,6 @@ class ProdutoService(
 
         val existeTipoProduto = tipoProdutoRepositorio.findById(novoProduto.tipo)
         val usuarioEncontrado = usuarioRepositorio.findById(novoProduto.fkUsuario)
-
-        if(!existeTipoProduto.isPresent || !usuarioEncontrado.isPresent){
-            return ResponseEntity.status(400).body("Tipo de produto ou usuário não encontrado".let { null })
-        }
-
         val fotoBytes: ByteArray? = novoProduto.fotoProduto?.bytes
 
         val produto = Produto(
