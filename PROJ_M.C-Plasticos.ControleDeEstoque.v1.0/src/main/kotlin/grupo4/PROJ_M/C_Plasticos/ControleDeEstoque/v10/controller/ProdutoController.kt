@@ -1,8 +1,9 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.produtoDto.AtualizarProdutoDto
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.produtoDto.CriarProdutoDto
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.produtoDto.CriarProdutoSemArquivoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.CriarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.CriarProdutoSemArquivoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.AtualizarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.ProdutoDetalhesDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Produto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.ProdutoService
 import org.apache.coyote.Response
@@ -20,7 +21,7 @@ class ProdutoController(val produtoService: ProdutoService) {
     }
 
     @GetMapping("/id")
-    fun getProdutoId(@RequestParam id: Int): ResponseEntity<Produto> {
+    fun getProdutoId(@RequestParam id: Int): ResponseEntity<ProdutoDetalhesDto> {
         return produtoService.getProdutoPorId(id)
     }
 

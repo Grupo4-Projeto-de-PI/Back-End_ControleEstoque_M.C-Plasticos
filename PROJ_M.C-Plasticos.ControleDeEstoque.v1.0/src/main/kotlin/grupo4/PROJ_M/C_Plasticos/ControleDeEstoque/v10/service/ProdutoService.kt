@@ -1,7 +1,8 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.produtoDto.AtualizarProdutoDto
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.produtoDto.CriarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.AtualizarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.CriarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.ProdutoDetalhesDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Produto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.helper.ProdutoHelper
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.ProdutoRepositorio
@@ -28,9 +29,9 @@ class ProdutoService(
         }
     }
 
-    fun getProdutoPorId(id: Int): ResponseEntity<Produto> {
-        val produto = repositorio.findById(id)
-        return ResponseEntity.of(produto)
+    fun getProdutoPorId(id: Int): ResponseEntity<ProdutoDetalhesDto> {
+        val produto = repositorio.findProdutoComDetalhes(id)
+        return ResponseEntity.status(200).body(produto[0])
     }
 
     fun getProdutoPorTipo(tipoId: Int): ResponseEntity<List<Produto>> {
