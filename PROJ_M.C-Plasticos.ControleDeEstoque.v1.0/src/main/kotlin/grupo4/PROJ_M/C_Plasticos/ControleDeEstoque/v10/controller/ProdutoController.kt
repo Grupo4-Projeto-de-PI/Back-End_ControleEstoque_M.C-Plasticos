@@ -36,8 +36,6 @@ class ProdutoController(val produtoService: ProdutoService) {
         @RequestPart(value = "fotoProduto", required = false) fotoProduto: MultipartFile?
     ): ResponseEntity<Produto> {
 
-        println("produto recebido $novoProduto")
-        println("arquivo recebido $fotoProduto")
         val produtoCompleto = CriarProdutoDto(
             nome = novoProduto.nome,
             tipo = novoProduto.tipo,
@@ -54,8 +52,18 @@ class ProdutoController(val produtoService: ProdutoService) {
         return produtoService.deletarProduto(id)
     }
 
-    @PutMapping("/atualizar-produto/{id}")
-    fun atualizarTodoProduto(@PathVariable id: Int, @RequestBody produtosAtualizado: AtualizarProdutoDto): ResponseEntity<Produto> {
-        return produtoService.atualizarProduto(id, produtosAtualizado)
+    @PutMapping("/atualizar-produto/{id}", consumes = ["multipart/form-data"])
+    fun atualizarTodoProduto(
+        @PathVariable id: Int,
+        @RequestPart("produto") produtoAtualizado: AtualizarProdutoDto,
+        @RequestPart(value = "fotoProduto", required = false) fotoProduto: MultipartFile?
+    ): ResponseEntity<Produto> {
+        val produtoCompletoAtualizado = AtualizarProdutoDto(
+            nome = produtoAtualizado.nome,
+            tipo = produtoAtualizado.tipo,
+            prioridade = produtoAtualizado.prioridade,
+            fotoProduto = fotoProduto
+        )
+        return produtoService.atualizarProduto(id, produtoCompletoAtualizado)
     }
 }

@@ -5,6 +5,7 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Produto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.TipoProdutoRepositorio
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
+import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 
 @Component
@@ -26,8 +27,14 @@ class ProdutoHelper(
         }
     }
 
+    fun atualizarFotoProduto(fotoBytes: MultipartFile?, produto: Produto) {
+
+        fotoBytes?.let { produto.fotoProduto = it.bytes }
+    }
+
     fun atualizarProduto(produtoAtualizado: AtualizarProdutoDto, produtoExistente: Produto) {
         atualizarNome(produtoAtualizado.nome, produtoExistente)
         atualizarTipoProduto(produtoAtualizado.tipo, produtoExistente)
+        atualizarFotoProduto(produtoAtualizado.fotoProduto, produtoExistente)
     }
 }

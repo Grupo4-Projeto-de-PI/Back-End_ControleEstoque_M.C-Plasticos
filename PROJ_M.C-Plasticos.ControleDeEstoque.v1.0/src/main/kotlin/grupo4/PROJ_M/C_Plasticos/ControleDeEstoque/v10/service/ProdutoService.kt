@@ -62,19 +62,6 @@ class ProdutoService(
         return ResponseEntity.status(201).body(produto)
     }
 
-    fun adicionarImagem(imagem: ByteArray, id: Int): ResponseEntity<Void> {
-        val produtoAchado = repositorio.findById(id).get()
-        produtoAchado.fotoProduto = imagem
-        repositorio.save(produtoAchado)
-        return ResponseEntity.status(200).build()
-    }
-
-    fun getFoto(@PathVariable id: Int): ResponseEntity<ByteArray>{
-        val produto = repositorio.findById(id).get()
-        val fotoProduto = produto.fotoProduto
-        return ResponseEntity.status(200).body(fotoProduto)
-    }
-
     fun deletarProduto(id: Int): ResponseEntity<Void> {
         return if (repositorio.existsById(id)) {
             repositorio.deleteById(id)
@@ -90,6 +77,7 @@ class ProdutoService(
         }
         val produtoExistente = repositorio.findById(id).get()
         produtoHelper.atualizarProduto(produtosAtualizado, produtoExistente)
+
         repositorio.save(produtoExistente)
         return ResponseEntity.status(200).body(produtoExistente)
     }
