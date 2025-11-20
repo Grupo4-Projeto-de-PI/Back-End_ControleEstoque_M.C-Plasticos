@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 interface TransacaoRepositorio: JpaRepository <Transacao, Int> {
@@ -39,7 +40,7 @@ interface TransacaoRepositorio: JpaRepository <Transacao, Int> {
       AND (
         :dataInicio IS NULL 
         OR :dataFim IS NULL 
-        OR t.data BETWEEN :dataInicio AND :dataFim
+        OR DATE(t.data) BETWEEN :dataInicio AND :dataFim
       )
       AND (
         :pesoMinimo IS NULL
@@ -55,8 +56,8 @@ interface TransacaoRepositorio: JpaRepository <Transacao, Int> {
         @Param("fkFornecedor") fkFornecedor: Int? = null,
         @Param("fkTipoParceiroComercial") fkTipoParceiroComercial: tipoComercialEnum? = null,
         @Param("tipoOperacao") tipoOperacao: tipoOperacaoEnum? = null,
-        @Param("dataInicio") dataInicio: LocalDateTime? = null,
-        @Param("dataFim") dataFim: LocalDateTime? = null,
+        @Param("dataInicio") dataInicio: LocalDate? = null,
+        @Param("dataFim") dataFim: LocalDate? = null,
         @Param("horarioInicio") horarioInicio: String? = null,
         @Param("horarioFim") horarioFim: String? = null,
         @Param("pesoMinimo") pesoMinimo: Double? = null,

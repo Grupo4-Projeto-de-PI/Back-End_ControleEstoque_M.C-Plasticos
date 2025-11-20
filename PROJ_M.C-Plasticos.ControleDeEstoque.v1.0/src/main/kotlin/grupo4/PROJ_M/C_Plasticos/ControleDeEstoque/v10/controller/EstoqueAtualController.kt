@@ -28,4 +28,14 @@ class EstoqueAtualController(val estoqueAtualService: EstoqueAtualService) {
         }
     }
 
+    @GetMapping("/valor-estoque-produto/{id}")
+    fun valorEstoqueProduto(@PathVariable id: Int): ResponseEntity<List<Map<String, Any>>> {
+        val valorProduto = estoqueAtualService.valorEstoqueProduto(id)
+
+        return if (valorProduto.isEmpty()) {
+            ResponseEntity.status(204).build()
+        } else {
+            ResponseEntity.status(200).body(valorProduto)
+        }
+    }
 }

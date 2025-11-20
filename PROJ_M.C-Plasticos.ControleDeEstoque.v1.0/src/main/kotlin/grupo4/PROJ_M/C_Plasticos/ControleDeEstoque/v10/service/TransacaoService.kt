@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
+import java.time.LocalDate
 
 @Service
 class TransacaoService(
@@ -74,6 +75,10 @@ class TransacaoService(
     }
 
     fun filtrarTransacoes(filtro: FiltroTransacaoDto): ResponseEntity<List<Transacao>> {
+
+        val dataInicioConvertida = filtro.dataInicio?.let { LocalDate.parse(it) }
+        val dataFimConvertida = filtro.dataFim?.let { LocalDate.parse(it) }
+
         val transacoes = repositorio.findByDynamicFilters(
             fkProduto = filtro.fkProduto,
             categoria = filtro.fkCategoria,
@@ -81,8 +86,8 @@ class TransacaoService(
             fkFornecedor = filtro.fkFornecedor,
             fkTipoParceiroComercial = filtro.fkTipoParceiroComercial,
             tipoOperacao = filtro.tipoOperacao,
-            dataInicio = filtro.dataInicio,
-            dataFim = filtro.dataFim,
+            dataInicio = dataInicioConvertida,
+            dataFim = dataFimConvertida,
             pesoMinimo = filtro.pesoMinimo,
             pesoMaximo = filtro.pesoMaximo,
             fkTipoProduto = filtro.fkTipoProduto
