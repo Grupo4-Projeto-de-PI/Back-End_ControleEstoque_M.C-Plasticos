@@ -14,6 +14,6 @@ interface EstoqueAtualRepositorio : JpaRepository<Produto, Int> {
     @Query(value = "SELECT nome FROM produto WHERE nome LIKE %:nome%", nativeQuery = true)
     fun buscarProdutoPorNome(nome: String): List<Map<String, Any>>
 
-    @Query(value = "SELECT * FROM saldo_produto_estoque WHERE fk_produto = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM informacoes_estoque_atual  WHERE fk_produto = :id", nativeQuery = true)
     fun valorEstoqueProduto(id: Int): List<Map<String, Any>>
 }
