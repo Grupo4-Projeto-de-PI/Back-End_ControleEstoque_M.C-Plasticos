@@ -29,6 +29,7 @@ class TransacaoService(
 
     fun criarTransacao(novaTransacao: NovaTransacaoDto): ResponseEntity<Transacao> {
 
+        println("Transacao recebida ASDADADASDASDASDWQEDQWDSADQDQWDSA $novaTransacao")
         val fkProduto = buscarId(produtoRepositorio, novaTransacao.fkProduto, "Produto não encontrado")
         val fkParceiroComercial = novaTransacao.fkParceiroComercial?.let {
             buscarId(parceiroComercialRepositorio, it,
@@ -44,7 +45,8 @@ class TransacaoService(
             valorTotal = novaTransacao.valorTotal,
             tipoOperacao = novaTransacao.tipoOperacao,
             fkParceiroComercial = fkParceiroComercial,
-            fkUsuario = fkUsuario
+            fkUsuario = fkUsuario,
+            data= novaTransacao.data
         )
 
         val transacao = repositorio.save(novoHistorico)
@@ -76,10 +78,15 @@ class TransacaoService(
 
     fun filtrarTransacoes(filtro: FiltroTransacaoDto): ResponseEntity<List<Transacao>> {
 
-        val dataInicioConvertida = filtro.dataInicio?.let { LocalDate.parse(it) }
-        val dataFimConvertida = filtro.dataFim?.let { LocalDate.parse(it) }
+        val dataInicioConvertida = if (filtro.dataInicio.isNullOrBlank()) null else LocalDate.parse(filtro.dataInicio)
+        val dataFimConvertida = if (filtro.dataFim.isNullOrBlank()) null else LocalDate.parse(filtro.dataFim)
 
-        val transacoes = repositorio.findByDynamicFilters(
+        val pesoMinimoConvertido = filtro.pesoMinimo?.toString()?.toDoubleOrNull()
+        val pesoMaximoConvertido = filtro.pesoMaximo?.toString()?.toDoubleOrNull()
+
+        println("RECEBENDO OS FILTROS AAAAAAAAAAAAAAADKADJASDAJSKD: $filtro" )
+
+        val transacoes = repositorio.findByDynamicFiltersNative(
             fkProduto = filtro.fkProduto,
             fkCategoria = filtro.fkCategoria,
             fkCliente = filtro.fkCliente,
@@ -88,8 +95,8 @@ class TransacaoService(
             tipoOperacao = filtro.tipoOperacao,
             dataInicio = dataInicioConvertida,
             dataFim = dataFimConvertida,
-            pesoMinimo = filtro.pesoMinimo,
-            pesoMaximo = filtro.pesoMaximo,
+            pesoMinimo = pesoMinimoConvertido,
+            pesoMaximo = pesoMaximoConvertido,
             fkTipoProduto = filtro.fkTipoProduto
         )
 

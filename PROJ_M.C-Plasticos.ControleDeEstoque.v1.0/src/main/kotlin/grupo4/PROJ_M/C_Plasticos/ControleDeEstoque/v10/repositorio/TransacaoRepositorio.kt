@@ -13,66 +13,43 @@ import java.time.LocalDateTime
 
 interface TransacaoRepositorio: JpaRepository <Transacao, Int> {
 
-    @Transactional
-    @Query("""
-    SELECT t FROM Transacao t
-    JOIN t.fkProduto p
-    JOIN p.tipo tp
-    JOIN t.fkParceiroComercial pc
-    WHERE 
-        (:fkProduto IS NULL OR t.fkProduto.id IN :fkProduto)
-        
-        AND (:fkCategoria IS NULL OR t.categoria IN :fkCategoria)
-
+    @Query(
+        value = """
+        SELECT t.*
+        FROM transacao t
+        JOIN produto p ON t.fk_produto = p.id
+        JOIN tipo_produto tp ON p.tipo_produto = tp.id
+        JOIN parceiro_comercial pc ON t.fk_parceiro_comercial = pc.id
+        WHERE 
+            (:fkProduto IS NULL OR t.fk_produto IN (:fkProduto))
+        AND (:fkCategoria IS NULL OR t.categoria IN (:fkCategoria))
+        AND (:fkCliente IS NULL OR pc.id IN (:fkCliente))
+        AND (:fkFornecedor IS NULL OR pc.id IN (:fkFornecedor))
+        AND (:fkTipoParceiroComercial IS NULL OR pc.tipo_comercial IN (:fkTipoParceiroComercial))
+        AND (:tipoOperacao IS NULL OR t.tipo_operacao IN (:tipoOperacao))
         AND (
-            :fkCliente IS NULL OR (
-                pc.id IN :fkCliente AND 
-                (
-                    pc.papelComercial = grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.parceiroComercialEnum.papelComercialEnum.CL 
-                    OR pc.papelComercial = grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.parceiroComercialEnum.papelComercialEnum.CLFN
-                )
-            )
+             (:dataInicio IS NULL AND :dataFim IS NULL)
+             OR (t.data BETWEEN :dataInicio AND :dataFim)
         )
-
         AND (
-            :fkFornecedor IS NULL OR (
-                pc.id IN :fkFornecedor AND 
-                (
-                    pc.papelComercial = grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.parceiroComercialEnum.papelComercialEnum.FN 
-                    OR pc.papelComercial = grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.parceiroComercialEnum.papelComercialEnum.CLFN
-                )
-            )
+             (:pesoMinimo IS NULL AND :pesoMaximo IS NULL)
+             OR (t.peso BETWEEN :pesoMinimo AND :pesoMaximo)
         )
-
-        AND (:fkTipoParceiroComercial IS NULL OR pc.tipoComercial IN :fkTipoParceiroComercial)
-
-        AND (:tipoOperacao IS NULL OR t.tipoOperacao IN :tipoOperacao)
-
-        AND (
-            :dataInicio IS NULL 
-            OR :dataFim IS NULL 
-            OR DATE(t.data) BETWEEN :dataInicio AND :dataFim
-        )
-
-        AND (
-            :pesoMinimo IS NULL
-            OR :pesoMaximo IS NULL
-            OR t.peso BETWEEN :pesoMinimo AND :pesoMaximo
-        )
-
-        AND (:fkTipoProduto IS NULL OR tp.id IN :fkTipoProduto)
-""")
-    fun findByDynamicFilters(
-        @Param("fkProduto") fkProduto: List<Int>? = null,
-        @Param("fkCategoria") fkCategoria: List<categoriaEnum>? = null,
-        @Param("fkCliente") fkCliente: List<Int>? = null,
-        @Param("fkFornecedor") fkFornecedor: List<Int>? = null,
-        @Param("fkTipoParceiroComercial") fkTipoParceiroComercial: List<tipoComercialEnum>? = null,
-        @Param("tipoOperacao") tipoOperacao: List<tipoOperacaoEnum>? = null,
-        @Param("dataInicio") dataInicio: LocalDate? = null,
-        @Param("dataFim") dataFim: LocalDate? = null,
-        @Param("pesoMinimo") pesoMinimo: Double? = null,
-        @Param("pesoMaximo") pesoMaximo: Double? = null,
-        @Param("fkTipoProduto") fkTipoProduto: List<Int>? = null
+        AND (:fkTipoProduto IS NULL OR tp.id IN (:fkTipoProduto))
+    """,
+        nativeQuery = true
+    )
+    fun findByDynamicFiltersNative(
+        @Param("fkProduto") fkProduto: List<Int>?,
+        @Param("fkCategoria") fkCategoria: List<Int>?,
+        @Param("fkCliente") fkCliente: List<Int>?,
+        @Param("fkFornecedor") fkFornecedor: List<Int>?,
+        @Param("fkTipoParceiroComercial") fkTipoParceiroComercial: List<Int>?,
+        @Param("tipoOperacao") tipoOperacao: List<Int>?,
+        @Param("dataInicio") dataInicio: LocalDate?,
+        @Param("dataFim") dataFim: LocalDate?,
+        @Param("pesoMinimo") pesoMinimo: Double?,
+        @Param("pesoMaximo") pesoMaximo: Double?,
+        @Param("fkTipoProduto") fkTipoProduto: List<Int>?
     ): List<Transacao>
 }

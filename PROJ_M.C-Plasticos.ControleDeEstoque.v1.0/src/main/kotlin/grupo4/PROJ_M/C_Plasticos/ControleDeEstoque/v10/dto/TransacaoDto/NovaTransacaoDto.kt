@@ -4,6 +4,8 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.catego
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.tipoOperacaoEnum
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class NovaTransacaoDto(
     @field: NotBlank(message = "O ID do produto é obrigatório")
@@ -20,4 +22,6 @@ data class NovaTransacaoDto(
     val fkParceiroComercial: Int?,
     @field: NotBlank(message = "Insira o ID do usuário que realizou a transação")
     val fkUsuario: Int?,
+
+    val data: LocalDateTime? = null
 )

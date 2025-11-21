@@ -8,11 +8,11 @@ import java.time.LocalDateTime
 
 data class FiltroTransacaoDto(
     val fkProduto: List<Int>? = null,
-    val fkCategoria: List<categoriaEnum>? = null,
+    val fkCategoria: List<Int>? = null,
     val fkFornecedor: List<Int>? = null,
     val fkCliente: List<Int>? = null,
-    val fkTipoParceiroComercial: List<tipoComercialEnum>? = null,
-    val tipoOperacao: List<tipoOperacaoEnum>? = null,
+    val fkTipoParceiroComercial: List<Int>? = null,
+    val tipoOperacao: List<Int>? = null,
     val dataInicio: String? = null,
     val dataFim: String? = null,
     val pesoMinimo: Double? = null,
