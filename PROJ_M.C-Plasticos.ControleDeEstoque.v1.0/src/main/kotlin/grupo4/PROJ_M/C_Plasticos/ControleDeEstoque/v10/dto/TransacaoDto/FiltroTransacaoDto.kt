@@ -7,17 +7,15 @@ import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.enum.transacaoEnum.tipoOp
 import java.time.LocalDateTime
 
 data class FiltroTransacaoDto(
-    val fkProduto: Int? = null,
-    val fkCategoria: categoriaEnum? = null,
-    val fkFornecedor: Int? = null,
-    val fkCliente: Int? = null,
-    val fkTipoParceiroComercial: tipoComercialEnum? = null,
-    val tipoOperacao: tipoOperacaoEnum? = null,
+    val fkProduto: List<Int>? = null,
+    val fkCategoria: List<categoriaEnum>? = null,
+    val fkFornecedor: List<Int>? = null,
+    val fkCliente: List<Int>? = null,
+    val fkTipoParceiroComercial: List<tipoComercialEnum>? = null,
+    val tipoOperacao: List<tipoOperacaoEnum>? = null,
     val dataInicio: String? = null,
     val dataFim: String? = null,
-    val horarioInicio: String? = null,
-    val horarioFim: String? = null,
     val pesoMinimo: Double? = null,
     val pesoMaximo: Double? = null,
-    val fkTipoProduto: Int? = null
+    val fkTipoProduto: List<Int>? = null
 )

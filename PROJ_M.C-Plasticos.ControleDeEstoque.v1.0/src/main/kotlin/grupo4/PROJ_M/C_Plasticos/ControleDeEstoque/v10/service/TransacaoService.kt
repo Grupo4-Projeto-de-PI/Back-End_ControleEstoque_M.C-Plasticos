@@ -81,7 +81,7 @@ class TransacaoService(
 
         val transacoes = repositorio.findByDynamicFilters(
             fkProduto = filtro.fkProduto,
-            categoria = filtro.fkCategoria,
+            fkCategoria = filtro.fkCategoria,
             fkCliente = filtro.fkCliente,
             fkFornecedor = filtro.fkFornecedor,
             fkTipoParceiroComercial = filtro.fkTipoParceiroComercial,
