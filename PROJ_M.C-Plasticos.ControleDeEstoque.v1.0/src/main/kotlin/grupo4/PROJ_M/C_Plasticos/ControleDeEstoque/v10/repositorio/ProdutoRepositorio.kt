@@ -29,4 +29,10 @@ interface ProdutoRepositorio: JpaRepository<Produto, Int> {
 """)
     fun findProdutoComDetalhes(produtoId: Int): List<ProdutoDetalhesDto>
 
+    @Transactional
+    @Query("""
+    SELECT * FROM produto WHERE nome LIKE %:nome%
+""", nativeQuery = true)
+    fun findByNome(nome: String): List<Produto>
+
 }

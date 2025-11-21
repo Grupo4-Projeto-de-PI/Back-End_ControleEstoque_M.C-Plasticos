@@ -29,6 +29,15 @@ class ProdutoService(
         }
     }
 
+    fun getProdutoPorNome(nome: String): ResponseEntity<List<Produto>> {
+        val produtos = repositorio.findByNome(nome)
+        return if (produtos.isEmpty()) {
+            ResponseEntity.status(204).build()
+        } else {
+            ResponseEntity.status(200).body(produtos)
+        }
+    }
+
     fun getProdutoPorId(id: Int): ResponseEntity<ProdutoDetalhesDto> {
         val produto = repositorio.findProdutoComDetalhes(id)
         return ResponseEntity.status(200).body(produto[0])

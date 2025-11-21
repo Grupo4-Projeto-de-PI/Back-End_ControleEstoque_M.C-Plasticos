@@ -20,6 +20,11 @@ class ProdutoController(val produtoService: ProdutoService) {
         return produtoService.listarTodosProdutos()
     }
 
+    @GetMapping("/nome")
+    fun getProdutoNome(@RequestParam nome: String): ResponseEntity<List<Produto>> {
+        return produtoService.getProdutoPorNome(nome)
+    }
+
     @GetMapping("/id")
     fun getProdutoId(@RequestParam id: Int): ResponseEntity<ProdutoDetalhesDto> {
         return produtoService.getProdutoPorId(id)
