@@ -15,28 +15,28 @@ interface TransacaoRepositorio: JpaRepository <Transacao, Int> {
 
     @Query(
         value = """
-        SELECT t.*
-        FROM transacao t
-        JOIN produto p ON t.fk_produto = p.id
-        JOIN tipo_produto tp ON p.tipo_produto = tp.id
-        JOIN parceiro_comercial pc ON t.fk_parceiro_comercial = pc.id
-        WHERE 
-            (:fkProduto IS NULL OR t.fk_produto IN (:fkProduto))
-        AND (:fkCategoria IS NULL OR t.categoria IN (:fkCategoria))
-        AND (:fkCliente IS NULL OR pc.id IN (:fkCliente))
-        AND (:fkFornecedor IS NULL OR pc.id IN (:fkFornecedor))
-        AND (:fkTipoParceiroComercial IS NULL OR pc.tipo_comercial IN (:fkTipoParceiroComercial))
-        AND (:tipoOperacao IS NULL OR t.tipo_operacao IN (:tipoOperacao))
-        AND (
-             (:dataInicio IS NULL AND :dataFim IS NULL)
-             OR (t.data BETWEEN :dataInicio AND :dataFim)
-        )
-        AND (
-             (:pesoMinimo IS NULL AND :pesoMaximo IS NULL)
-             OR (t.peso BETWEEN :pesoMinimo AND :pesoMaximo)
-        )
-        AND (:fkTipoProduto IS NULL OR tp.id IN (:fkTipoProduto))
-    """,
+    SELECT t.*
+    FROM transacao t
+    JOIN produto p ON t.fk_produto = p.id
+    JOIN tipo_produto tp ON p.tipo_produto = tp.id
+    JOIN parceiro_comercial pc ON t.fk_parceiro_comercial = pc.id
+    WHERE
+        (COALESCE(:fkProduto) IS NULL OR t.fk_produto IN (:fkProduto))
+    AND (COALESCE(:fkCategoria) IS NULL OR t.categoria IN (:fkCategoria))
+    AND (COALESCE(:fkCliente) IS NULL OR pc.id IN (:fkCliente))
+    AND (COALESCE(:fkFornecedor) IS NULL OR pc.id IN (:fkFornecedor))
+    AND (COALESCE(:fkTipoParceiroComercial) IS NULL OR pc.tipo_comercial IN (:fkTipoParceiroComercial))
+    AND (COALESCE(:tipoOperacao) IS NULL OR t.tipo_operacao IN (:tipoOperacao))
+    AND (
+         (:dataInicio IS NULL AND :dataFim IS NULL)
+         OR (t.data BETWEEN :dataInicio AND :dataFim)
+    )
+    AND (
+         (:pesoMinimo IS NULL AND :pesoMaximo IS NULL)
+         OR (t.peso BETWEEN :pesoMinimo AND :pesoMaximo)
+    )
+    AND (COALESCE(:fkTipoProduto) IS NULL OR tp.id IN (:fkTipoProduto))
+""",
         nativeQuery = true
     )
     fun findByDynamicFiltersNative(

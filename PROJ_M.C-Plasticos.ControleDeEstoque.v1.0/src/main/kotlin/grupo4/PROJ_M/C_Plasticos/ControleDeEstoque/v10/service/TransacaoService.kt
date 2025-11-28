@@ -84,20 +84,20 @@ class TransacaoService(
         val pesoMinimoConvertido = filtro.pesoMinimo?.toString()?.toDoubleOrNull()
         val pesoMaximoConvertido = filtro.pesoMaximo?.toString()?.toDoubleOrNull()
 
-        println("RECEBENDO OS FILTROS AAAAAAAAAAAAAAADKADJASDAJSKD: $filtro" )
+        println("RECEBENDO OS FILTROS AAAAAAAAAAAAAAADKADJASDAJSKD: $filtro")
 
         val transacoes = repositorio.findByDynamicFiltersNative(
-            fkProduto = filtro.fkProduto,
-            fkCategoria = filtro.fkCategoria,
-            fkCliente = filtro.fkCliente,
-            fkFornecedor = filtro.fkFornecedor,
-            fkTipoParceiroComercial = filtro.fkTipoParceiroComercial,
-            tipoOperacao = filtro.tipoOperacao,
+            fkProduto = filtro.fkProduto?.takeIf { it.isNotEmpty() },
+            fkCategoria = filtro.fkCategoria?.takeIf { it.isNotEmpty() },
+            fkCliente = filtro.fkCliente?.takeIf { it.isNotEmpty() },
+            fkFornecedor = filtro.fkFornecedor?.takeIf { it.isNotEmpty() },
+            fkTipoParceiroComercial = filtro.fkTipoParceiroComercial?.takeIf { it.isNotEmpty() },
+            tipoOperacao = filtro.tipoOperacao?.takeIf { it.isNotEmpty() },
             dataInicio = dataInicioConvertida,
             dataFim = dataFimConvertida,
             pesoMinimo = pesoMinimoConvertido,
             pesoMaximo = pesoMaximoConvertido,
-            fkTipoProduto = filtro.fkTipoProduto
+            fkTipoProduto = filtro.fkTipoProduto?.takeIf { it.isNotEmpty() }
         )
 
         return if (transacoes.isEmpty()) {
