@@ -17,9 +17,9 @@ interface TransacaoRepositorio: JpaRepository <Transacao, Int> {
         value = """
     SELECT t.*
     FROM transacao t
-    JOIN produto p ON t.fk_produto = p.id
-    JOIN tipo_produto tp ON p.tipo_produto = tp.id
-    JOIN parceiro_comercial pc ON t.fk_parceiro_comercial = pc.id
+    LEFT JOIN produto p ON t.fk_produto = p.id
+    LEFT JOIN tipo_produto tp ON p.tipo_produto = tp.id
+    LEFT JOIN parceiro_comercial pc ON t.fk_parceiro_comercial = pc.id
     WHERE
         (COALESCE(:fkProduto) IS NULL OR t.fk_produto IN (:fkProduto))
     AND (COALESCE(:fkCategoria) IS NULL OR t.categoria IN (:fkCategoria))
