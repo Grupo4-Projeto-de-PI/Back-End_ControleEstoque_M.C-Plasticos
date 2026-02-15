@@ -8,9 +8,12 @@ import org.springframework.stereotype.Repository
 @Repository
 interface EstoqueAtualRepositorio : JpaRepository<Produto, Int> {
 
-    @Query(value = "SELECT nome, fk_produto, estoqueAtual FROM estoque_atual", nativeQuery = true)
+    @Query(value = "SELECT * FROM estoque_atual", nativeQuery = true)
     fun buscarEstoqueAtual(): List<Map<String, Any>>
 
     @Query(value = "SELECT nome FROM produto WHERE nome LIKE %:nome%", nativeQuery = true)
     fun buscarProdutoPorNome(nome: String): List<Map<String, Any>>
+
+    @Query(value = "SELECT * FROM informacoes_estoque_atual  WHERE fk_produto = :id", nativeQuery = true)
+    fun valorEstoqueProduto(id: Int): List<Map<String, Any>>
 }

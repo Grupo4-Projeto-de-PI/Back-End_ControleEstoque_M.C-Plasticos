@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
+import java.time.LocalDate
 
 @Service
 class TransacaoService(
@@ -27,12 +28,14 @@ class TransacaoService(
     }
 
     fun criarTransacao(novaTransacao: NovaTransacaoDto): ResponseEntity<Transacao> {
-        println("Cai dentro do criarTransacao")
-        println("Transação recebida: $novaTransacao")
+
+        println("Transacao recebida ASDADADASDASDASDWQEDQWDSADQDQWDSA $novaTransacao")
         val fkProduto = buscarId(produtoRepositorio, novaTransacao.fkProduto, "Produto não encontrado")
-        val fkParceiroComercial = buscarId(parceiroComercialRepositorio, novaTransacao.fkParceiroComercial,
-            "Parceiro Comercial não encontrado")
-        val fkUsuario = buscarId(usuarioRepositorio, novaTransacao.fkUsuario, "Usuário não encontrado")
+        val fkParceiroComercial = novaTransacao.fkParceiroComercial?.let {
+            buscarId(parceiroComercialRepositorio, it,
+                "Parceiro Comercial não encontrado")
+        }
+        val fkUsuario = novaTransacao.fkUsuario?.let { buscarId(usuarioRepositorio, it, "Usuário não encontrado") }
 
 
         val novoHistorico = Transacao(
@@ -42,7 +45,8 @@ class TransacaoService(
             valorTotal = novaTransacao.valorTotal,
             tipoOperacao = novaTransacao.tipoOperacao,
             fkParceiroComercial = fkParceiroComercial,
-            fkUsuario = fkUsuario
+            fkUsuario = fkUsuario,
+            data= novaTransacao.data
         )
 
         val transacao = repositorio.save(novoHistorico)
@@ -73,16 +77,27 @@ class TransacaoService(
     }
 
     fun filtrarTransacoes(filtro: FiltroTransacaoDto): ResponseEntity<List<Transacao>> {
-        val transacoes = repositorio.findByDynamicFilters(
-            fkProduto = filtro.fkProduto,
-            categoria = filtro.categoria,
-            fkParceiroComercial = filtro.fkParceiroComercial,
-            tipoOperacao = filtro.tipoOperacao,
-            dataInicio = filtro.dataInicio,
-            dataFim = filtro.dataFim,
-            pesoMinimo = filtro.pesoMinimo,
-            pesoMaximo = filtro.pesoMaximo,
-            tipoProdutoId = filtro.tipoProdutoId
+
+        val dataInicioConvertida = if (filtro.dataInicio.isNullOrBlank()) null else LocalDate.parse(filtro.dataInicio)
+        val dataFimConvertida = if (filtro.dataFim.isNullOrBlank()) null else LocalDate.parse(filtro.dataFim)
+
+        val pesoMinimoConvertido = filtro.pesoMinimo?.toString()?.toDoubleOrNull()
+        val pesoMaximoConvertido = filtro.pesoMaximo?.toString()?.toDoubleOrNull()
+
+        println("RECEBENDO OS FILTROS AAAAAAAAAAAAAAADKADJASDAJSKD: $filtro")
+
+        val transacoes = repositorio.findByDynamicFiltersNative(
+            fkProduto = filtro.fkProduto?.takeIf { it.isNotEmpty() },
+            fkCategoria = filtro.fkCategoria?.takeIf { it.isNotEmpty() },
+            fkCliente = filtro.fkCliente?.takeIf { it.isNotEmpty() },
+            fkFornecedor = filtro.fkFornecedor?.takeIf { it.isNotEmpty() },
+            fkTipoParceiroComercial = filtro.fkTipoParceiroComercial?.takeIf { it.isNotEmpty() },
+            tipoOperacao = filtro.tipoOperacao?.takeIf { it.isNotEmpty() },
+            dataInicio = dataInicioConvertida,
+            dataFim = dataFimConvertida,
+            pesoMinimo = pesoMinimoConvertido,
+            pesoMaximo = pesoMaximoConvertido,
+            fkTipoProduto = filtro.fkTipoProduto?.takeIf { it.isNotEmpty() }
         )
 
         return if (transacoes.isEmpty()) {

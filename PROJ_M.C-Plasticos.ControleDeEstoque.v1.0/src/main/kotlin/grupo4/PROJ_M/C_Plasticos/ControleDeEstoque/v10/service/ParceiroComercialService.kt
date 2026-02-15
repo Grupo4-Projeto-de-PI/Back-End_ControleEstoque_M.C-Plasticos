@@ -21,6 +21,15 @@ class ParceiroComercialService(
         }
     }
 
+    fun obterParceiroPorId(id: Int): ResponseEntity<ParceiroComercial> {
+        return if (repositorio.existsById(id)) {
+            val parceiro = repositorio.findById(id).get()
+            ResponseEntity.status(200).body(parceiro)
+        } else {
+            ResponseEntity.status(404).build()
+        }
+    }
+
     fun criarParceiro(novosFornecedores: ParceiroComercial): ResponseEntity<ParceiroComercial> {
         val parceiro = repositorio.save(novosFornecedores)
         return ResponseEntity.status(201).body(parceiro)

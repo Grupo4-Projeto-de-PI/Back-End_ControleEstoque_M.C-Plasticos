@@ -13,4 +13,8 @@ class EstoqueAtualService(val estoqueAtualRepositorio: EstoqueAtualRepositorio) 
     fun buscarProdutoPorNome(nome: String): List<Map<String, Any>> {
         return estoqueAtualRepositorio.buscarProdutoPorNome(nome)
     }
+
+    fun valorEstoqueProduto(id: Int): List<Map<String, Any>> {
+        return estoqueAtualRepositorio.valorEstoqueProduto(id)
+    }
 }

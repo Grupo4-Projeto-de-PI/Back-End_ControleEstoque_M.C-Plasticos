@@ -13,19 +13,18 @@ data class Produto(
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id:Int? = null,
+    var id: Int? = null,
 
     @field: NotBlank
     var nome: String? = null,
 
-    @JsonIgnore @field: PositiveOrZero var preco: Double? = null,
+    @JsonIgnore
+    @field: PositiveOrZero
+    var preco: Double? = null,
 
-    var prioridade: ProdutoPrioridade? = null,
+    var prioridade: ProdutoPrioridade = ProdutoPrioridade.BAIXA, // Valor padrão
 
     var nivelSaude: ProdutoNivelSaude? = null,
-
-    @field:Size(min = 0, max = 100)
-    var meta: Double? = null,
 
     @field:PositiveOrZero
     var precoMaximo: Double? = null,
@@ -46,5 +45,8 @@ data class Produto(
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var dataCadastro: LocalDateTime = LocalDateTime.now(),
-    @Column(length = 100*1024*1024) var fotoProduto: ByteArray? = null
+
+    @Column(length = 500*1024*1024)
+    var fotoProduto: ByteArray? = null
 )
+

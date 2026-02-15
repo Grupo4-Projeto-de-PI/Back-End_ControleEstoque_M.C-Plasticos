@@ -1,12 +1,15 @@
 package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.produtoDto.AtualizarProdutoDto
-import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.produtoDto.CriarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.CriarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.CriarProdutoSemArquivoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.AtualizarProdutoDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.ProdutoDto.ProdutoDetalhesDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Produto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.ProdutoService
 import org.apache.coyote.Response
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/produto")
@@ -17,8 +20,13 @@ class ProdutoController(val produtoService: ProdutoService) {
         return produtoService.listarTodosProdutos()
     }
 
+    @GetMapping("/nome")
+    fun getProdutoNome(@RequestParam nome: String): ResponseEntity<List<Produto>> {
+        return produtoService.getProdutoPorNome(nome)
+    }
+
     @GetMapping("/id")
-    fun getProdutoId(@RequestParam id: Int): ResponseEntity<Produto> {
+    fun getProdutoId(@RequestParam id: Int): ResponseEntity<ProdutoDetalhesDto> {
         return produtoService.getProdutoPorId(id)
     }
 
@@ -27,20 +35,21 @@ class ProdutoController(val produtoService: ProdutoService) {
         return produtoService.getProdutoPorTipo(tipoId)
     }
 
-    @PostMapping("/imagem/{id}")
-    fun adicionarImagemProduto(@RequestBody imagem: ByteArray, @PathVariable id: Int): ResponseEntity<Void> {
-        return produtoService.adicionarImagem(imagem, id)
-    }
+    @PostMapping(consumes = ["multipart/form-data"])
+    fun criarProduto(
+        @RequestPart("produto") novoProduto: CriarProdutoSemArquivoDto,
+        @RequestPart(value = "fotoProduto", required = false) fotoProduto: MultipartFile?
+    ): ResponseEntity<Produto> {
 
-    @GetMapping(value = ["/resgastar-foto/{id}"],
-        produces = ["image/png", "image/jpeg", "image/jpg", "image/gif"])
-    fun getFoto(@PathVariable id: Int): ResponseEntity<ByteArray>{
-        return produtoService.getFoto(id)
-    }
+        val produtoCompleto = CriarProdutoDto(
+            nome = novoProduto.nome,
+            tipo = novoProduto.tipo,
+            prioridade = novoProduto.prioridade,
+            fkUsuario = novoProduto.fkUsuario,
+            fotoProduto = fotoProduto
+        )
 
-    @PostMapping
-    fun criarProduto(@RequestBody novoProduto: CriarProdutoDto): ResponseEntity<Produto> {
-        return produtoService.criarProduto(novoProduto)
+        return produtoService.criarProduto(produtoCompleto)
     }
 
     @DeleteMapping("/{id}")
@@ -48,8 +57,18 @@ class ProdutoController(val produtoService: ProdutoService) {
         return produtoService.deletarProduto(id)
     }
 
-    @PutMapping("/atualizar-produto/{id}")
-    fun atualizarTodoProduto(@PathVariable id: Int, @RequestBody produtosAtualizado: AtualizarProdutoDto): ResponseEntity<Produto> {
-        return produtoService.atualizarProduto(id, produtosAtualizado)
+    @PutMapping("/atualizar-produto/{id}", consumes = ["multipart/form-data"])
+    fun atualizarTodoProduto(
+        @PathVariable id: Int,
+        @RequestPart("produto") produtoAtualizado: AtualizarProdutoDto,
+        @RequestPart(value = "fotoProduto", required = false) fotoProduto: MultipartFile?
+    ): ResponseEntity<Produto> {
+        val produtoCompletoAtualizado = AtualizarProdutoDto(
+            nome = produtoAtualizado.nome,
+            tipo = produtoAtualizado.tipo,
+            prioridade = produtoAtualizado.prioridade,
+            fotoProduto = fotoProduto
+        )
+        return produtoService.atualizarProduto(id, produtoCompletoAtualizado)
     }
 }

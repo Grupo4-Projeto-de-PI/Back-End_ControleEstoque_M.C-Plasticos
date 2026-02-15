@@ -33,5 +33,5 @@ data class Transacao(
     var valorTotal: Double? = null,
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    var data: LocalDateTime? = LocalDateTime.now()
+    var data: LocalDateTime? = null
 )

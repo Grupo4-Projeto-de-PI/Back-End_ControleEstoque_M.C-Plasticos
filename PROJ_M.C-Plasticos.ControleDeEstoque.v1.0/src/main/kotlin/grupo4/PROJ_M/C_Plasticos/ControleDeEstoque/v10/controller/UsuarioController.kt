@@ -2,6 +2,8 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.controller
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.EditarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.CriarUsuarioDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.LoginResponseDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.LoginUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service.UsuarioService
 import io.swagger.v3.oas.annotations.Operation
@@ -112,14 +114,8 @@ class UsuarioController(
     }
 
     @Operation(summary = "Login do usuário", description = "Realiza o login de um usuário com base no código do funcionário e senha.")
-    @GetMapping("/login")
-    fun login(@RequestBody loginUsuario: Usuario): ResponseEntity<String> {
+    @PostMapping("/login")
+    fun login(@RequestBody loginUsuario: LoginUsuarioDto): ResponseEntity<LoginResponseDto> {
         return usuarioService.loginUsuario(loginUsuario)
-    }
-
-    @Operation(summary = "Logoff do usuário", description = "Realiza o logoff de um usuário com base no código do funcionário.")
-    @GetMapping("/logoff")
-    fun logoff(@RequestBody nomeEntrada: Usuario): ResponseEntity<String> {
-        return usuarioService.logoffUsuario(nomeEntrada)
     }
 }

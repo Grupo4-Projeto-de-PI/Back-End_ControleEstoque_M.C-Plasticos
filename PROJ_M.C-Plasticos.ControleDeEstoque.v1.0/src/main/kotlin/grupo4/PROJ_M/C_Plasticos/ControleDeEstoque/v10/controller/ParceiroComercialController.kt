@@ -15,6 +15,11 @@ class ParceiroComercialController(val parceiroComercialService: ParceiroComercia
         return parceiroComercialService.listarTodosParceiros()
     }
 
+    @GetMapping("/{id}")
+    fun getParceiroPorId(@PathVariable id: Int): ResponseEntity<ParceiroComercial> {
+        return parceiroComercialService.obterParceiroPorId(id)
+    }
+
     @PostMapping
     fun post(@Valid @RequestBody novosFornecedores: ParceiroComercial): ResponseEntity<ParceiroComercial> {
         return parceiroComercialService.criarParceiro(novosFornecedores)

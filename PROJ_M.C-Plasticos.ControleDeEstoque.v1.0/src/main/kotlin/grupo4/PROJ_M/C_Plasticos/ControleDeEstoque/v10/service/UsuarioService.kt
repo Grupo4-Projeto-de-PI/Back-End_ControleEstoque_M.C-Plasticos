@@ -2,8 +2,11 @@ package grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.service
 
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.EditarUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.CriarUsuarioDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.LoginResponseDto
+import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.dto.usuarioDto.LoginUsuarioDto
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.entidades.Usuario
 import grupo4.PROJ_M.C_Plasticos.ControleDeEstoque.v10.repositorio.UsuarioRepositorio
+import org.apache.coyote.Response
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
@@ -95,28 +98,45 @@ class UsuarioService(
         return ResponseEntity.status(404).build()
     }
 
-    fun loginUsuario(loginUsuario: Usuario): ResponseEntity<String> {
-        val login = repositorio.findByCodigoFuncionarioAndSenha(
-            loginUsuario.codigoFuncionario,
-            loginUsuario.senha
+    fun loginUsuario(loginUsuario: LoginUsuarioDto): ResponseEntity<LoginResponseDto> {
+        if (loginUsuario.codigoFuncionario <= 0 || loginUsuario.senhaLog.isBlank()) {
+            return ResponseEntity.status(400).body(
+                LoginResponseDto(
+                    success = false,
+                    message = "Dados inválidos ou incompletos",
+                    statusText = "Bad Request",
+                )
+            )
+        }
+
+        val usuario = repositorio.findByCodigoFuncionario(loginUsuario.codigoFuncionario).firstOrNull()
+            ?: return ResponseEntity.status(404).body(
+                LoginResponseDto(
+                    success = false,
+                    message = "Usuário não encontrado",
+                    statusText = "Not Found",
+                )
+            )
+
+        if (usuario.senha != loginUsuario.senhaLog) {
+            return ResponseEntity.status(401).body(
+                LoginResponseDto(
+                    success = false,
+                    message = "Credenciais inválidas",
+                    statusText = "Unauthorized",
+                )
+            )
+        }
+
+        repositorio.atualizarOnline(loginUsuario.codigoFuncionario, true)
+
+        return ResponseEntity.status(200).body(
+            LoginResponseDto(
+                success = true,
+                message = "Usuário logado com sucesso!",
+                statusText = "OK",
+                usuario = usuario
+            )
         )
-
-        return if (login.isNotEmpty()) {
-            repositorio.atualizarOnline(loginUsuario.codigoFuncionario, true)
-            ResponseEntity.status(200).body("Usuario logado com sucesso!")
-        } else {
-            ResponseEntity.status(404).build()
-        }
-    }
-
-    fun logoffUsuario(nomeEntrada: Usuario): ResponseEntity<String> {
-        val login = repositorio.findByCodigoFuncionario(nomeEntrada.codigoFuncionario)
-
-        return if (login.isNotEmpty()) {
-            repositorio.atualizarOnline(nomeEntrada.codigoFuncionario, false)
-            ResponseEntity.status(200).body("Usuario desconectado!")
-        } else {
-            ResponseEntity.status(404).build()
-        }
     }
 }
